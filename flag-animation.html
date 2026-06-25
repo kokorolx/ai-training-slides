@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Flag Animation — Huashu-Design</title>
+<style>
+*{margin:0;padding:0}
+body{background:#000;overflow:hidden;width:100vw;height:100vh}
+canvas{display:block}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); buildEmblem(); });
+
+// ── Flag geometry ────────────────────────────────────────────
+const COLS = 36, ROWS = 24;
+let FW, FH, FX, FY; // computed each frame from canvas size
+
+function layout() {
+  FH = canvas.height * 0.48;
+  FW = FH * 1.55;
+  FX = canvas.width  * 0.26;
+  FY = canvas.height * 0.22;
+}
+
+// ── Pre-render emblem to offscreen canvas ────────────────────
+const emb = document.createElement('canvas');
+emb.width = 800; emb.height = 516;
+const ec = emb.getContext('2d');
+
+function buildEmblem() {
+  const W = emb.width, H = emb.height;
+  ec.clearRect(0, 0, W, H);
+
+  // Flag fabric — warm white
+  ec.fillStyle = '#F2EEE4';
+  ec.fillRect(0, 0, W, H);
+
+  // Subtle fabric texture lines
+  ec.strokeStyle = 'rgba(180,165,140,.08)';
+  ec.lineWidth = 1;
+  for (let y = 0; y < H; y += 14) {
+    ec.beginPath(); ec.moveTo(0, y); ec.lineTo(W, y); ec.stroke();
+  }
+
+  // ── Central hub-and-spoke emblem ──────────────────────────
+  const cx = W * 0.46, cy = H * 0.50;
+  const r  = Math.min(W, H) * 0.22;
+  const INK = '#1B2A42';
+
+  // Outer ring (very faint)
+  ec.beginPath();
+  ec.arc(cx, cy, r * 1.08, 0, Math.PI * 2);
+  ec.strokeStyle = 'rgba(27,42,66,.12)';
+  ec.lineWidth = 2;
+  ec.stroke();
+
+  // Spoke positions: top, right, bottom, left
+  const nodes = [
+    { angle: -Math.PI/2, label: 'MEMORY',     sub: 'CLAUDE.md' },
+    { angle:  0,         label: 'SPEC',        sub: 'driven'    },
+    { angle:  Math.PI/2, label: 'SKILLS',      sub: '/commands' },
+    { angle:  Math.PI,   label: 'MCP',         sub: 'tools'     },
+  ];
+
+  const spokeR = r * 0.78;
+  const nodeR  = r * 0.28;
+
+  // Draw spokes
+  nodes.forEach(n => {
+    const nx = cx + Math.cos(n.angle) * spokeR;
+    const ny = cy + Math.sin(n.angle) * spokeR;
+    ec.beginPath();
+    ec.moveTo(cx + Math.cos(n.angle) * 28, cy + Math.sin(n.angle) * 28);
+    ec.lineTo(nx - Math.cos(n.angle) * nodeR, ny - Math.sin(n.angle) * nodeR);
+    ec.strokeStyle = INK;
+    ec.lineWidth = 5;
+    ec.stroke();
+  });
+
+  // Draw satellite nodes
+  nodes.forEach(n => {
+    const nx = cx + Math.cos(n.angle) * spokeR;
+    const ny = cy + Math.sin(n.angle) * spokeR;
+    ec.beginPath();
+    ec.arc(nx, ny, nodeR, 0, Math.PI * 2);
+    ec.fillStyle = INK;
+    ec.fill();
+    // Label
+    ec.fillStyle = '#F2EEE4';
+    ec.font = `bold ${nodeR * 0.62}px 'Arial Narrow', Arial`;
+    ec.textAlign = 'center';
+    ec.textBaseline = 'middle';
+    ec.fillText(n.label, nx, ny - nodeR * 0.08);
+    ec.font = `${nodeR * 0.36}px monospace`;
+    ec.fillStyle = 'rgba(242,238,228,.7)';
+    ec.fillText(n.sub, nx, ny + nodeR * 0.4);
+  });
+
+  // Center dot
+  ec.beginPath();
+  ec.arc(cx, cy, 28, 0, Math.PI * 2);
+  ec.fillStyle = INK;
+  ec.fill();
+  ec.beginPath();
+  ec.arc(cx, cy, 14, 0, Math.PI * 2);
+  ec.fillStyle = '#F2EEE4';
+  ec.fill();
+
+  // ── Text ─────────────────────────────────────────────────
+  const TX = W * 0.74, TY = H * 0.50;
+  ec.textAlign = 'left';
+  ec.fillStyle = INK;
+  ec.font = `900 ${H * 0.092}px 'Arial Narrow', Arial`;
+  ec.textBaseline = 'middle';
+  ec.fillText('NUS', TX, TY - H * 0.085);
+  ec.fillText('TECH', TX, TY + H * 0.008);
+
+  ec.font = `${H * 0.038}px monospace`;
+  ec.fillStyle = 'rgba(27,42,66,.55)';
+  ec.fillText('ADVANCED AI', TX, TY + H * 0.105);
+  ec.fillText('TRAINING 2026', TX, TY + H * 0.155);
+
+  // Thin bottom rule
+  ec.fillStyle = 'rgba(27,42,66,.15)';
+  ec.fillRect(TX, TY + H * 0.19, W * 0.22, 2);
+}
+buildEmblem();
+
+// ── Wave math ────────────────────────────────────────────────
+function waveY(col, row, t) {
+  const xr = col / COLS;
+  const yr = row / ROWS;
+  const amp = xr * FH * 0.095;
+  return (
+    Math.sin(xr * 5.8  - t * 2.4)        * amp       +
+    Math.sin(xr * 11.2 - t * 3.9 + yr*2) * amp * 0.4 +
+    Math.sin(xr * 3.1  - t * 1.6)        * amp * 0.5 +
+    Math.sin(xr * 18   - t * 6.2 + yr*4) * amp * 0.12
+  );
+}
+
+function waveX(col, row, t) {
+  const xr = col / COLS;
+  return Math.sin(xr * 4.5 - t * 2.0) * xr * FW * 0.018;
+}
+
+function vertex(col, row, t) {
+  return {
+    x: FX + (col / COLS) * FW + waveX(col, row, t),
+    y: FY + (row / ROWS) * FH + waveY(col, row, t),
+  };
+}
+
+// ── Affine texture-mapped quad ───────────────────────────────
+function drawQuad(tl, tr, bl, br, u0, v0, u1, v1) {
+  const sw = emb.width, sh = emb.height;
+  const sx = u0 * sw, sy = v0 * sh;
+  const sw2 = (u1 - u0) * sw, sh2 = (v1 - v0) * sh;
+
+  // Affine: maps (sx,sy)→tl, (sx+sw2,sy)→tr, (sx,sy+sh2)→bl
+  const dx1 = tr.x - tl.x, dy1 = tr.y - tl.y;
+  const dx2 = bl.x - tl.x, dy2 = bl.y - tl.y;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(tl.x, tl.y);
+  ctx.lineTo(tr.x, tr.y);
+  ctx.lineTo(br.x, br.y);
+  ctx.lineTo(bl.x, bl.y);
+  ctx.closePath();
+  ctx.clip();
+
+  ctx.transform(
+    dx1 / sw2, dy1 / sw2,
+    dx2 / sh2, dy2 / sh2,
+    tl.x - dx1 * sx / sw2 - dx2 * sy / sh2,
+    tl.y - dy1 * sx / sw2 - dy2 * sy / sh2
+  );
+  ctx.drawImage(emb, 0, 0);
+  ctx.restore();
+}
+
+// ── Shading overlay per quad ─────────────────────────────────
+function shadeQuad(tl, tr, bl, br) {
+  // Surface normal (Z component of cross product → brightness)
+  const ax = tr.x - tl.x, ay = tr.y - tl.y;
+  const bx = bl.x - tl.x, by = bl.y - tl.y;
+  const nz = ax * by - ay * bx;       // z of normal
+  const bright = Math.max(0, Math.min(1, nz / (FW / COLS * FH / ROWS * 1.2)));
+  const shade  = (bright - 0.5) * 0.38;
+
+  if (Math.abs(shade) < 0.01) return;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(tl.x, tl.y);
+  ctx.lineTo(tr.x, tr.y);
+  ctx.lineTo(br.x, br.y);
+  ctx.lineTo(bl.x, bl.y);
+  ctx.closePath();
+  ctx.clip();
+  ctx.fillStyle = shade > 0
+    ? `rgba(255,245,220,${shade.toFixed(3)})`
+    : `rgba(30,25,15,${(-shade).toFixed(3)})`;
+  ctx.fill();
+  ctx.restore();
+}
+
+// ── Draw pole ────────────────────────────────────────────────
+function drawPole() {
+  const px = FX - 12;
+  const topY = FY - FH * 0.15;
+  const botY = canvas.height * 0.95;
+
+  // Pole shadow
+  const gs = ctx.createLinearGradient(px - 10, 0, px + 10, 0);
+  gs.addColorStop(0, 'rgba(0,0,0,0)');
+  gs.addColorStop(.4, 'rgba(0,0,0,.25)');
+  gs.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = gs;
+  ctx.fillRect(px - 10, topY, 20, botY - topY);
+
+  // Pole body gradient
+  const gp = ctx.createLinearGradient(px - 7, 0, px + 7, 0);
+  gp.addColorStop(0,   '#4A3728');
+  gp.addColorStop(0.3, '#8B6B4A');
+  gp.addColorStop(0.6, '#C49A6C');
+  gp.addColorStop(1,   '#6B4E32');
+  ctx.fillStyle = gp;
+  ctx.beginPath();
+  ctx.roundRect(px - 7, topY, 14, botY - topY, 3);
+  ctx.fill();
+
+  // Pole tip
+  ctx.beginPath();
+  ctx.arc(px, topY, 10, 0, Math.PI * 2);
+  ctx.fillStyle = '#C0A060';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(px, topY, 6, 0, Math.PI * 2);
+  ctx.fillStyle = '#F0D090';
+  ctx.fill();
+}
+
+// ── Sky background ───────────────────────────────────────────
+function drawSky() {
+  const g = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  g.addColorStop(0,   '#4A8FC4');
+  g.addColorStop(0.5, '#87CEEB');
+  g.addColorStop(1,   '#C5E8F7');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Clouds
+  drawCloud(canvas.width * 0.12, canvas.height * 0.12, 90, 0.7);
+  drawCloud(canvas.width * 0.72, canvas.height * 0.08, 70, 0.85);
+  drawCloud(canvas.width * 0.88, canvas.height * 0.25, 55, 0.6);
+  drawCloud(canvas.width * 0.35, canvas.height * 0.06, 50, 0.5);
+}
+
+function drawCloud(x, y, r, op) {
+  ctx.save();
+  ctx.globalAlpha = op;
+  ctx.fillStyle = '#fff';
+  [[0,0,1],[r*.7,-r*.3,.8],[-r*.7,-r*.2,.75],[r*.4,r*.2,.7],[-r*.4,r*.25,.65]].forEach(([dx,dy,s]) => {
+    ctx.beginPath();
+    ctx.arc(x+dx, y+dy, r*s, 0, Math.PI*2);
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+// ── Ground ───────────────────────────────────────────────────
+function drawGround() {
+  const gy = canvas.height * 0.88;
+  const g = ctx.createLinearGradient(0, gy, 0, canvas.height);
+  g.addColorStop(0, '#4A7C4E');
+  g.addColorStop(1, '#2D5230');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, gy, canvas.width, canvas.height - gy);
+}
+
+// ── Main render ──────────────────────────────────────────────
+let lastT = 0;
+function draw(ts) {
+  const t = ts / 1000;
+  layout();
+
+  drawSky();
+  drawGround();
+  drawPole();
+
+  // Precompute all vertices
+  const verts = [];
+  for (let r = 0; r <= ROWS; r++) {
+    verts[r] = [];
+    for (let c = 0; c <= COLS; c++) {
+      verts[r][c] = vertex(c, r, t);
+    }
+  }
+
+  // Draw flag quads — bottom to top for overdraw
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const tl = verts[r][c],   tr = verts[r][c+1];
+      const bl = verts[r+1][c], br = verts[r+1][c+1];
+      const u0 = c/COLS, u1 = (c+1)/COLS;
+      const v0 = r/ROWS, v1 = (r+1)/ROWS;
+
+      drawQuad(tl, tr, bl, br, u0, v0, u1, v1);
+      shadeQuad(tl, tr, bl, br);
+    }
+  }
+
+  // Flag edge shadow (depth illusion)
+  const topLeft  = verts[0][COLS];
+  const botLeft  = verts[ROWS][COLS];
+  const topRight = verts[0][COLS];
+  ctx.save();
+  const ge = ctx.createLinearGradient(topLeft.x - 6, 0, topLeft.x + 4, 0);
+  ge.addColorStop(0, 'rgba(0,0,0,.18)');
+  ge.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = ge;
+  ctx.beginPath();
+  ctx.moveTo(verts[0][0].x, verts[0][0].y);
+  ctx.lineTo(verts[0][0].x + 6, verts[0][0].y);
+  ctx.lineTo(verts[ROWS][0].x + 6, verts[ROWS][0].y);
+  ctx.lineTo(verts[ROWS][0].x, verts[ROWS][0].y);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  // Watermark
+  ctx.fillStyle = 'rgba(255,255,255,.18)';
+  ctx.font = '11px monospace';
+  ctx.textAlign = 'right';
+  ctx.fillText('Created by Huashu-Design', canvas.width - 18, canvas.height - 14);
+
+  requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Advanced AI for Developers — NUS Technology</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --nd:#0d244a;--nm:#314558;--y:#FFB00F;--b:#008DCF;
+  --w:#FEFEFE;--mu:#92ABBC;--cb:#091929;--g:#4ade80;--r:#fc8585;
+  /* ── Text scale system — change --fs-scale to resize all body text ── */
+  --fs-scale: 1.35;
+  --fs-2xs:  calc(11px * var(--fs-scale));
+  --fs-xs:   calc(13px * var(--fs-scale));
+  --fs-sm:   calc(15px * var(--fs-scale));
+  --fs-base: calc(17px * var(--fs-scale));
+  --fs-md:   calc(19px * var(--fs-scale));
+  --fs-lg:   calc(21px * var(--fs-scale));
+  --fs-xl:   calc(25px * var(--fs-scale));
+  --fs-2xl:  calc(30px * var(--fs-scale));
+}
+html,body{width:100%;height:100%;background:#060e1c;overflow:hidden;
+  font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.slide-wrapper{width:1600px;height:900px;position:relative;transform-origin:center center}
+.slide{width:1600px;height:900px;background:var(--nd);color:var(--w);
+  position:absolute;inset:0;overflow:hidden;display:none}
+.logo{position:absolute;top:36px;right:44px;width:52px;height:52px;opacity:.82;pointer-events:none}
+.counter{position:absolute;bottom:36px;right:44px;font-size:var(--fs-base);color:var(--mu);
+  letter-spacing:.1em;font-weight:500}
+.tag{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,176,15,.13);border:1px solid rgba(255,176,15,.35);
+  color:var(--y);font-size:var(--fs-sm);font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;padding:6px 14px;border-radius:20px;margin-bottom:18px}
+.nav-dots{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:10}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--nm);
+  cursor:pointer;transition:all .25s}
+.dot.active{background:var(--y);width:18px;border-radius:3px}
+
+/* panels */
+.panel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:26px}
+.panel-title{font-size:var(--fs-base);font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mu);margin-bottom:16px}
+
+/* rules */
+.rule-row{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.rule-icon{width:32px;height:32px;border-radius:7px;background:rgba(255,176,15,.12);
+  display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);flex-shrink:0}
+.rule-body strong{display:block;font-size:var(--fs-lg);font-weight:700;
+  color:var(--w);margin-bottom:3px}
+.rule-body span{font-size:var(--fs-md);color:var(--mu);line-height:1.45}
+
+/* code */
+.code-stack{display:flex;flex-direction:column;gap:14px}
+.cblock{background:var(--cb);border-radius:10px;overflow:hidden}
+.cblock-head{padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+.clabel{font-size:var(--fs-base);font-weight:700;padding:4px 12px;border-radius:4px;
+  letter-spacing:.06em}
+.cblock.bad .clabel{background:rgba(255,100,100,.18);color:#fca5a5}
+.cblock.good .clabel{background:rgba(74,222,128,.14);color:#86efac}
+.cblock pre{padding:16px;font-family:'JetBrains Mono',monospace;
+  font-size:var(--fs-md);line-height:1.7}
+.cblock.bad pre{color:#fca5a5}
+.cblock.good pre{color:#86efac}
+pre .cm{color:#3a5570}pre .qt{color:var(--y)}
+pre .qv{color:var(--g)}pre .qs{color:var(--mu)}
+
+/* before/after */
+.ba-row{display:flex;gap:14px}
+.ba-box{flex:1;padding:16px 18px;border-radius:10px;font-size:var(--fs-md);line-height:1.55}
+.ba-box.bad{background:rgba(252,133,133,.07);border:1px solid rgba(252,133,133,.2);color:#fca5a5}
+.ba-box.good{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);color:#86efac}
+.ba-lbl{font-size:var(--fs-base);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;opacity:.7;margin-bottom:7px}
+
+/* anatomy */
+.anatomy-list{display:flex;flex-direction:column}
+.arow{display:flex;gap:14px;align-items:flex-start;padding:11px 0;
+  border-bottom:1px solid rgba(255,255,255,.06)}
+.arow:last-child{border-bottom:none}
+.atag{font-size:var(--fs-base);font-weight:700;background:rgba(0,141,207,.18);
+  color:var(--b);padding:4px 10px;border-radius:4px;white-space:nowrap;
+  letter-spacing:.07em;flex-shrink:0;margin-top:2px;
+  font-family:'JetBrains Mono',monospace}
+.adesc{font-size:var(--fs-md);color:var(--mu);line-height:1.5}
+
+/* hard gate */
+.hard-gate-box{padding:13px 16px;background:rgba(255,100,100,.07);
+  border:1px solid rgba(255,100,100,.22);border-radius:7px;
+  font-family:'JetBrains Mono',monospace;font-size:var(--fs-base);color:#fca5a5}
+
+/* skill */
+.skill-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:20px 24px}
+.skill-card h4{font-size:var(--fs-xl);font-weight:700;color:var(--y);margin-bottom:7px}
+.skill-trigger{font-size:var(--fs-base);font-family:'JetBrains Mono',monospace;
+  color:var(--b);background:rgba(0,141,207,.1);padding:4px 12px;
+  border-radius:4px;display:inline-block;margin-bottom:9px}
+.skill-desc{font-size:var(--fs-md);color:var(--mu);line-height:1.5}
+.skill-desc strong{color:#fca5a5}
+
+/* pipeline */
+.pipeline{display:flex;align-items:stretch;gap:0;margin-bottom:24px}
+.pipe-step{flex:1;position:relative}
+.pipe-step::after{content:'→';position:absolute;right:-13px;top:50%;
+  transform:translateY(-50%);color:var(--mu);font-size:var(--fs-xl);z-index:2}
+.pipe-step:last-child::after{display:none}
+.pipe-box{margin-right:26px;padding:20px 16px;border-radius:12px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  height:100%;position:relative}
+.pipe-box.hl{background:rgba(255,176,15,.1);border-color:rgba(255,176,15,.38)}
+.pipe-step:last-child .pipe-box{margin-right:0}
+.pipe-star{position:absolute;top:-11px;right:10px;background:var(--y);
+  color:#000;font-size:var(--fs-xs);font-weight:800;padding:3px 10px;
+  border-radius:20px;letter-spacing:.06em}
+.pipe-cmd{font-family:'JetBrains Mono',monospace;font-size:var(--fs-base);
+  font-weight:600;color:var(--b);margin-bottom:6px}
+.pipe-box.hl .pipe-cmd{color:var(--y)}
+.pipe-name{font-size:var(--fs-lg);font-weight:700;color:var(--w);margin-bottom:6px}
+.pipe-desc{font-size:var(--fs-base);color:var(--mu);line-height:1.4}
+
+/* tools */
+.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.tool-chip{display:flex;align-items:center;gap:12px;padding:13px 15px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px}
+.tool-icon{width:34px;height:34px;border-radius:8px;display:flex;
+  align-items:center;justify-content:center;font-size:var(--fs-xl);flex-shrink:0}
+.tool-name{font-size:var(--fs-lg);font-weight:700;color:var(--w)}
+.tool-note{font-size:var(--fs-base);color:var(--mu)}
+
+/* impact */
+.impact-box{padding:18px 20px;border-radius:10px}
+.impact-box.before{background:rgba(252,133,133,.07);border:1px solid rgba(252,133,133,.2)}
+.impact-box.after{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2)}
+.impact-num{font-size:42px;font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:5px}
+.impact-box.before .impact-num{color:var(--r)}
+.impact-box.after .impact-num{color:var(--g)}
+.impact-lbl{font-size:var(--fs-base);color:var(--mu);line-height:1.4}
+
+/* query */
+.query-box{background:var(--cb);border-radius:12px;padding:18px 22px}
+.query-lbl{font-size:var(--fs-base);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--b);margin-bottom:12px}
+.query-box pre{font-family:'JetBrains Mono',monospace;
+  font-size:var(--fs-md);line-height:1.7;color:#93c5fd}
+
+/* wrap-up stack */
+.sblock{flex:1;padding:24px 20px;border-radius:12px;position:relative;overflow:hidden}
+.sblock::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.sblock.m1,.sblock.m3{background:rgba(255,176,15,.08);border:1px solid rgba(255,176,15,.2)}
+.sblock.m1::before,.sblock.m3::before{background:var(--y)}
+.sblock.m2,.sblock.m4{background:rgba(0,141,207,.08);border:1px solid rgba(0,141,207,.2)}
+.sblock.m2::before,.sblock.m4::before{background:var(--b)}
+.sblock-lvl{font-size:var(--fs-base);font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--mu);margin-bottom:8px}
+.sblock h4{font-size:var(--fs-xl);font-weight:800;color:var(--w);margin-bottom:6px}
+.sblock p{font-size:var(--fs-md);color:var(--mu);line-height:1.45}
+
+/* commit */
+.commit-box{background:linear-gradient(135deg,rgba(255,176,15,.11),rgba(0,141,207,.08));
+  border:1px solid rgba(255,176,15,.3);border-radius:16px;padding:26px 44px;
+  max-width:800px;text-align:center}
+.commit-box h3{font-size:var(--fs-xl);font-weight:700;color:var(--y);margin-bottom:10px}
+.commit-box p{font-size:var(--fs-lg);color:var(--mu);line-height:1.65}
+.commit-box strong{color:var(--w)}
+
+/* level rows */
+.lvl-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:9px}
+.lvl-row.on{background:rgba(255,176,15,.1);border:1px solid rgba(255,176,15,.28)}
+.lvl-row.off{opacity:.32}
+.lvl-num{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;
+  justify-content:center;font-weight:800;font-size:var(--fs-md);flex-shrink:0}
+.lvl-row.on .lvl-num{background:var(--y);color:#000}
+.lvl-row.off .lvl-num{background:rgba(255,255,255,.07);color:var(--mu)}
+.lvl-text{font-size:var(--fs-lg);font-weight:500;flex:1}
+.lvl-row.on .lvl-text{color:var(--w)}
+.lvl-row.off .lvl-text{color:var(--mu)}
+.lvl-badge{font-size:var(--fs-sm);font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;padding:4px 10px;border-radius:20px;flex-shrink:0}
+.lvl-badge.today{background:var(--y);color:#000}
+.lvl-badge.overkill{background:rgba(255,255,255,.07);color:var(--mu)}
+.lvl-row{cursor:pointer;flex-direction:column;align-items:stretch}
+.lvl-row-top{display:flex;align-items:center;gap:14px}
+.lvl-desc{font-size:var(--fs-xs);line-height:1.55;max-height:0;overflow:hidden;
+  transition:max-height .3s ease,opacity .3s ease,padding .3s ease;
+  opacity:0;padding:0 0 0 48px;color:rgba(255,255,255,.55)}
+.lvl-row.expanded .lvl-desc{max-height:60px;opacity:1;padding:6px 0 2px 48px}
+.lvl-row.on.expanded{background:rgba(255,176,15,.17)}
+.lvl-row.active{opacity:1!important;background:rgba(255,176,15,.12)!important;border:1px solid rgba(255,176,15,.4)!important;border-radius:9px}
+.lvl-row.active .lvl-num{background:var(--y)!important;color:#000!important}
+.lvl-row.active .lvl-text{color:var(--w)!important}
+#lvl-content{transition:opacity .12s}
+/* tool survey tabs */
+.tool-tab{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--mu);padding:9px 22px;border-radius:9px;cursor:pointer;font-size:var(--fs-sm);font-weight:600;transition:all .2s;font-family:inherit}
+.tool-tab:hover{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.25);color:var(--w)}
+.tool-tab.active{background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.45);color:#A78BFA}
+.tool-panel{display:none;flex-direction:column;gap:14px;flex:1}
+.tool-panel.active{display:flex}
+.step-row{display:flex;align-items:stretch;gap:0}
+.step-arrow{color:rgba(167,139,250,.4);font-size:var(--fs-md);padding:0 10px;display:flex;align-items:center;flex-shrink:0}
+.step-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 12px;text-align:center;flex:1;cursor:pointer;transition:all .2s}
+.step-box:hover,.step-box.active{background:rgba(167,139,250,.12);border-color:rgba(167,139,250,.4)}
+.step-box.hl{border-color:rgba(167,139,250,.35);background:rgba(167,139,250,.08)}
+.step-box.hl:hover,.step-box.hl.active{background:rgba(167,139,250,.2)}
+.step-cmd{font-family:'JetBrains Mono',monospace;font-size:var(--fs-2xs);color:#A78BFA;font-weight:600;margin-bottom:5px;white-space:nowrap}
+.step-cmd.star{color:var(--y)}
+.step-name{font-size:var(--fs-sm);font-weight:700;color:var(--w)}
+.step-detail{background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.22);border-radius:10px;padding:14px 20px;min-height:64px;transition:opacity .2s;display:flex;flex-direction:column;justify-content:center}
+
+/* toolbar */
+.toolbar{position:fixed;bottom:14px;right:18px;
+  display:flex;align-items:center;gap:2px;
+  background:rgba(9,25,41,.82);border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:5px 8px;backdrop-filter:blur(16px);
+  z-index:100;user-select:none;box-shadow:0 2px 12px rgba(0,0,0,.4);
+  opacity:.35;transition:opacity .2s}
+.toolbar:hover{opacity:1}
+.tb-btn{width:24px;height:24px;border:none;border-radius:5px;
+  background:transparent;color:var(--mu);font-size:var(--fs-xs);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+  line-height:1}
+.tb-btn:hover{background:rgba(255,255,255,.09);color:var(--w)}
+.tb-btn:active{transform:scale(.9)}
+.tb-sep{width:1px;height:14px;background:rgba(255,255,255,.12);margin:0 3px}
+.tb-count{font-size:var(--fs-2xs);font-weight:700;color:var(--w);padding:0 5px;
+  min-width:48px;text-align:center;font-family:'JetBrains Mono',monospace;
+  letter-spacing:.04em}
+
+.slide-body {
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,176,15,.25) transparent;
+  min-height:0;
+}
+.slide-body::-webkit-scrollbar { width:5px }
+.slide-body::-webkit-scrollbar-track { background:transparent }
+.slide-body::-webkit-scrollbar-thumb { background:rgba(255,176,15,.25);border-radius:3px }
+.slide-body::-webkit-scrollbar-thumb:hover { background:rgba(255,176,15,.45) }
+.step-out{font-size:var(--fs-2xs);color:rgba(167,139,250,.55);margin-top:3px;font-weight:600;letter-spacing:.05em}
+.tool-visual{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px}
+</style>
+</head>
+<body>
+<div id="deck">
+<div class="slide-wrapper" id="wrapper">
+<div class="nav-dots">
+<div class="dot" onclick="goTo(0)"></div>
+<div class="dot" onclick="goTo(1)"></div>
+<div class="dot" onclick="goTo(2)"></div>
+<div class="dot" onclick="goTo(3)"></div>
+<div class="dot" onclick="goTo(4)"></div>
+<div class="dot" onclick="goTo(5)"></div>
+<div class="dot" onclick="goTo(6)"></div>
+<div class="dot" onclick="goTo(7)"></div>
+<div class="dot" onclick="goTo(8)"></div>
+<div class="dot" onclick="goTo(9)"></div>
+<div class="dot" onclick="goTo(10)"></div>
+<div class="dot" onclick="goTo(11)"></div>
+<div class="dot" onclick="goTo(12)"></div>
+<div class="dot" onclick="goTo(13)"></div>
+<div class="dot" onclick="goTo(14)"></div>
+<div class="dot" onclick="goTo(15)"></div>
+<div class="dot" onclick="goTo(16)"></div>
+<div class="dot" onclick="goTo(17)"></div>
+<div class="dot" onclick="goTo(18)"></div>
+<div class="dot" onclick="goTo(19)"></div>
+<div class="dot" onclick="goTo(20)"></div>
+<div class="dot" onclick="goTo(21)"></div>
+<div class="dot" onclick="goTo(22)"></div>
+<div class="dot" onclick="goTo(23)"></div>
+<div class="dot" onclick="goTo(24)"></div>
+<div class="dot" onclick="goTo(25)"></div>
+<div class="dot" onclick="goTo(26)"></div>
+<div class="dot" onclick="goTo(27)"></div>
+<div class="dot" onclick="goTo(28)"></div>
+<div class="dot" onclick="goTo(29)"></div>
+<div class="dot" onclick="goTo(30)"></div>
+<div class="dot" onclick="goTo(31)"></div>
+<div class="dot" onclick="goTo(32)"></div>
+<div class="dot" onclick="goTo(33)"></div>
+<div class="dot" onclick="goTo(34)"></div>
+<div class="dot" onclick="goTo(35)"></div>
+<div class="dot" onclick="goTo(36)"></div>
+<div class="dot" onclick="goTo(37)"></div>
+<div class="dot" onclick="goTo(38)"></div>
+</div>
+<!-- S1: COVER -->
+<section class="slide" id="s1" style="flex-direction:column;justify-content:center;align-items:flex-start;padding:80px 110px;">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div style="position:absolute;top:-120px;right:-80px;width:700px;height:700px;background:radial-gradient(ellipse,rgba(255,176,15,.09) 0%,transparent 65%);pointer-events:none"></div>
+  <div style="font-size:var(--fs-base);font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--y);margin-bottom:28px">NUS Technology · Internal Training 2026</div>
+  <h1 style="font-size:88px;font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:24px">Advanced AI<br><span style="color:var(--y)">for Developers</span></h1>
+  <p style="font-size:var(--fs-xl);font-weight:300;color:var(--mu);margin-bottom:48px;line-height:1.5;max-width:660px;letter-spacing:.01em">Your skills. Your workflow.<br><strong style="color:var(--w);font-weight:700">Your agents.</strong></p>
+  <div style="display:flex;gap:12px">
+    <div onclick="goTo(3)" style="display:flex;align-items:center;gap:9px;padding:11px 20px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:var(--fs-lg);font-weight:600;cursor:pointer;transition:all .18s" onmouseenter="this.style.background='rgba(255,176,15,.15)';this.style.borderColor='rgba(255,176,15,.5)'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.1)'"><span style="background:var(--y);color:#000;width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-sm);font-weight:800">1</span> Memory</div>
+    <div onclick="goTo(10)" style="display:flex;align-items:center;gap:9px;padding:11px 20px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:var(--fs-lg);font-weight:600;cursor:pointer;transition:all .18s" onmouseenter="this.style.background='rgba(255,176,15,.15)';this.style.borderColor='rgba(255,176,15,.5)'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.1)'"><span style="background:var(--y);color:#000;width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-sm);font-weight:800">2</span> Skills</div>
+    <div onclick="goTo(18)" style="display:flex;align-items:center;gap:9px;padding:11px 20px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:var(--fs-lg);font-weight:600;cursor:pointer;transition:all .18s" onmouseenter="this.style.background='rgba(255,176,15,.15)';this.style.borderColor='rgba(255,176,15,.5)'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.1)'"><span style="background:var(--y);color:#000;width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-sm);font-weight:800">3</span> Agents</div>
+    <div onclick="goTo(26)" style="display:flex;align-items:center;gap:9px;padding:11px 20px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:var(--fs-lg);font-weight:600;cursor:pointer;transition:all .18s" onmouseenter="this.style.background='rgba(255,176,15,.15)';this.style.borderColor='rgba(255,176,15,.5)'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.1)'"><span style="background:var(--y);color:#000;width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-sm);font-weight:800">4</span> MCP</div>
+  </div>
+  <div style="position:absolute;bottom:44px;left:110px;font-size:var(--fs-base);color:var(--mu)">Half-day Workshop · 3.5 giờ · Follow-along + Mini Exercises</div>
+  <div class="counter">1 / 35</div>
+
+  <!-- Network illustration -->
+  <div style="position:absolute;right:60px;top:50%;transform:translateY(-50%);width:580px;height:520px;pointer-events:none">
+    <svg viewBox="0 0 580 520" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="cg" cx="50%" cy="50%"><stop offset="0%" stop-color="#FFB00F" stop-opacity=".06"/><stop offset="100%" stop-color="#FFB00F" stop-opacity="0"/></radialGradient>
+        <style>
+          @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.8}}
+          @keyframes dash{to{stroke-dashoffset:-16}}
+          .pr{animation:pulse 3s ease-in-out infinite}
+          .ln{animation:dash 2.5s linear infinite}
+        </style>
+      </defs>
+      <circle cx="290" cy="260" r="280" fill="url(#cg)"/>
+
+      <!-- Connection lines -->
+      <line class="ln" x1="168" y1="165" x2="412" y2="165" stroke="rgba(255,176,15,.22)" stroke-width="1.5" stroke-dasharray="6,5"/>
+      <line class="ln" x1="168" y1="355" x2="412" y2="355" stroke="rgba(74,222,128,.18)" stroke-width="1.5" stroke-dasharray="6,5" style="animation-delay:.8s"/>
+      <line class="ln" x1="125" y1="198" x2="125" y2="322" stroke="rgba(255,176,15,.18)" stroke-width="1.5" stroke-dasharray="6,5" style="animation-delay:.4s"/>
+      <line class="ln" x1="455" y1="198" x2="455" y2="322" stroke="rgba(0,141,207,.18)" stroke-width="1.5" stroke-dasharray="6,5" style="animation-delay:1.2s"/>
+      <line x1="157" y1="194" x2="423" y2="326" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <line x1="423" y1="194" x2="157" y2="326" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+
+      <!-- Central hub -->
+      <line x1="265" y1="243" x2="153" y2="188" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
+      <line x1="315" y1="243" x2="427" y2="188" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
+      <line x1="265" y1="277" x2="153" y2="332" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
+      <line x1="315" y1="277" x2="427" y2="332" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
+      <circle cx="290" cy="260" r="24" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.14)" stroke-width="1.5"/>
+      <circle cx="290" cy="260" r="7" fill="rgba(255,255,255,.55)"/>
+
+      <!-- Memory node -->
+      <circle class="pr" cx="125" cy="165" r="56" fill="rgba(255,176,15,.05)" stroke="rgba(255,176,15,.32)" stroke-width="1.5"/>
+      <circle cx="125" cy="165" r="38" fill="rgba(255,176,15,.09)"/>
+      <text x="125" y="152" text-anchor="middle" font-size="24" font-family="system-ui,sans-serif">🧠</text>
+      <text x="125" y="173" text-anchor="middle" fill="#FFB00F" font-size="14" font-weight="700" font-family="Inter,sans-serif">Memory</text>
+
+      <!-- Skills node -->
+      <circle class="pr" cx="455" cy="165" r="56" fill="rgba(0,141,207,.05)" stroke="rgba(0,141,207,.32)" stroke-width="1.5" style="animation-delay:.75s"/>
+      <circle cx="455" cy="165" r="38" fill="rgba(0,141,207,.09)"/>
+      <text x="455" y="152" text-anchor="middle" font-size="24" font-family="system-ui,sans-serif">⚡</text>
+      <text x="455" y="173" text-anchor="middle" fill="#008DCF" font-size="14" font-weight="700" font-family="Inter,sans-serif">Skills</text>
+
+      <!-- Agents node -->
+      <circle class="pr" cx="125" cy="355" r="56" fill="rgba(74,222,128,.05)" stroke="rgba(74,222,128,.32)" stroke-width="1.5" style="animation-delay:1.5s"/>
+      <circle cx="125" cy="355" r="38" fill="rgba(74,222,128,.09)"/>
+      <text x="125" y="342" text-anchor="middle" font-size="24" font-family="system-ui,sans-serif">🤖</text>
+      <text x="125" y="363" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="700" font-family="Inter,sans-serif">Agents</text>
+
+      <!-- MCP node -->
+      <circle class="pr" cx="455" cy="355" r="56" fill="rgba(255,114,48,.05)" stroke="rgba(255,114,48,.32)" stroke-width="1.5" style="animation-delay:2.25s"/>
+      <circle cx="455" cy="355" r="38" fill="rgba(255,114,48,.09)"/>
+      <text x="455" y="342" text-anchor="middle" font-size="24" font-family="system-ui,sans-serif">🔌</text>
+      <text x="455" y="363" text-anchor="middle" fill="#FF7230" font-size="14" font-weight="700" font-family="Inter,sans-serif">MCP</text>
+
+      <!-- Satellite nodes — Memory -->
+      <line x1="76" y1="107" x2="100" y2="138" stroke="rgba(255,176,15,.15)" stroke-width="1"/>
+      <circle cx="64" cy="94" r="15" fill="rgba(255,176,15,.05)" stroke="rgba(255,176,15,.22)" stroke-width="1"/>
+      <text x="64" y="98" text-anchor="middle" fill="rgba(255,176,15,.7)" font-size="12" font-family="Inter,sans-serif">CLAUDE.md</text>
+      <line x1="62" y1="218" x2="95" y2="200" stroke="rgba(255,176,15,.12)" stroke-width="1"/>
+      <circle cx="50" cy="228" r="15" fill="rgba(255,176,15,.05)" stroke="rgba(255,176,15,.2)" stroke-width="1"/>
+      <text x="50" y="232" text-anchor="middle" fill="rgba(255,176,15,.6)" font-size="12" font-family="Inter,sans-serif">memory</text>
+
+      <!-- Satellite nodes — Skills -->
+      <line x1="504" y1="107" x2="480" y2="138" stroke="rgba(0,141,207,.15)" stroke-width="1"/>
+      <circle cx="516" cy="94" r="15" fill="rgba(0,141,207,.05)" stroke="rgba(0,141,207,.22)" stroke-width="1"/>
+      <text x="516" y="98" text-anchor="middle" fill="rgba(0,141,207,.7)" font-size="12" font-family="Inter,sans-serif">/brainstorm</text>
+      <line x1="518" y1="218" x2="485" y2="200" stroke="rgba(0,141,207,.12)" stroke-width="1"/>
+      <circle cx="530" cy="228" r="15" fill="rgba(0,141,207,.05)" stroke="rgba(0,141,207,.2)" stroke-width="1"/>
+      <text x="530" y="232" text-anchor="middle" fill="rgba(0,141,207,.6)" font-size="12" font-family="Inter,sans-serif">/debug</text>
+
+      <!-- Satellite nodes — Agents -->
+      <line x1="66" y1="410" x2="96" y2="382" stroke="rgba(74,222,128,.12)" stroke-width="1"/>
+      <circle cx="54" cy="422" r="15" fill="rgba(74,222,128,.05)" stroke="rgba(74,222,128,.2)" stroke-width="1"/>
+      <text x="54" y="426" text-anchor="middle" fill="rgba(74,222,128,.6)" font-size="12" font-family="Inter,sans-serif">opsx</text>
+      <line x1="56" y1="298" x2="92" y2="320" stroke="rgba(74,222,128,.12)" stroke-width="1"/>
+      <circle cx="44" cy="286" r="15" fill="rgba(74,222,128,.05)" stroke="rgba(74,222,128,.2)" stroke-width="1"/>
+      <text x="44" y="290" text-anchor="middle" fill="rgba(74,222,128,.6)" font-size="12" font-family="Inter,sans-serif">multi-agent</text>
+
+      <!-- Satellite nodes — MCP -->
+      <line x1="514" y1="410" x2="484" y2="382" stroke="rgba(255,114,48,.12)" stroke-width="1"/>
+      <circle cx="526" cy="422" r="15" fill="rgba(255,114,48,.05)" stroke="rgba(255,114,48,.2)" stroke-width="1"/>
+      <text x="526" y="426" text-anchor="middle" fill="rgba(255,114,48,.6)" font-size="12" font-family="Inter,sans-serif">Database</text>
+      <line x1="524" y1="298" x2="488" y2="320" stroke="rgba(255,114,48,.12)" stroke-width="1"/>
+      <circle cx="536" cy="286" r="15" fill="rgba(255,114,48,.05)" stroke="rgba(255,114,48,.2)" stroke-width="1"/>
+      <text x="536" y="290" text-anchor="middle" fill="rgba(255,114,48,.6)" font-size="12" font-family="Inter,sans-serif">Linear</text>
+
+      <!-- Top/bottom anchor nodes -->
+      <circle cx="290" cy="68" r="9" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+      <line x1="272" y1="74" x2="148" y2="138" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <line x1="308" y1="74" x2="432" y2="138" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <circle cx="290" cy="452" r="9" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+      <line x1="272" y1="446" x2="148" y2="382" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <line x1="308" y1="446" x2="432" y2="382" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+    </svg>
+  </div>
+</section>
+
+<!-- S2: AGENDA -->
+<section class="slide" id="s2" style="flex-direction:column;justify-content:center;padding:56px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Hôm nay</div>
+  <h2 style="font-size:48px;font-weight:900;margin-bottom:36px;letter-spacing:-1px">Chương trình</h2>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px">
+    <div style="background:rgba(255,176,15,.06);border:1px solid rgba(255,176,15,.25);border-radius:14px;padding:26px 20px">
+      <div style="font-size:var(--fs-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--y);margin-bottom:10px">Block 1</div>
+      <div style="font-size:var(--fs-2xl);margin-bottom:8px">🧠</div>
+      <div style="font-size:var(--fs-xl);font-weight:800;margin-bottom:6px">Memory</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);font-weight:600;margin-bottom:8px">50 phút</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);line-height:1.5">AI tự biết project, không cần giải thích lại</div>
+    </div>
+    <div style="background:rgba(0,141,207,.06);border:1px solid rgba(0,141,207,.25);border-radius:14px;padding:26px 20px">
+      <div style="font-size:var(--fs-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--b);margin-bottom:10px">Block 2</div>
+      <div style="font-size:var(--fs-2xl);margin-bottom:8px">⚡</div>
+      <div style="font-size:var(--fs-xl);font-weight:800;margin-bottom:6px">Skills</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);font-weight:600;margin-bottom:8px">45 phút</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);line-height:1.5">Mọi người follow cùng quy trình, output nhất quán</div>
+    </div>
+    <div style="background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.2);border-radius:14px;padding:26px 20px">
+      <div style="font-size:var(--fs-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--g);margin-bottom:10px">Block 3</div>
+      <div style="font-size:var(--fs-2xl);margin-bottom:8px">🤖</div>
+      <div style="font-size:var(--fs-xl);font-weight:800;margin-bottom:6px">Spec-Driven</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);font-weight:600;margin-bottom:8px">45 phút + break</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);line-height:1.5">AI tự xử lý task phức tạp nhiều bước</div>
+    </div>
+    <div style="background:rgba(255,114,48,.05);border:1px solid rgba(255,114,48,.2);border-radius:14px;padding:26px 20px">
+      <div style="font-size:var(--fs-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#FF7230;margin-bottom:10px">Block 4</div>
+      <div style="font-size:var(--fs-2xl);margin-bottom:8px">🔌</div>
+      <div style="font-size:var(--fs-xl);font-weight:800;margin-bottom:6px">MCP</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);font-weight:600;margin-bottom:8px">45 phút</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);line-height:1.5">AI query thẳng database, tickets, logs</div>
+    </div>
+  </div>
+  <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 22px;text-align:center;font-size:var(--fs-base);color:var(--mu)">Mỗi block: <strong style="color:var(--w)">15-20 phút lý thuyết</strong> · <strong style="color:var(--w)">20 phút follow-along</strong> · <strong style="color:var(--w)">10 phút exercise</strong> · <strong style="color:var(--w)">3 check questions</strong></div>
+  <div class="counter">2 / 35</div>
+</section>
+
+<!-- S3: 7 LEVELS -->
+<section class="slide" id="s3" style="flex-direction:row">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div style="flex:1;padding:68px 76px;display:flex;flex-direction:column;justify-content:center">
+    <div class="tag">Framework</div>
+    <h2 style="font-size:52px;font-weight:900;line-height:1.05;letter-spacing:-1px;margin-bottom:16px">The 7 Levels<br>of Using AI</h2>
+    <div id="lvl-content">
+      <p style="font-size:var(--fs-lg);color:var(--mu);line-height:1.65;max-width:460px;margin-bottom:32px">Hầu hết dev đang dùng AI như một chatbot thông minh — trong khi phần lớn sức mạnh đang bị bỏ lãng phí mỗi ngày.</p>
+      <div style="background:linear-gradient(135deg,rgba(255,176,15,.12),rgba(0,141,207,.07));border:1px solid rgba(255,176,15,.3);border-radius:12px;padding:18px 22px;max-width:440px">
+        <div style="font-size:var(--fs-sm);font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--y);margin-bottom:7px">Tại sao dừng ở đây?</div>
+        <p style="font-size:var(--fs-md);color:var(--w);line-height:1.55">Memory + Skills + Agents + MCP giải quyết được 99% vấn đề thực tế. RAG và cao hơn là overkill — tốn infra, tốn thời gian, không cần thiết.</p>
+      </div>
+    </div>
+  </div>
+  <div style="width:440px;background:rgba(255,255,255,.025);border-left:1px solid rgba(255,255,255,.07);padding:56px 40px;display:flex;flex-direction:column;justify-content:center;gap:7px">
+    <div class="lvl-row off"><div class="lvl-row-top"><div class="lvl-num">1</div><div class="lvl-text">One-shot chat, copy-paste</div></div><div class="lvl-desc">Hỏi 1 câu → copy kết quả vào code. Không context, không memory. AI như Google thông minh hơn.</div></div>
+    <div class="lvl-row off"><div class="lvl-row-top"><div class="lvl-num">2</div><div class="lvl-text">Multi-turn, prompt cơ bản</div></div><div class="lvl-desc">Hội thoại nhiều lượt trong 1 session. Biết viết prompt tốt (few-shot, chain-of-thought). Vẫn mất hết khi đóng tab.</div></div>
+    <div class="lvl-row on"><div class="lvl-row-top"><div class="lvl-num">3</div><div class="lvl-text">Project memory</div><span class="lvl-badge today">Hôm nay</span></div><div class="lvl-desc">CLAUDE.md: AI biết project, tech stack, conventions từ đầu. Không cần giải thích lại. Context persist qua nhiều ngày.</div></div>
+    <div class="lvl-row on"><div class="lvl-row-top"><div class="lvl-num">4</div><div class="lvl-text">Tools + skills + agents</div><span class="lvl-badge today">Hôm nay</span></div><div class="lvl-desc">AI gọi tool (terminal, file, web), chạy workflow tự động. Skills tái sử dụng workflow. Agents tự xử lý multi-step task.</div></div>
+    <div class="lvl-row off"><div class="lvl-row-top"><div class="lvl-num">5</div><div class="lvl-text">RAG</div><span class="lvl-badge overkill">Overkill</span></div><div class="lvl-desc">AI tra cứu knowledge base nội bộ qua vector search. Cần infra: vector DB + embedding pipeline. Hầu hết team không cần đến đây.</div></div>
+    <div class="lvl-row off"><div class="lvl-row-top"><div class="lvl-num">6</div><div class="lvl-text">Agentic RAG</div><span class="lvl-badge overkill">Overkill</span></div><div class="lvl-desc">Agent tự quyết định retrieve gì, khi nào. Kết hợp reasoning + retrieval động. Phức tạp, không stable cho production.</div></div>
+    <div class="lvl-row off"><div class="lvl-row-top"><div class="lvl-num">7</div><div class="lvl-text">Full autonomous multi-agent</div><span class="lvl-badge overkill">Overkill</span></div><div class="lvl-desc">Nhiều agent tự phối hợp, tự phân công, tự debug, tự deploy. Frontier research — chưa production-ready cho hầu hết use cases.</div></div>
+  </div>
+  <div class="counter">3 / 35</div>
+</section>
+
+<!-- S4: BLOCK 1 INTRO -->
+<section class="slide" id="s4" style="flex-direction:column;justify-content:center;padding:60px 80px;position:relative;overflow:hidden">
+  <div style="position:absolute;right:60px;top:50%;transform:translateY(-50%);width:310px;height:310px;pointer-events:none;opacity:.8">
+<svg viewBox="0 0 310 310" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="mg" cx="50%" cy="50%"><stop offset="0%" stop-color="#FFB00F" stop-opacity=".12"/><stop offset="100%" stop-color="#FFB00F" stop-opacity="0"/></radialGradient></defs>
+<circle cx="155" cy="155" r="155" fill="url(#mg)"/>
+<rect x="70" y="100" width="130" height="160" rx="8" fill="rgba(255,176,15,.04)" stroke="rgba(255,176,15,.15)" stroke-width="1.5"/>
+<rect x="85" y="88" width="130" height="160" rx="8" fill="rgba(255,176,15,.05)" stroke="rgba(255,176,15,.2)" stroke-width="1.5"/>
+<rect x="100" y="76" width="130" height="160" rx="8" fill="rgba(255,176,15,.07)" stroke="rgba(255,176,15,.35)" stroke-width="1.5"/>
+<rect x="118" y="102" width="94" height="7" rx="3.5" fill="rgba(255,176,15,.55)"/>
+<rect x="118" y="118" width="72" height="5" rx="2.5" fill="rgba(255,176,15,.3)"/>
+<rect x="118" y="131" width="82" height="5" rx="2.5" fill="rgba(255,176,15,.3)"/>
+<rect x="118" y="144" width="60" height="5" rx="2.5" fill="rgba(255,176,15,.2)"/>
+<rect x="118" y="165" width="94" height="18" rx="4" fill="rgba(255,176,15,.12)" stroke="rgba(255,176,15,.3)" stroke-width="1"/>
+<text x="165" y="178" text-anchor="middle" fill="#FFB00F" font-size="9" font-weight="700" font-family="monospace" letter-spacing="0.5">CLAUDE.md</text>
+<rect x="118" y="196" width="78" height="5" rx="2.5" fill="rgba(255,176,15,.2)"/>
+<rect x="118" y="209" width="62" height="5" rx="2.5" fill="rgba(255,176,15,.15)"/>
+<circle cx="214" cy="94" r="5" fill="#FFB00F" opacity=".8"/>
+<circle cx="203" cy="94" r="3.5" fill="rgba(255,176,15,.4)"/>
+<circle cx="194" cy="94" r="3.5" fill="rgba(255,176,15,.3)"/>
+</svg>
+</div>
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 1</div>
+  <h2 style="font-size:58px;font-weight:900;letter-spacing:-1px;margin-bottom:18px">Memory System</h2>
+  <p style="font-size:var(--fs-lg);color:var(--mu);max-width:640px;line-height:1.65;margin-bottom:36px;border-left:3px solid rgba(255,176,15,.5);padding-left:18px">AI bắt đầu từ zero mỗi conversation — không biết project, convention, hay bất kỳ quyết định nào đã làm trước đó</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:700px;margin-bottom:32px">
+    <div style="background:rgba(255,176,15,.06);border:1px solid rgba(255,176,15,.25);border-radius:12px;padding:20px 22px">
+      <div style="font-size:var(--fs-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--y);margin-bottom:8px">Level 3</div>
+      <div style="font-size:var(--fs-lg);font-weight:700;margin-bottom:6px">In-project Memory</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);line-height:1.5">CLAUDE.md — AI đọc mỗi session, biết conventions, routing, anti-patterns</div>
+    </div>
+    <div style="background:rgba(0,141,207,.06);border:1px solid rgba(0,141,207,.25);border-radius:12px;padding:20px 22px">
+      <div style="font-size:var(--fs-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--b);margin-bottom:8px">Level 4</div>
+      <div style="font-size:var(--fs-lg);font-weight:700;margin-bottom:6px">Cross-session Memory</div>
+      <div style="font-size:var(--fs-base);color:var(--mu);line-height:1.5">Persistent — nhớ investigations, decisions, context xuyên suốt nhiều sessions</div>
+    </div>
+  </div>
+  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:9px 18px;font-size:var(--fs-base);color:var(--mu);font-weight:500">⏱ 50 phút · Theory + Follow-along + Exercise</div>
+  <div class="counter">B1 · 1/7</div>
+</section>
+
+<!-- S5: CLAUDE.MD STRUCTURE -->
+<section class="slide" id="s5" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 1 · Memory</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:30px">CLAUDE.md — Project Memory</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px" class="slide-body">
+    <div class="panel" style="display:flex;flex-direction:column">
+      <div class="panel-title">Cấu trúc</div>
+      <p style="font-size:var(--fs-base);color:var(--mu);line-height:1.6;margin-bottom:18px">CLAUDE.md nằm ở root repo. AI đọc mỗi khi bắt đầu session — project context được load tự động.</p>
+      <div class="anatomy-list">
+        <div class="arow"><span class="atag">stack info</span><span class="adesc">framework, repos, ports, conventions</span></div>
+        <div class="arow"><span class="atag">routing rules</span><span class="adesc">keyword → đúng repo, không edit nhầm</span></div>
+        <div class="arow"><span class="atag">never do this</span><span class="adesc">anti-patterns project-specific</span></div>
+        <div class="arow"><span class="atag">naming</span><span class="adesc">file naming, variable naming</span></div>
+        <div class="arow"><span class="atag">business ctx</span><span class="adesc">domain knowledge AI cần biết</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="cblock good">
+        <div class="cblock-head"><span class="clabel good">CLAUDE.md — ví dụ thực tế</span></div>
+        <pre><span class="cm"># CLAUDE.md</span>
+
+<span class="qt">## Stack</span>
+<span class="qv">Nuxt 3</span>, Express :3000, NestJS :3001
+
+<span class="qt">## Never</span>
+- <span class="qs">window.localStorage</span> → <span class="qv">useLocalStorage()</span>
+- <span class="qs">&lt;v-icon&gt;</span> → <span class="qv">Font Awesome &lt;i class="fa-*"&gt;</span>
+- <span class="qs">import { ref } from 'vue'</span> <span class="cm">(auto-imported)</span>
+
+<span class="qt">## Routing</span>
+<span class="cm">"bot management"</span> → <span class="qv">old-tradeit</span>
+<span class="cm">(NOT tradeit-backend)</span></pre>
+      </div>
+      <div style="background:rgba(255,100,100,.07);border:1px solid rgba(255,100,100,.2);border-radius:9px;padding:12px 16px;font-size:var(--fs-base);color:#fca5a5"><strong>Anti-pattern:</strong> nhét quá nhiều → AI bị overwhelmed → ignore toàn bộ file</div>
+    </div>
+  </div>
+  <div class="counter">B1 · 2/7</div>
+</section>
+
+<!-- S6: 5 REAL RULES -->
+<section class="slide" id="s6" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 1 · Memory</div>
+  <h2 style="font-size:44px;font-weight:900;letter-spacing:-1px;margin-bottom:24px">5 Rules thực tế từ production</h2>
+  <div style="display:flex;flex-direction:column;gap:13px;flex:1">
+
+    <div style="display:flex;align-items:center;gap:22px;padding:18px 24px;background:rgba(255,176,15,.06);border:1px solid rgba(255,176,15,.2);border-left:4px solid #FFB00F;border-radius:0 12px 12px 0">
+      <div style="font-size:var(--fs-2xl);width:48px;height:48px;background:rgba(255,176,15,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">📁</div>
+      <div style="flex:1">
+        <div style="font-size:var(--fs-base);font-weight:700;color:var(--w);margin-bottom:4px">Repo routing table <span style="color:var(--mu);font-weight:400;font-size:var(--fs-sm)">(40+ repos)</span></div>
+        <div style="font-size:var(--fs-sm);color:var(--mu);line-height:1.5">AI không biết <code style="background:rgba(255,255,255,.08);padding:1px 6px;border-radius:3px;font-size:var(--fs-xs)">bot management</code> → old-tradeit. Không có rule, AI edit sai repo mỗi lần.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:22px;padding:18px 24px;background:rgba(0,141,207,.05);border:1px solid rgba(0,141,207,.18);border-left:4px solid #008DCF;border-radius:0 12px 12px 0">
+      <div style="font-size:var(--fs-2xl);width:48px;height:48px;background:rgba(0,141,207,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🔒</div>
+      <div style="flex:1">
+        <div style="font-size:var(--fs-base);font-weight:700;color:var(--w);margin-bottom:4px">useLocalStorage() <span style="color:var(--mu);font-weight:400;font-size:var(--fs-sm)">thay vì window.localStorage</span></div>
+        <div style="font-size:var(--fs-sm);color:var(--mu);line-height:1.5">SSR crash production — Nuxt render server-side, <code style="background:rgba(255,255,255,.08);padding:1px 6px;border-radius:3px;font-size:var(--fs-xs)">window</code> không tồn tại.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:22px;padding:18px 24px;background:rgba(74,222,128,.04);border:1px solid rgba(74,222,128,.18);border-left:4px solid #4ade80;border-radius:0 12px 12px 0">
+      <div style="font-size:var(--fs-2xl);width:48px;height:48px;background:rgba(74,222,128,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🎨</div>
+      <div style="flex:1">
+        <div style="font-size:var(--fs-base);font-weight:700;color:var(--w);margin-bottom:4px">No &lt;v-icon&gt; <span style="color:var(--mu);font-weight:400;font-size:var(--fs-sm)">— dùng Font Awesome &lt;i&gt;</span></div>
+        <div style="font-size:var(--fs-sm);color:var(--mu);line-height:1.5">Không có rule, AI sai design system mỗi lần — Vuetify icon và FA trộn lẫn.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:22px;padding:18px 24px;background:rgba(255,114,48,.04);border:1px solid rgba(255,114,48,.18);border-left:4px solid #FF7230;border-radius:0 12px 12px 0">
+      <div style="font-size:var(--fs-2xl);width:48px;height:48px;background:rgba(255,114,48,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">⚡</div>
+      <div style="flex:1">
+        <div style="font-size:var(--fs-base);font-weight:700;color:var(--w);margin-bottom:4px">Auto-imports <span style="color:var(--mu);font-weight:400;font-size:var(--fs-sm)">— không import ref/computed thủ công</span></div>
+        <div style="font-size:var(--fs-sm);color:var(--mu);line-height:1.5">Import thủ công gây runtime error trong Nuxt — Nuxt auto-import Vue APIs globally.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:22px;padding:18px 24px;background:rgba(146,171,188,.04);border:1px solid rgba(146,171,188,.15);border-left:4px solid #92ABBC;border-radius:0 12px 12px 0">
+      <div style="font-size:var(--fs-2xl);width:48px;height:48px;background:rgba(146,171,188,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">📝</div>
+      <div style="flex:1">
+        <div style="font-size:var(--fs-base);font-weight:700;color:var(--w);margin-bottom:4px">Document creation policy <span style="color:var(--mu);font-weight:400;font-size:var(--fs-sm)">— mọi doc vào .agents/ đúng subfolder</span></div>
+        <div style="font-size:var(--fs-sm);color:var(--mu);line-height:1.5">Không có rule, docs tản mát khắp workspace — không ai tìm được sau 2 tuần.</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="counter">B1 · 3/7</div>
+</section>
+
+<!-- S7: BEFORE/AFTER CODE -->
+<section class="slide" id="s7" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 1 · Memory</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">Memory System — Before / After</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px" class="slide-body">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:var(--fs-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:4px">Rules trong CLAUDE.md</div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(74,222,128,.05);border-left:3px solid #4ade80;border-radius:0 10px 10px 0">
+        <span style="font-size:var(--fs-xl);width:36px;text-align:center;flex-shrink:0">🎨</span>
+        <div><div style="font-size:var(--fs-sm);font-weight:700;color:var(--w);margin-bottom:3px">No &lt;v-icon&gt;</div><div style="font-size:var(--fs-xs);color:var(--mu)">Dùng Font Awesome &lt;i class="fa-*"&gt;</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(255,176,15,.05);border-left:3px solid #FFB00F;border-radius:0 10px 10px 0">
+        <span style="font-size:var(--fs-xl);width:36px;text-align:center;flex-shrink:0">⚡</span>
+        <div><div style="font-size:var(--fs-sm);font-weight:700;color:var(--w);margin-bottom:3px">Auto-imports</div><div style="font-size:var(--fs-xs);color:var(--mu)">Không import ref, computed từ vue</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(0,141,207,.05);border-left:3px solid #008DCF;border-radius:0 10px 10px 0">
+        <span style="font-size:var(--fs-xl);width:36px;text-align:center;flex-shrink:0">🔒</span>
+        <div><div style="font-size:var(--fs-sm);font-weight:700;color:var(--w);margin-bottom:3px">useLocalStorage()</div><div style="font-size:var(--fs-xs);color:var(--mu)">Không dùng window.localStorage trực tiếp</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(146,171,188,.04);border-left:3px solid #92ABBC;border-radius:0 10px 10px 0">
+        <span style="font-size:var(--fs-xl);width:36px;text-align:center;flex-shrink:0">📁</span>
+        <div><div style="font-size:var(--fs-sm);font-weight:700;color:var(--w);margin-bottom:3px">Docs → .agents/</div><div style="font-size:var(--fs-xs);color:var(--mu)">Đúng subfolder theo routing table</div></div>
+      </div>
+    </div>
+    <div class="code-stack">
+      <div class="cblock bad">
+        <div class="cblock-head"><span class="clabel bad">❌ Không có CLAUDE.md — AI đoán sai</span></div>
+        <pre><span class="qs">import</span> { ref } <span class="qs">from</span> <span class="qt">'vue'</span>          <span class="cm">// import thủ công</span>
+&lt;<span class="qs">v-icon</span>&gt;mdi-close&lt;/<span class="qs">v-icon</span>&gt;        <span class="cm">// sai design sys</span>
+<span class="qs">window</span>.localStorage.setItem(...)  <span class="cm">// SSR crash</span>
+<span class="cm">// ghi ra docs/feature.md          // tản mát</span></pre>
+      </div>
+      <div class="cblock good">
+        <div class="cblock-head"><span class="clabel good">✅ Có CLAUDE.md — đúng ngay lần đầu</span></div>
+        <pre><span class="cm">// ref auto-imported, không cần import</span>
+&lt;<span class="qv">i</span> class=<span class="qt">"far fa-xmark"</span>&gt;&lt;/<span class="qv">i</span>&gt;
+<span class="qv">useLocalStorage</span>(<span class="qt">'key'</span>, defaultVal)
+<span class="cm">// .agents/_plans/feature.md        // đúng chỗ</span></pre>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B1 · 4/7</div>
+</section>
+
+<!-- S8: CROSS-SESSION MEMORY -->
+<section class="slide" id="s8" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 1 · Memory</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">Cross-Session Memory</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px" class="slide-body">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="background:rgba(0,141,207,.08);border:1px solid rgba(0,141,207,.22);border-radius:12px;padding:18px 20px">
+        <div style="font-size:var(--fs-sm);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--b);margin-bottom:7px">Là gì</div>
+        <div style="font-size:var(--fs-md);color:var(--w);line-height:1.6">AI nhớ xuyên suốt nhiều sessions — decisions, bugs đã debug, architecture đã thảo luận</div>
+      </div>
+      <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:18px 20px">
+        <div style="font-size:var(--fs-sm);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--g);margin-bottom:7px">Khi nào dùng</div>
+        <div style="font-size:var(--fs-md);color:var(--w);line-height:1.6">Investigation phức tạp mất nhiều giờ · Architectural decision quan trọng</div>
+      </div>
+      <div class="panel" style="padding:16px 18px">
+        <div class="panel-title" style="margin-bottom:7px">Tại sao không cần RAG</div>
+        <div style="font-size:var(--fs-base);color:var(--mu);line-height:1.5">Structured context files đủ dùng — không cần vector DB, embedding pipeline. RAG là Level 5.</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Ví dụ thực tế — DEV-4923</div>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:var(--fs-base);color:var(--mu);line-height:1.6">Investigation — 45 phút trace bug (<code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-size:var(--fs-base)">saleOfferOwner → sso</code> rename, silent breakage)</div>
+        <div style="font-size:var(--fs-base);color:var(--mu);line-height:1.6">Saved to memory → next session recalls instantly, full context available immediately</div>
+        <div style="height:1px;background:rgba(255,255,255,.06)"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:rgba(252,133,133,.07);border:1px solid rgba(252,133,133,.2);border-radius:9px;padding:13px">
+            <div style="font-size:var(--fs-sm);font-weight:700;color:var(--r);margin-bottom:5px">Without Memory</div>
+            <div style="font-size:var(--fs-xl);font-weight:800;color:var(--r)">45 min</div>
+            <div style="font-size:var(--fs-base);color:var(--mu);margin-top:3px">re-trace every time</div>
+          </div>
+          <div style="background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.2);border-radius:9px;padding:13px">
+            <div style="font-size:var(--fs-sm);font-weight:700;color:var(--g);margin-bottom:5px">With Memory</div>
+            <div style="font-size:var(--fs-xl);font-weight:800;color:var(--g)">10 sec</div>
+            <div style="font-size:var(--fs-base);color:var(--mu);margin-top:3px">recall instantly</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B1 · 5/7</div>
+</section>
+
+<!-- S9: CHECK QUESTIONS B1 -->
+<section class="slide" id="s9" style="flex-direction:column;justify-content:center;padding:56px 80px">
+  <div style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:320px;font-weight:900;color:#FFB00F;opacity:.04;line-height:1;pointer-events:none;user-select:none;font-family:serif">?</div>
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Kiểm tra nhanh · Block 1</div>
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:36px">3 Câu hỏi</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" class="slide-body">
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div style="width:38px;height:38px;background:var(--y);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);font-weight:900;color:#000">01</div>
+      <p style="font-size:var(--fs-lg);color:var(--w);line-height:1.7;font-weight:500">Nếu không có CLAUDE.md, điều gì xảy ra khi mở conversation mới về cùng một project?</p>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div style="width:38px;height:38px;background:var(--y);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);font-weight:900;color:#000">02</div>
+      <p style="font-size:var(--fs-lg);color:var(--w);line-height:1.7;font-weight:500">Khác biệt giữa in-project memory (level 3) và cross-session memory (level 4) là gì? Khi nào cần cái nào?</p>
+      <div style="font-size:var(--fs-2xs);color:var(--mu);font-style:italic">(Xem lại S5, S8)</div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div style="width:38px;height:38px;background:var(--y);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);font-weight:900;color:#000">03</div>
+      <p style="font-size:var(--fs-lg);color:var(--w);line-height:1.7;font-weight:500">Tại sao nhét quá nhiều context vào CLAUDE.md lại phản tác dụng?</p>
+      <div style="font-size:var(--fs-2xs);color:var(--mu);font-style:italic">(Xem lại S5)</div>
+    </div>
+  </div>
+  <div style="margin-top:24px;text-align:center;font-size:var(--fs-md);color:var(--mu)">Trả lời trước khi tiếp tục ⟶</div>
+  <div class="counter">B1 · 6/7</div>
+</section>
+
+<!-- S10: FOLLOW-ALONG + EXERCISE B1 -->
+<section class="slide" id="s10" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Thực hành · Block 1</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">Follow-along + Exercise</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="slide-body">
+    <div class="panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="panel-title" style="margin-bottom:0">Follow-along — 20 phút</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,141,207,.12);border:1px solid rgba(0,141,207,.3);border-radius:6px;padding:4px 10px;font-size:var(--fs-2xs);font-weight:700;color:var(--b)">▶ Trainer-led</div>
+      </div>
+      <p style="font-size:var(--fs-base);color:var(--mu);line-height:1.6;margin-bottom:16px">Trainer tạo CLAUDE.md cho project demo. Audience tự tạo cho project của mình song song.</p>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;gap:10px;align-items:flex-start"><span style="background:rgba(255,176,15,.15);color:var(--y);font-size:var(--fs-sm);font-weight:800;border-radius:5px;padding:2px 8px;flex-shrink:0;margin-top:1px">1</span><span style="font-size:var(--fs-base);color:var(--w);line-height:1.5">Tạo file CLAUDE.md ở root repo</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><span style="background:rgba(255,176,15,.15);color:var(--y);font-size:var(--fs-sm);font-weight:800;border-radius:5px;padding:2px 8px;flex-shrink:0;margin-top:1px">2</span><span style="font-size:var(--fs-base);color:var(--w);line-height:1.5">Thêm stack info (framework, repos, ports)</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><span style="background:rgba(255,176,15,.15);color:var(--y);font-size:var(--fs-sm);font-weight:800;border-radius:5px;padding:2px 8px;flex-shrink:0;margin-top:1px">3</span><span style="font-size:var(--fs-base);color:var(--w);line-height:1.5">Thêm 3 "never do this" rules quan trọng nhất</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start"><span style="background:rgba(255,176,15,.15);color:var(--y);font-size:var(--fs-sm);font-weight:800;border-radius:5px;padding:2px 8px;flex-shrink:0;margin-top:1px">4</span><span style="font-size:var(--fs-base);color:var(--w);line-height:1.5">Thêm naming patterns và routing rules</span></div>
+      </div>
+    </div>
+    <div style="background:rgba(255,176,15,.04);border:2px solid rgba(255,176,15,.35);border-radius:14px;padding:26px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="panel-title" style="color:var(--y);margin-bottom:0">Mini Exercise</div>
+        <div style="background:var(--y);color:#000;font-size:var(--fs-2xl);font-weight:900;border-radius:9px;padding:5px 14px">10'</div>
+      </div>
+      <div style="font-size:var(--fs-lg);font-weight:700;margin-bottom:14px">Viết 5 rules vào CLAUDE.md:</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+        <div style="font-size:var(--fs-base);color:var(--w)"><span style="color:var(--y);margin-right:8px">·</span>1 coding convention</div>
+        <div style="font-size:var(--fs-base);color:var(--w)"><span style="color:var(--y);margin-right:8px">·</span>1 naming pattern</div>
+        <div style="font-size:var(--fs-base);color:var(--w)"><span style="color:var(--y);margin-right:8px">·</span>1 "never do this"</div>
+        <div style="font-size:var(--fs-base);color:var(--w)"><span style="color:var(--y);margin-right:8px">·</span>1 stack info</div>
+        <div style="font-size:var(--fs-base);color:var(--w)"><span style="color:var(--y);margin-right:8px">·</span>1 business context</div>
+      </div>
+      <div style="background:rgba(255,176,15,.08);border-radius:7px;padding:10px 13px;font-size:var(--fs-base);color:rgba(255,176,15,.8);line-height:1.5">Mở conversation mới và test ngay — AI có dùng đúng context không?</div>
+    </div>
+  </div>
+  <div class="counter">B1 · 7/7</div>
+</section>
+
+<!-- S11: BLOCK 2 INTRO -->
+<section class="slide" id="s11" style="flex-direction:column;justify-content:center;padding:60px 80px;position:relative;overflow:hidden">
+  <div style="position:absolute;right:60px;top:50%;transform:translateY(-50%);width:310px;height:310px;pointer-events:none;opacity:.8">
+<svg viewBox="0 0 310 310" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="sg" cx="50%" cy="50%"><stop offset="0%" stop-color="#008DCF" stop-opacity=".12"/><stop offset="100%" stop-color="#008DCF" stop-opacity="0"/></radialGradient></defs>
+<circle cx="155" cy="155" r="155" fill="url(#sg)"/>
+<circle cx="155" cy="148" r="62" fill="rgba(0,141,207,.06)" stroke="rgba(0,141,207,.3)" stroke-width="1.5" stroke-dasharray="8,5"/>
+<circle cx="155" cy="148" r="38" fill="rgba(0,141,207,.09)" stroke="rgba(0,141,207,.4)" stroke-width="2"/>
+<circle cx="155" cy="148" r="18" fill="rgba(0,141,207,.15)" stroke="rgba(0,141,207,.5)" stroke-width="1.5"/>
+<line x1="155" y1="75" x2="155" y2="62" stroke="rgba(0,141,207,.4)" stroke-width="4" stroke-linecap="round"/>
+<line x1="155" y1="221" x2="155" y2="234" stroke="rgba(0,141,207,.4)" stroke-width="4" stroke-linecap="round"/>
+<line x1="82" y1="148" x2="69" y2="148" stroke="rgba(0,141,207,.4)" stroke-width="4" stroke-linecap="round"/>
+<line x1="228" y1="148" x2="241" y2="148" stroke="rgba(0,141,207,.4)" stroke-width="4" stroke-linecap="round"/>
+<line x1="104" y1="97" x2="95" y2="88" stroke="rgba(0,141,207,.35)" stroke-width="4" stroke-linecap="round"/>
+<line x1="206" y1="97" x2="215" y2="88" stroke="rgba(0,141,207,.35)" stroke-width="4" stroke-linecap="round"/>
+<line x1="104" y1="199" x2="95" y2="208" stroke="rgba(0,141,207,.35)" stroke-width="4" stroke-linecap="round"/>
+<line x1="206" y1="199" x2="215" y2="208" stroke="rgba(0,141,207,.35)" stroke-width="4" stroke-linecap="round"/>
+<polygon points="155,130 161,144 155,140 149,144" fill="rgba(0,141,207,.7)"/>
+<rect x="142" y="232" width="54" height="22" rx="6" fill="rgba(0,141,207,.12)" stroke="rgba(0,141,207,.3)" stroke-width="1"/>
+<text x="169" y="247" text-anchor="middle" fill="#008DCF" font-size="10" font-weight="700" font-family="monospace">/brainstorm</text>
+</svg>
+</div>
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 2</div>
+  <h2 style="font-size:58px;font-weight:900;letter-spacing:-1px;margin-bottom:18px">Skills</h2>
+  <p style="font-size:var(--fs-lg);color:var(--mu);max-width:640px;line-height:1.65;margin-bottom:32px;border-left:3px solid rgba(0,141,207,.5);padding-left:18px">Cùng một quy trình lặp đi lặp lại mỗi tuần — code review, test cases, scan errors — nhưng vẫn nhắc AI từng bước mỗi lần. Output khác nhau. Team không dùng chung được.</p>
+  <div style="display:flex;gap:18px;max-width:680px;margin-bottom:32px">
+    <div class="panel" style="flex:1"><div class="panel-title" style="color:var(--r)">Không có Skills</div><div style="font-size:var(--fs-base);color:var(--mu);line-height:1.8">Prompt dài mỗi lần<br>Output không nhất quán<br>Không share với team được</div></div>
+    <div class="panel" style="flex:1;border-color:rgba(74,222,128,.3)"><div class="panel-title" style="color:var(--g)">Có Skills</div><div style="font-size:var(--fs-base);color:var(--mu);line-height:1.8">Gọi một lệnh<br>AI follow đúng quy trình<br>Toàn team dùng chung</div></div>
+  </div>
+  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:9px 18px;font-size:var(--fs-base);color:var(--mu);font-weight:500">⏱ 45 phút · Theory + Follow-along + Exercise</div>
+  <div class="counter">B2 · 1/7</div>
+</section>
+
+<!-- S12: SKILL ANATOMY -->
+<section class="slide" id="s12" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 2 · Skills</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">Anatomy của một Skill</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px" class="slide-body">
+    <div class="panel" style="display:flex;flex-direction:column">
+      <div class="panel-title">Cấu trúc</div>
+      <div class="anatomy-list" style="flex:1">
+        <div class="arow"><span class="atag">frontmatter</span><span class="adesc">name + description — AI biết khi nào trigger</span></div>
+        <div class="arow"><span class="atag" style="background:rgba(255,100,100,.18);color:#fca5a5">HARD-GATE</span><span class="adesc">Rule không thể bỏ qua — AI đọc file markdown này và tự enforce. Không phải syntax đặc biệt — là convention mà AI models được trained để respect.</span></div>
+        <div class="arow"><span class="atag">checklist</span><span class="adesc">Ordered steps AI phải làm theo thứ tự</span></div>
+        <div class="arow"><span class="atag">process flow</span><span class="adesc">State machine — happy path + decision branches</span></div>
+        <div class="arow"><span class="atag">red flags</span><span class="adesc">Common excuses AI tự tìm để skip — paired với correct response</span></div>
+      </div>
+      <div class="hard-gate-box" style="margin-top:14px">HARD-GATE: Do NOT write any code until design is presented and user has approved it.</div>
+    </div>
+    <div class="cblock good">
+      <div class="cblock-head"><span class="clabel good">SKILL.md — cấu trúc thực tế</span></div>
+      <pre><span class="cm">skills/</span>
+  brainstorming/
+    SKILL.md      <span class="cm">← skill chính</span>
+    visual.md     <span class="cm">← file hỗ trợ</span>
+
+<span class="cm">---</span>
+<span class="qt">name</span>: brainstorming
+<span class="qt">description</span>: <span class="qv">Use before any creative work</span>
+<span class="cm">---</span>
+
+## HARD-GATE
+<span class="qs">No code until design approved.</span>
+
+## Checklist
+<span class="qv">1.</span> Explore project context
+<span class="qv">2.</span> Ask clarifying questions
+<span class="qv">3.</span> Propose 2-3 approaches
+<span class="qv">4.</span> Present design, get approval
+<span class="qv">5.</span> Write spec, commit
+<span class="qv">6.</span> THEN implement</pre>
+    </div>
+  </div>
+  <div class="counter">B2 · 2/7</div>
+</section>
+<!-- S13: BRAINSTORMING SKILL -->
+<section class="slide" id="s13" style="flex-direction:column;padding:48px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 2 · Skills · Example 1</div>
+  <h2 style="font-size:42px;font-weight:900;letter-spacing:-1px;margin-bottom:8px">/brainstorming</h2>
+  <div class="skill-trigger" style="margin-bottom:20px">Use before any feature, component, or behavior change</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="slide-body">
+    <div class="panel">
+      <div class="panel-title">Checklist enforced</div>
+      <ol style="padding-left:18px;font-size:var(--fs-md);line-height:2;color:var(--w)">
+        <li>Explore project context (files, docs, commits)</li>
+        <li>Ask clarifying questions — one at a time</li>
+        <li>Propose 2–3 approaches + trade-offs + recommendation</li>
+        <li>Present design section by section, get approval</li>
+        <li>Write spec doc, commit it</li>
+        <li style="color:var(--y);font-weight:700">ONLY THEN: implement</li>
+      </ol>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="ba-box bad" style="flex:1">
+        <div class="ba-lbl">❌ Không có skill</div>
+        Dev: "Add notification badge". AI bắt đầu code ngay. Assume "badge = red dot". Ship → cần work across tabs, clear on click, mobile nav khác → <strong>Full rewrite 3h</strong>
+      </div>
+      <div class="ba-box good" style="flex:1">
+        <div class="ba-lbl">✅ Có /brainstorming</div>
+        AI explore → tìm useNotifications composable đã có → hỏi "clear on click?" → propose 3 approaches → spec → implement đúng lần đầu. <strong>45 phút tiết kiệm 3h rewrite.</strong>
+      </div>
+    </div>
+  </div>
+  <div class="hard-gate-box" style="margin-top:14px">HARD-GATE: Do NOT invoke any implementation skill or write any code until design is approved</div>
+  <div class="counter">B2 · 3/7</div>
+</section>
+
+<!-- S14: DEBUGGING SKILL -->
+<section class="slide" id="s14" style="flex-direction:column;padding:48px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 2 · Skills · Example 2</div>
+  <h2 style="font-size:42px;font-weight:900;letter-spacing:-1px;margin-bottom:8px">/systematic-debugging</h2>
+  <div class="skill-trigger" style="margin-bottom:12px">Use when encountering any bug, test failure, or unexpected behavior</div>
+  <div class="hard-gate-box" style="margin-bottom:18px">IRON LAW: NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="slide-body">
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div class="panel-title">4 Phases — Cycle</div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 280 260" width="280" height="260" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,141,207,.6)"/>
+            </marker>
+          </defs>
+          <!-- Phase nodes -->
+          <circle cx="140" cy="44" r="36" fill="rgba(0,141,207,.1)" stroke="rgba(0,141,207,.45)" stroke-width="1.5"/>
+          <text x="140" y="39" text-anchor="middle" fill="#008DCF" font-size="11" font-weight="700" font-family="Inter,sans-serif">Root Cause</text>
+          <text x="140" y="53" text-anchor="middle" fill="rgba(0,141,207,.7)" font-size="10" font-family="Inter,sans-serif">Investigation</text>
+
+          <circle cx="236" cy="142" r="36" fill="rgba(0,141,207,.08)" stroke="rgba(0,141,207,.35)" stroke-width="1.5"/>
+          <text x="236" y="137" text-anchor="middle" fill="#008DCF" font-size="11" font-weight="700" font-family="Inter,sans-serif">Pattern</text>
+          <text x="236" y="151" text-anchor="middle" fill="rgba(0,141,207,.7)" font-size="10" font-family="Inter,sans-serif">Analysis</text>
+
+          <circle cx="140" cy="218" r="36" fill="rgba(0,141,207,.08)" stroke="rgba(0,141,207,.35)" stroke-width="1.5"/>
+          <text x="140" y="213" text-anchor="middle" fill="#008DCF" font-size="11" font-weight="700" font-family="Inter,sans-serif">Hypothesis</text>
+          <text x="140" y="227" text-anchor="middle" fill="rgba(0,141,207,.7)" font-size="10" font-family="Inter,sans-serif">Testing</text>
+
+          <circle cx="44" cy="142" r="36" fill="rgba(74,222,128,.07)" stroke="rgba(74,222,128,.4)" stroke-width="1.5"/>
+          <text x="44" y="137" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700" font-family="Inter,sans-serif">Implement</text>
+          <text x="44" y="151" text-anchor="middle" fill="rgba(74,222,128,.7)" font-size="10" font-family="Inter,sans-serif">&amp; Verify</text>
+
+          <!-- Arrows clockwise -->
+          <path d="M166,68 Q210,80 216,108" fill="none" stroke="rgba(0,141,207,.45)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <path d="M216,176 Q210,210 170,226" fill="none" stroke="rgba(0,141,207,.4)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <path d="M110,226 Q70,210 64,176" fill="none" stroke="rgba(0,141,207,.4)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <path d="M62,108 Q68,74 114,60" fill="none" stroke="rgba(74,222,128,.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- Fail loop label -->
+          <text x="140" y="135" text-anchor="middle" fill="rgba(252,133,133,.5)" font-size="9" font-family="Inter,sans-serif">fail → restart</text>
+        </svg>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:var(--fs-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:4px">Red Flags — AI hay dùng để skip</div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(252,133,133,.07);border:1px solid rgba(252,133,133,.2);border-radius:10px">
+        <span style="font-size:var(--fs-md);color:var(--r);font-weight:900;flex-shrink:0;width:32px;text-align:center">✕</span>
+        <div><div style="font-size:var(--fs-sm);font-weight:700;color:#fca5a5;margin-bottom:3px">"Just try changing X"</div><div style="font-size:var(--fs-xs);color:var(--mu)">→ STOP. Về Phase 1. Chưa có root cause.</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(252,133,133,.07);border:1px solid rgba(252,133,133,.2);border-radius:10px">
+        <span style="font-size:var(--fs-md);color:var(--r);font-weight:900;flex-shrink:0;width:32px;text-align:center">✕</span>
+        <div><div style="font-size:var(--fs-sm);font-weight:700;color:#fca5a5;margin-bottom:3px">"One more fix attempt"</div><div style="font-size:var(--fs-xs);color:var(--mu)">→ STOP. Sau 2+ lần fail — question architecture.</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(252,133,133,.07);border:1px solid rgba(252,133,133,.2);border-radius:10px">
+        <span style="font-size:var(--fs-md);color:var(--r);font-weight:900;flex-shrink:0;width:32px;text-align:center">✕</span>
+        <div><div style="font-size:var(--fs-sm);font-weight:700;color:#fca5a5;margin-bottom:3px">"It's probably X, let me fix"</div><div style="font-size:var(--fs-xs);color:var(--mu)">→ STOP. Assumption không có evidence.</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;background:rgba(252,133,133,.1);border:1px solid rgba(252,133,133,.3);border-radius:10px">
+        <span style="font-size:var(--fs-md);color:var(--r);font-weight:900;flex-shrink:0;width:32px;text-align:center">🛑</span>
+        <div><div style="font-size:var(--fs-sm);font-weight:700;color:#fca5a5;margin-bottom:3px">"3+ fixes failed"</div><div style="font-size:var(--fs-xs);color:var(--mu)">→ STOP. Wrong architecture. Dừng lại, discuss với human.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B2 · 4/7</div>
+</section>
+
+<!-- S15: BEFORE/AFTER SKILLS -->
+<section class="slide" id="s15" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 2 · Skills</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">Với /systematic-debugging</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px" class="slide-body">
+    <div style="background:rgba(252,133,133,.06);border:1px solid rgba(252,133,133,.3);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:var(--fs-base);font-weight:700;color:var(--r)">❌ Không có skill — debug theo cảm tính</div>
+      <div style="font-size:var(--fs-xs);color:var(--mu);font-style:italic">Bug: user data không load sau login</div>
+      <ul style="padding-left:18px;font-size:13.5px;line-height:1.9;color:var(--w)">
+        <li>AI: "Có thể do cache, thử clear đi"</li>
+        <li>Fix → vẫn lỗi</li>
+        <li>AI: "Thử check network tab"</li>
+        <li>Fix attempt 3, 4, 5... mỗi cái reveal bug mới</li>
+        <li>2 giờ sau vẫn chưa hiểu root cause</li>
+      </ul>
+      <div style="margin-top:auto;padding-top:14px;border-top:1px solid rgba(252,133,133,.2);font-size:var(--fs-sm);font-weight:700;color:var(--r)">Shotgun debugging — may hơn khôn</div>
+    </div>
+    <div style="background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.3);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:var(--fs-base);font-weight:700;color:var(--g)">✅ Có /systematic-debugging</div>
+      <div style="font-size:var(--fs-xs);color:var(--mu);font-style:italic">Bug: user data không load sau login</div>
+      <ul style="padding-left:18px;font-size:13.5px;line-height:1.9;color:var(--w)">
+        <li>Phase 1: Reproduce consistently, check git log</li>
+        <li>→ Commit 3 ngày trước đổi auth middleware</li>
+        <li>Phase 2: So sánh với code working trước đó</li>
+        <li>→ Token không được forward trong header</li>
+        <li>1 line fix, root cause rõ ràng</li>
+      </ul>
+      <div style="margin-top:auto;padding-top:14px;border-top:1px solid rgba(74,222,128,.2);font-size:var(--fs-sm);font-weight:700;color:var(--g)">Trace first → fix once → done</div>
+    </div>
+  </div>
+  <div style="margin-top:16px;text-align:center;font-size:var(--fs-xs);color:var(--mu);font-style:italic">Iron Law: No fixes without root cause investigation first</div>
+  <div class="counter">B2 · 5/7</div>
+</section>
+
+<!-- S16: CHECK QUESTIONS B2 -->
+<section class="slide" id="s16" style="flex-direction:column;justify-content:center;padding:56px 80px">
+  <div style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:320px;font-weight:900;color:#008DCF;opacity:.04;line-height:1;pointer-events:none;user-select:none;font-family:serif">?</div>
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Kiểm tra nhanh · Block 2</div>
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:36px">3 Câu hỏi</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" class="slide-body">
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div style="width:38px;height:38px;background:var(--y);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);font-weight:900;color:#000">01</div>
+      <p style="font-size:var(--fs-lg);color:var(--w);line-height:1.7;font-weight:500">Khác biệt giữa viết một prompt dài và viết một skill là gì?</p>
+      <div style="font-size:var(--fs-2xs);color:var(--mu);font-style:italic">(Xem lại S12)</div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div style="width:38px;height:38px;background:var(--y);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);font-weight:900;color:#000">02</div>
+      <p style="font-size:var(--fs-lg);color:var(--w);line-height:1.7;font-weight:500">Nếu 3 người trong team cùng dùng một skill, lợi ích gì so với mỗi người tự prompt theo cách của mình?</p>
+      <div style="font-size:var(--fs-2xs);color:var(--mu);font-style:italic">(Xem lại S11, S12)</div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div style="width:38px;height:38px;background:var(--y);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);font-weight:900;color:#000">03</div>
+      <p style="font-size:var(--fs-lg);color:var(--w);line-height:1.7;font-weight:500">Bạn có thể nghĩ ra một task trong project hiện tại mà nếu có skill sẽ tiết kiệm thời gian ngay không?</p>
+      <div style="font-size:var(--fs-2xs);color:var(--mu);font-style:italic">(Gợi ý: code review, test cases, daily report...)</div>
+    </div>
+  </div>
+  <div style="margin-top:24px;text-align:center;font-size:var(--fs-md);color:var(--mu)">Trả lời trước khi tiếp tục ⟶</div>
+  <div class="counter">B2 · 6/7</div>
+</section>
+
+<!-- S17: EXERCISE B2 -->
+<section class="slide" id="s17" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Thực hành · Block 2</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">Follow-along + Exercise</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="slide-body">
+    <div class="panel">
+      <div class="panel-title">Follow-along — 20 phút</div>
+      <ul style="padding-left:18px;font-size:var(--fs-md);line-height:1.9;color:var(--w);margin-top:10px">
+        <li style="list-style:none;margin-left:-18px;margin-bottom:10px"><div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,141,207,.12);border:1px solid rgba(0,141,207,.3);border-radius:6px;padding:5px 12px;font-size:var(--fs-2xs);font-weight:700;color:var(--b)">▶ Trainer-led</div></li>
+        <li>Trainer mở skill thực tế (<strong>brainstorming</strong>)</li>
+        <li style="list-style:none;margin-left:-18px;margin-top:10px"><div style="background:rgba(255,176,15,.07);border:1px solid rgba(255,176,15,.2);border-radius:7px;padding:10px 14px;font-size:var(--fs-2xs);color:var(--mu);line-height:1.5">⚠️ <strong style="color:var(--y)">Tool cần có:</strong> Claude Code (claude.ai/code) hoặc Cursor với custom instructions. ChatGPT/Claude.ai web không hỗ trợ skill files.</div></li>
+        <li>Phân tích từng phần: frontmatter, HARD-GATE, checklist, red flags</li>
+        <li>Gọi skill → AI thực hiện đúng quy trình</li>
+        <li>Audience: đọc một skill có sẵn trong tool của mình</li>
+      </ul>
+    </div>
+    <div style="background:rgba(255,176,15,.04);border:2px solid rgba(255,176,15,.35);border-radius:14px;padding:26px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="panel-title" style="color:var(--y);margin-bottom:0">Mini Exercise</div>
+        <div style="background:var(--y);color:#000;font-size:var(--fs-2xl);font-weight:900;border-radius:9px;padding:5px 14px">10'</div>
+      </div>
+      <div style="font-size:var(--fs-lg);font-weight:700;margin-bottom:12px">Chọn một task bạn làm ít nhất 1 lần/tuần</div>
+      <div style="font-size:var(--fs-md);color:var(--mu);margin-bottom:12px">Viết skill tối giản:</div>
+      <div class="rule-row"><div class="rule-icon" style="background:rgba(255,176,15,.15);color:var(--y);font-weight:800">①</div><div class="rule-body"><span style="color:var(--w)">Trigger phrase — khi nào gọi skill này</span></div></div>
+      <div class="rule-row"><div class="rule-icon" style="background:rgba(255,176,15,.15);color:var(--y);font-weight:800">②</div><div class="rule-body"><span style="color:var(--w)">3–5 bước checklist theo thứ tự</span></div></div>
+      <div class="rule-row" style="margin-bottom:14px"><div class="rule-icon" style="background:rgba(255,176,15,.15);color:var(--y);font-weight:800">③</div><div class="rule-body"><span style="color:var(--w)">Output format mong muốn</span></div></div>
+      <div style="font-size:var(--fs-base);color:var(--mu);font-style:italic">Không cần hoàn hảo — đủ để AI hiểu là được</div>
+    </div>
+  </div>
+  <div class="counter">B2 · 7/7</div>
+</section>
+
+<!-- S18: BREAK -->
+<section class="slide" id="s18" style="flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div style="position:relative;display:inline-block;margin-bottom:16px">
+    <svg width="120" height="60" viewBox="0 0 120 60" style="position:absolute;top:-55px;left:50%;transform:translateX(-50%)" xmlns="http://www.w3.org/2000/svg">
+      <style>@keyframes steam1{0%,100%{opacity:0;transform:translateY(0) scaleX(1)}40%{opacity:.6}60%{opacity:.4;transform:translateY(-30px) scaleX(1.3)}80%{opacity:0;transform:translateY(-50px) scaleX(1.5)}}@keyframes steam2{0%,100%{opacity:0;transform:translateY(0) scaleX(1)}20%{opacity:0}50%{opacity:.5}70%{opacity:.3;transform:translateY(-28px) scaleX(1.2)}90%{opacity:0;transform:translateY(-45px) scaleX(1.4)}}.s1{animation:steam1 2.5s ease-out infinite}.s2{animation:steam2 2.5s ease-out infinite;animation-delay:.8s}.s3{animation:steam1 2.5s ease-out infinite;animation-delay:1.6s}</style>
+      <path class="s1" d="M30,50 Q28,35 33,20 Q38,8 35,0" fill="none" stroke="rgba(146,171,188,.5)" stroke-width="3" stroke-linecap="round"/>
+      <path class="s2" d="M60,50 Q58,32 63,18 Q68,5 65,0" fill="none" stroke="rgba(146,171,188,.5)" stroke-width="3" stroke-linecap="round"/>
+      <path class="s3" d="M90,50 Q88,35 93,20 Q98,8 95,0" fill="none" stroke="rgba(146,171,188,.5)" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <div style="font-size:80px;line-height:1">☕</div>
+  </div>
+  <h1 style="font-size:80px;font-weight:900;margin-bottom:10px">Break</h1>
+  <div style="font-size:var(--fs-2xl);font-weight:300;color:var(--mu);margin-bottom:32px">15 phút</div>
+  <div style="display:flex;gap:10px;margin-bottom:20px">
+    <div style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:20px;padding:6px 16px;font-size:var(--fs-xs);font-weight:700;color:var(--g)">Memory ✓</div>
+    <div style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:20px;padding:6px 16px;font-size:var(--fs-xs);font-weight:700;color:var(--g)">Skills ✓</div>
+  </div>
+  <div style="background:rgba(255,176,15,.1);border:1px solid rgba(255,176,15,.25);border-radius:8px;padding:10px 24px;font-size:var(--fs-md);color:rgba(255,176,15,.8)">Sau break: Block 3 — Spec-Driven Development</div>
+  <div class="counter">Break</div>
+</section>
+
+<!-- S36: T2 COVER -->
+<section class="slide" id="s36" style="flex-direction:column;justify-content:center;padding:60px 80px;position:relative;overflow:hidden">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div style="position:absolute;right:60px;top:50%;transform:translateY(-50%);width:320px;height:320px;background:radial-gradient(ellipse,rgba(167,139,250,.12) 0%,transparent 65%);pointer-events:none"></div>
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">Block 3</div>
+  <h2 style="font-size:62px;font-weight:900;letter-spacing:-1.5px;margin-bottom:16px">Spec-Driven<br><span style="color:#A78BFA">Development</span></h2>
+  <p style="font-size:var(--fs-lg);color:var(--mu);max-width:600px;line-height:1.65;margin-bottom:36px;border-left:3px solid rgba(167,139,250,.5);padding-left:18px">Làm đúng từ đầu — không sửa từ cuối. Tư duy và workflow để AI làm việc có kỷ luật.</p>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:880px">
+    <div class="panel" style="padding:14px 16px;border-top:2px solid rgba(167,139,250,.4)"><div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:6px">Lý thuyết</div><div style="font-size:var(--fs-sm);color:var(--w)">Core loop & nguyên lý spec-driven</div></div>
+    <div class="panel" style="padding:14px 16px;border-top:2px solid rgba(167,139,250,.4)"><div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:6px">OpenSpecs</div><div style="font-size:var(--fs-sm);color:var(--w)">propose → apply → archive</div></div>
+    <div class="panel" style="padding:14px 16px;border-top:2px solid rgba(167,139,250,.4)"><div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:6px">Superpowers</div><div style="font-size:var(--fs-sm);color:var(--w)">brainstorm → design → plan</div></div>
+    <div class="panel" style="padding:14px 16px;border-top:2px solid rgba(167,139,250,.4)"><div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:6px">GSD</div><div style="font-size:var(--fs-sm);color:var(--w)">discuss → plan → execute → ship</div></div>
+  </div>
+  <div class="counter">B3 · 1/12</div>
+</section>
+
+<!-- S37: CORE LOOP -->
+<section class="slide" id="s37" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">Nguyên lý nền</div>
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:22px">Core Loop</h2>
+  <div style="display:flex;align-items:center;gap:0;margin-bottom:24px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px 24px">
+    <div style="text-align:center;flex:1"><div style="font-size:var(--fs-xl);margin-bottom:5px">💡</div><div style="font-size:var(--fs-sm);font-weight:700;color:var(--w)">Idea</div><div style="font-size:var(--fs-2xs);color:var(--mu);margin-top:2px">ticket / request</div></div>
+    <div style="color:rgba(167,139,250,.5);font-size:var(--fs-md);padding:0 6px">→</div>
+    <div style="text-align:center;flex:1;background:rgba(167,139,250,.08);border-radius:10px;padding:12px 6px"><div style="font-size:var(--fs-xs);font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#A78BFA;margin-bottom:3px">Brainstorm</div><div style="font-size:var(--fs-2xs);color:var(--mu)">explore intent</div></div>
+    <div style="color:rgba(167,139,250,.5);font-size:var(--fs-md);padding:0 6px">→</div>
+    <div style="text-align:center;flex:1;background:rgba(167,139,250,.08);border-radius:10px;padding:12px 6px"><div style="font-size:var(--fs-xs);font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#A78BFA;margin-bottom:3px">Spec</div><div style="font-size:var(--fs-2xs);color:var(--mu)">WHAT &amp; WHY</div></div>
+    <div style="color:rgba(167,139,250,.5);font-size:var(--fs-md);padding:0 6px">→</div>
+    <div style="text-align:center;flex:1;background:rgba(167,139,250,.08);border-radius:10px;padding:12px 6px"><div style="font-size:var(--fs-xs);font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#A78BFA;margin-bottom:3px">Tasks + AC</div><div style="font-size:var(--fs-2xs);color:var(--mu)">bite-sized + criteria</div></div>
+    <div style="color:rgba(167,139,250,.5);font-size:var(--fs-md);padding:0 6px">→</div>
+    <div style="text-align:center;flex:1;background:rgba(255,176,15,.08);border-radius:10px;padding:12px 6px;border:1px solid rgba(255,176,15,.2)"><div style="font-size:var(--fs-xs);font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--y);margin-bottom:3px">Code</div><div style="font-size:var(--fs-2xs);color:var(--mu)">implement</div></div>
+    <div style="color:rgba(167,139,250,.5);font-size:var(--fs-md);padding:0 6px">→</div>
+    <div style="text-align:center;flex:1;background:rgba(167,139,250,.08);border-radius:10px;padding:12px 6px"><div style="font-size:var(--fs-xs);font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#A78BFA;margin-bottom:3px">Verify</div><div style="font-size:var(--fs-2xs);color:var(--mu)">evidence, not claim</div></div>
+    <div style="color:rgba(167,139,250,.5);font-size:var(--fs-md);padding:0 6px">→</div>
+    <div style="text-align:center;flex:1"><div style="font-size:var(--fs-xl);margin-bottom:5px">🚀</div><div style="font-size:var(--fs-sm);font-weight:700;color:var(--w)">Ship</div><div style="font-size:var(--fs-2xs);color:var(--mu);margin-top:2px">PR + archive</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+    <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px 18px"><div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#A78BFA;margin-bottom:6px">Nguyên tắc #1</div><div style="font-size:var(--fs-base);color:var(--w);line-height:1.5">Không code trước khi spec được approve — <strong style="color:#A78BFA">hard gate</strong>, không exception</div></div>
+    <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px 18px"><div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#A78BFA;margin-bottom:6px">Nguyên tắc #2</div><div style="font-size:var(--fs-base);color:var(--w);line-height:1.5">Spec = thoả thuận về "done". <strong style="color:#A78BFA">AC</strong> = câu hỏi trả lời bằng Yes/No</div></div>
+    <div style="background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px 18px"><div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#A78BFA;margin-bottom:6px">Nguyên tắc #3</div><div style="font-size:var(--fs-base);color:var(--w);line-height:1.5">Verify = chạy evidence thật, <strong style="color:#A78BFA">không tự claim</strong> xong khi chưa có bằng chứng</div></div>
+  </div>
+  <div class="counter">B3 · 2/12</div>
+</section>
+
+<!-- S38: VẤN ĐỀ — CONTEXT ROT -->
+<section class="slide" id="s38" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">Vấn đề</div>
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:22px">Context Rot &amp; Vibe Coding</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1">
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#FC8585;margin-bottom:12px">❌ Vibe Coding</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="panel" style="padding:12px 16px;border-left:3px solid rgba(252,133,133,.4)"><div style="font-size:var(--fs-base)">Idea → code ngay, hỏi AI "làm cái này đi"</div></div>
+        <div class="panel" style="padding:12px 16px;border-left:3px solid rgba(252,133,133,.4)"><div style="font-size:var(--fs-base)">AI fill context window với debug info, sửa đi sửa lại</div></div>
+        <div class="panel" style="padding:12px 16px;border-left:3px solid rgba(252,133,133,.4)"><div style="font-size:var(--fs-base)">Output ngày càng tệ — fix 1 bug tạo ra 2 bug mới</div></div>
+        <div class="panel" style="padding:12px 16px;border-left:3px solid rgba(252,133,133,.5);background:rgba(252,133,133,.07)"><div style="font-size:var(--fs-base);color:#FC8585;font-weight:600">Kết quả: rework, misalignment, mất ngày</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:12px">✓ Spec-Driven</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="panel" style="padding:12px 16px;border-left:3px solid rgba(167,139,250,.4)"><div style="font-size:var(--fs-base)">Brainstorm → spec approve → sau đó mới code</div></div>
+        <div class="panel" style="padding:12px 16px;border-left:3px solid rgba(167,139,250,.4)"><div style="font-size:var(--fs-base)">AI làm trong fresh context, không bị rot</div></div>
+        <div class="panel" style="padding:12px 16px;border-left:3px solid rgba(167,139,250,.4)"><div style="font-size:var(--fs-base)">Spec = guardrail — AI không drift, không overengineer</div></div>
+        <div class="panel" style="padding:12px 16px;border-left:3px solid rgba(167,139,250,.5);background:rgba(167,139,250,.07)"><div style="font-size:var(--fs-base);color:#A78BFA;font-weight:600">Kết quả: đúng ngay lần đầu, ít review cycle</div></div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:14px;padding:12px 18px;background:rgba(167,139,250,.06);border-left:3px solid rgba(167,139,250,.5);border-radius:4px;font-size:var(--fs-base)"><strong style="color:#A78BFA">Context rot:</strong> càng nhiều code trong context → AI output càng tệ. Spec-driven phòng ngừa bằng cách isolate mỗi phase trong fresh context.</div>
+  <div class="counter">B3 · 3/12</div>
+</section>
+
+<!-- S39: BRAINSTORM & SPEC -->
+<section class="slide" id="s39" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">Lý thuyết · Bước 1–2</div>
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:20px">Brainstorm &amp; Spec</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1">
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:12px">Brainstorm — Explore trước</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="panel" style="padding:13px 16px"><div style="font-size:var(--fs-base);line-height:1.55">Hỏi AI <em style="color:var(--mu)">"clarify questions"</em> — không phải solutions</div></div>
+        <div class="panel" style="padding:13px 16px"><div style="font-size:var(--fs-base);line-height:1.55">Propose 2–3 approaches với trade-offs trước khi chọn</div></div>
+        <div class="panel" style="padding:13px 16px"><div style="font-size:var(--fs-base);line-height:1.55">Kết quả: design doc được approve. Tất cả align trước khi code 1 dòng nào.</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:12px">Spec — WHAT, không phải HOW</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:rgba(252,133,133,.07);border:1px solid rgba(252,133,133,.2);border-radius:8px;padding:12px">
+            <div style="font-size:var(--fs-2xs);font-weight:700;color:#FC8585;margin-bottom:6px">❌ BAD SPEC</div>
+            <div style="font-size:var(--fs-xs);color:var(--mu);line-height:1.5">"Dùng Redis cache TTL 5 phút, invalidate khi user update"</div>
+          </div>
+          <div style="background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.2);border-radius:8px;padding:12px">
+            <div style="font-size:var(--fs-2xs);font-weight:700;color:#A78BFA;margin-bottom:6px">✓ GOOD SPEC</div>
+            <div style="font-size:var(--fs-xs);color:var(--mu);line-height:1.5">"User profile load &lt; 200ms. Data consistent sau update."</div>
+          </div>
+        </div>
+        <div class="panel" style="padding:12px 16px"><div style="font-size:var(--fs-base);line-height:1.5">Spec mô tả <strong>kết quả</strong>, không phải implementation. HOW là việc của tasks.</div></div>
+        <div class="panel" style="padding:12px 16px"><div style="font-size:var(--fs-base);line-height:1.5">Good spec = constraint tối thiểu để AI không drift.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B3 · 4/12</div>
+</section>
+
+<!-- S40: TASKS + AC + VERIFY -->
+<section class="slide" id="s40" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">Lý thuyết · Bước 3–5</div>
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:20px">Tasks · AC · Verify</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1">
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:10px">Tasks — Bite-sized</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="panel" style="padding:11px 14px"><div style="font-size:var(--fs-sm);line-height:1.5">Mỗi task ≤ 30 phút, commit độc lập</div></div>
+        <div class="panel" style="padding:11px 14px"><div style="font-size:var(--fs-sm);line-height:1.5">Không "implement the feature" — chia nhỏ: schema → API → FE → test</div></div>
+        <div class="panel" style="padding:11px 14px"><div style="font-size:var(--fs-sm);line-height:1.5">Mỗi task verifiable độc lập</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:10px">AC — Acceptance Criteria</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="panel" style="padding:11px 14px"><div style="font-size:var(--fs-sm);line-height:1.5">Mỗi AC là câu hỏi <strong>Yes/No</strong></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <div style="background:rgba(252,133,133,.07);border:1px solid rgba(252,133,133,.2);border-radius:7px;padding:9px 11px"><div style="font-size:var(--fs-2xs);font-weight:700;color:#FC8585;margin-bottom:4px">❌</div><div style="font-size:var(--fs-xs);color:var(--mu)">"User có thể login bình thường"</div></div>
+          <div style="background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.2);border-radius:7px;padding:9px 11px"><div style="font-size:var(--fs-2xs);font-weight:700;color:#A78BFA;margin-bottom:4px">✓</div><div style="font-size:var(--fs-xs);color:var(--mu)">"POST /login valid → 200 + JWT"</div></div>
+        </div>
+        <div class="panel" style="padding:11px 14px"><div style="font-size:var(--fs-sm);line-height:1.5">Feature done = tất cả AC pass</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:10px">Verify — Evidence</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="panel" style="padding:11px 14px"><div style="font-size:var(--fs-sm);line-height:1.5">Không tự claim "xong" — chạy test, show output thật</div></div>
+        <div class="panel" style="padding:11px 14px"><div style="font-size:var(--fs-sm);line-height:1.5">Screenshot, curl response, test pass count</div></div>
+        <div class="panel" style="padding:11px 14px;background:rgba(167,139,250,.06);border-color:rgba(167,139,250,.3)"><div style="font-size:var(--fs-sm);color:#A78BFA;font-weight:600;line-height:1.5">Evidence before assertions. Always.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B3 · 5/12</div>
+</section>
+
+<!-- S41: TOOL SURVEY — INTERACTIVE TABS -->
+<section class="slide" id="s41" style="flex-direction:column;padding:44px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">Tool Survey</div>
+  <h2 style="font-size:44px;font-weight:900;letter-spacing:-1px;margin-bottom:16px">3 Spec-Driven Tools</h2>
+  <div style="display:flex;gap:10px;margin-bottom:18px">
+    <button class="tool-tab active" data-tool="opsx">OpenSpecs &nbsp;<code style="font-size:var(--fs-2xs);font-family:'JetBrains Mono',monospace;opacity:.8">/opsx</code></button>
+    <button class="tool-tab" data-tool="sp">Superpowers &nbsp;<code style="font-size:var(--fs-2xs);font-family:'JetBrains Mono',monospace;opacity:.8">/brainstorming</code></button>
+    <button class="tool-tab" data-tool="gsd">Get Shit Done &nbsp;<code style="font-size:var(--fs-2xs);font-family:'JetBrains Mono',monospace;opacity:.8">/gsd</code></button>
+  </div>
+
+  <!-- OpenSpecs -->
+  <div class="tool-panel active" id="tool-opsx">
+    <div style="display:grid;grid-template-columns:1fr 260px;gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="step-row">
+          <div class="step-box" data-cmd="/opsx:explore" data-desc="Thinking partner. Đọc codebase, vẽ diagram, clarify intent. KHÔNG viết code — chỉ explore và align." data-out="notes.md"><div class="step-cmd">/opsx:explore</div><div class="step-name">Explore</div><div class="step-out">→ notes.md</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box" data-cmd="/opsx:propose" data-desc="AI tự tạo proposal.md + specs.md + design.md + tasks.md. Tất cả artifacts persist trên disk, không volatile." data-out="4 artifacts"><div class="step-cmd">/opsx:propose</div><div class="step-name">Propose</div><div class="step-out">→ 4 artifacts</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box" data-cmd="Human Review Gate" data-desc="User đọc proposal.md + specs.md, approve hoặc request changes. AI không tiếp tục cho đến khi có explicit approve từ human." data-out="approved"><div class="step-cmd" style="color:rgba(255,176,15,.8)">Review</div><div class="step-name">Review</div><div class="step-out" style="color:rgba(255,176,15,.55)">human gate</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box hl" data-cmd="/opsx:apply — Agentic Core ★" data-desc="AI tự chạy tất cả tasks trong tasks.md. Edit code, track progress, tự pause khi ambiguous. Đây là bước agentic thực sự." data-out="code changes"><div class="step-cmd star">/opsx:apply ★</div><div class="step-name">Apply</div><div class="step-out">→ code changes</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box" data-cmd="/opsx:archive" data-desc="Validate artifacts, sync specs với code thực tế, move sang archive/YYYY-MM-DD-name/. Đóng loop, knowledge persist." data-out="archive/"><div class="step-cmd">/opsx:archive</div><div class="step-name">Archive</div><div class="step-out">→ archive/</div></div>
+        </div>
+        <div class="step-detail" style="opacity:0"><span style="font-size:var(--fs-xs);color:var(--mu)">← Click vào bước bất kỳ để xem chi tiết</span></div>
+      </div>
+      <div class="tool-visual">
+        <svg viewBox="0 0 260 220" width="228" height="193" xmlns="http://www.w3.org/2000/svg">
+          <!-- background -->
+          <rect width="260" height="220" rx="10" fill="rgba(10,18,30,0)"/>
+          <!-- title -->
+          <text x="130" y="22" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#A78BFA" letter-spacing="0.1em">ARTIFACTS</text>
+          <!-- left bracket grouping files -->
+          <line x1="42" y1="36" x2="42" y2="152" stroke="rgba(167,139,250,.35)" stroke-width="1.5"/>
+          <line x1="42" y1="36" x2="50" y2="36" stroke="rgba(167,139,250,.35)" stroke-width="1.5"/>
+          <line x1="42" y1="152" x2="50" y2="152" stroke="rgba(167,139,250,.35)" stroke-width="1.5"/>
+          <text x="22" y="99" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(167,139,250,.5)" transform="rotate(-90,22,99)">propose</text>
+          <!-- file card 4 (bottom shadow) -->
+          <rect x="60" y="44" width="150" height="30" rx="5" fill="rgba(255,255,255,.025)" stroke="rgba(167,139,250,.12)" stroke-width="1"/>
+          <!-- file card 3 -->
+          <rect x="57" y="62" width="150" height="30" rx="5" fill="rgba(255,255,255,.035)" stroke="rgba(167,139,250,.15)" stroke-width="1"/>
+          <!-- file card 2 -->
+          <rect x="54" y="80" width="150" height="30" rx="5" fill="rgba(255,255,255,.045)" stroke="rgba(167,139,250,.2)" stroke-width="1"/>
+          <!-- file card 1 (top, most visible) -->
+          <rect x="51" y="98" width="150" height="30" rx="5" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.35)" stroke-width="1"/>
+          <!-- file labels -->
+          <text x="72" y="57" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="rgba(167,139,250,.4)">📄 proposal.md</text>
+          <text x="72" y="75" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="rgba(167,139,250,.5)">📄 specs.md</text>
+          <text x="72" y="93" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="rgba(167,139,250,.65)">📄 design.md</text>
+          <text x="72" y="111" font-family="'JetBrains Mono',monospace" font-size="9.5" fill="#FFB00F">📋 tasks.md ★</text>
+          <!-- arrow down -->
+          <line x1="126" y1="134" x2="126" y2="162" stroke="rgba(167,139,250,.4)" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <polygon points="120,159 132,159 126,168" fill="rgba(167,139,250,.4)"/>
+          <!-- archive folder -->
+          <rect x="76" y="170" width="100" height="32" rx="6" fill="rgba(167,139,250,.07)" stroke="rgba(167,139,250,.25)" stroke-width="1"/>
+          <rect x="76" y="165" width="42" height="8" rx="3" fill="rgba(167,139,250,.12)" stroke="rgba(167,139,250,.2)" stroke-width="1"/>
+          <text x="126" y="191" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="rgba(167,139,250,.7)">archive/ 📁</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Superpowers -->
+  <div class="tool-panel" id="tool-sp">
+    <div style="display:grid;grid-template-columns:1fr 260px;gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="step-row">
+          <div class="step-box" data-cmd="/brainstorming" data-desc="AI hỏi clarifying questions 1 by 1. Propose 2–3 approaches với trade-offs. Explore intent trước khi commit hướng đi." data-out="intent clear"><div class="step-cmd">/brainstorming</div><div class="step-name">Explore</div><div class="step-out">→ intent clear</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box" data-cmd="/writing-design-doc" data-desc="AI tạo design doc: problem statement, proposed approach, trade-offs, open questions. Structured artifact để human review." data-out="design.md"><div class="step-cmd">/writing-plans</div><div class="step-name">Design Doc</div><div class="step-out">→ design.md</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box hl" data-cmd="Design Review ★ Hard Gate" data-desc="User approve design doc trước khi AI code bất kỳ dòng nào. Hard gate — không exception, kể cả task 'đơn giản'. Không approve = không code." data-out="approved"><div class="step-cmd star">Review ★</div><div class="step-name">Review</div><div class="step-out" style="color:rgba(255,176,15,.55)">hard gate</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box" data-cmd="/writing-plans" data-desc="Tạo implementation plan: file map rõ ràng, bite-sized tasks (≤30 phút mỗi task), TDD approach, test strategy cụ thể." data-out="PLAN.md"><div class="step-cmd">/writing-plans</div><div class="step-name">Plan</div><div class="step-out">→ PLAN.md</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box" data-cmd="/executing-plans" data-desc="Chạy plan task by task với review checkpoints. Verify từng bước trước khi tiếp tục. Không skip verification." data-out="PR ready"><div class="step-cmd">/executing-plans</div><div class="step-name">Execute</div><div class="step-out">→ PR ready</div></div>
+        </div>
+        <div class="step-detail" style="opacity:0"><span style="font-size:var(--fs-xs);color:var(--mu)">← Click vào bước bất kỳ để xem chi tiết</span></div>
+      </div>
+      <div class="tool-visual">
+        <svg viewBox="0 0 260 220" width="228" height="193" xmlns="http://www.w3.org/2000/svg">
+          <!-- two-tone background zones -->
+          <rect x="0" y="0" width="114" height="220" rx="8" fill="rgba(167,139,250,.055)"/>
+          <rect x="146" y="0" width="114" height="220" rx="8" fill="rgba(255,255,255,.018)"/>
+          <!-- zone labels -->
+          <text x="57" y="22" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#A78BFA" letter-spacing="0.08em">THINK</text>
+          <text x="203" y="22" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="rgba(255,255,255,.25)" letter-spacing="0.08em">CODE</text>
+          <!-- THINK side: 3 question rects -->
+          <rect x="12" y="32" width="90" height="22" rx="5" fill="rgba(167,139,250,.08)" stroke="rgba(167,139,250,.2)" stroke-width="1"/>
+          <text x="57" y="47" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(167,139,250,.8)">What is the goal?</text>
+          <rect x="12" y="62" width="90" height="22" rx="5" fill="rgba(167,139,250,.08)" stroke="rgba(167,139,250,.2)" stroke-width="1"/>
+          <text x="57" y="77" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(167,139,250,.8)">3 approaches</text>
+          <rect x="12" y="92" width="90" height="22" rx="5" fill="rgba(167,139,250,.08)" stroke="rgba(167,139,250,.2)" stroke-width="1"/>
+          <text x="57" y="107" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(167,139,250,.8)">Trade-offs?</text>
+          <!-- center gate line -->
+          <line x1="130" y1="10" x2="130" y2="210" stroke="rgba(255,255,255,.1)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <!-- star gate badge -->
+          <circle cx="130" cy="120" r="18" fill="rgba(10,18,30,.95)" stroke="#FFB00F" stroke-width="2"/>
+          <text x="130" y="126" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#FFB00F">★</text>
+          <!-- CODE side: grayed out with lock -->
+          <rect x="152" y="32" width="90" height="60" rx="7" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+          <!-- lock icon body -->
+          <rect x="185" y="62" width="20" height="16" rx="3" fill="rgba(255,255,255,.15)"/>
+          <!-- lock shackle -->
+          <path d="M188 62 Q188 52 195 52 Q202 52 202 62" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/>
+          <circle cx="195" cy="70" r="2.5" fill="rgba(10,18,30,.8)"/>
+          <text x="197" y="110" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,.3)">Chỉ sau approve</text>
+          <!-- arrow from gate to code side -->
+          <line x1="149" y1="120" x2="163" y2="120" stroke="rgba(255,176,15,.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <defs>
+            <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="rgba(255,176,15,.5)"/>
+            </marker>
+          </defs>
+          <text x="130" y="175" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,176,15,.6)">approve → unlock</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- GSD -->
+  <div class="tool-panel" id="tool-gsd">
+    <div style="display:grid;grid-template-columns:1fr 260px;gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="step-row">
+          <div class="step-box" data-cmd="/gsd-init" data-desc="Khởi tạo workspace: tạo STATE.md, phase structure, project scaffolding. One-time setup — run once per project." data-out="STATE.md"><div class="step-cmd">/gsd-init</div><div class="step-name">Init</div><div class="step-out">→ STATE.md</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box hl" data-cmd="/gsd-discuss-phase ★" data-desc="Capture decisions trước khi plan. AI hỏi về approach, constraints, edge cases. Output: CONTEXT.md. Quan trọng nhất — đừng skip." data-out="CONTEXT.md"><div class="step-cmd star">/gsd-discuss ★</div><div class="step-name">Discuss</div><div class="step-out">→ CONTEXT.md</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box" data-cmd="/gsd-plan-phase" data-desc="AI research codebase + đọc CONTEXT.md → tạo PLAN.md với file map + tasks + AC. AI tự verify plan trước khi bạn approve." data-out="PLAN.md"><div class="step-cmd">/gsd-plan</div><div class="step-name">Plan</div><div class="step-out">→ PLAN.md</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box hl" data-cmd="/gsd-execute-phase ★ Context Isolation" data-desc="Mỗi task chạy trong fresh 200k-token context riêng — không context rot. Wave-based: tasks độc lập chạy song song. STATE.md persist qua sessions." data-out="code done"><div class="step-cmd star">/gsd-execute ★</div><div class="step-name">Execute</div><div class="step-out">→ code done</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box" data-cmd="/gsd-verify-work" data-desc="Conversational UAT: AI tự test feature theo AC trong PLAN.md. Report ✓/✗ per AC — evidence thật, không tự claim xong." data-out="UAT report"><div class="step-cmd">/gsd-verify</div><div class="step-name">Verify</div><div class="step-out">→ UAT report</div></div>
+          <div class="step-arrow">→</div>
+          <div class="step-box" data-cmd="/gsd-ship" data-desc="Tạo PR với description từ PLAN.md + verify report. Changelog từ commit history. STATE.md mark phase done → next phase ready." data-out="PR merged"><div class="step-cmd">/gsd-ship</div><div class="step-name">Ship</div><div class="step-out">→ PR merged</div></div>
+        </div>
+        <div class="step-detail" style="opacity:0"><span style="font-size:var(--fs-xs);color:var(--mu)">← Click vào bước bất kỳ để xem chi tiết</span></div>
+      </div>
+      <div class="tool-visual">
+        <svg viewBox="0 0 260 220" width="228" height="193" xmlns="http://www.w3.org/2000/svg">
+          <!-- label top -->
+          <text x="130" y="18" text-anchor="middle" font-family="sans-serif" font-size="10" fill="rgba(255,255,255,.45)" letter-spacing="0.04em">Fresh context per task</text>
+          <!-- task box 1 -->
+          <rect x="10" y="28" width="70" height="90" rx="8" fill="rgba(167,139,250,.04)" stroke="rgba(167,139,250,.22)" stroke-width="1.5"/>
+          <text x="45" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="rgba(167,139,250,.8)">Task 1</text>
+          <text x="45" y="68" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(167,139,250,.45)">200k ctx</text>
+          <rect x="20" y="76" width="50" height="6" rx="3" fill="rgba(167,139,250,.15)"/>
+          <rect x="20" y="88" width="38" height="6" rx="3" fill="rgba(167,139,250,.1)"/>
+          <rect x="20" y="100" width="44" height="6" rx="3" fill="rgba(167,139,250,.08)"/>
+          <!-- task box 2 — execute star, highlighted -->
+          <rect x="95" y="28" width="70" height="90" rx="8" fill="rgba(255,176,15,.07)" stroke="rgba(255,176,15,.45)" stroke-width="1.5"/>
+          <!-- star badge on task 2 -->
+          <rect x="108" y="20" width="44" height="16" rx="8" fill="#FFB00F"/>
+          <text x="130" y="31" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="800" fill="#000">Execute ★</text>
+          <text x="130" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="rgba(255,176,15,.9)">Task 2</text>
+          <text x="130" y="68" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,176,15,.5)">200k ctx</text>
+          <rect x="105" y="76" width="50" height="6" rx="3" fill="rgba(255,176,15,.2)"/>
+          <rect x="105" y="88" width="38" height="6" rx="3" fill="rgba(255,176,15,.15)"/>
+          <rect x="105" y="100" width="44" height="6" rx="3" fill="rgba(255,176,15,.1)"/>
+          <!-- task box 3 -->
+          <rect x="180" y="28" width="70" height="90" rx="8" fill="rgba(167,139,250,.04)" stroke="rgba(167,139,250,.18)" stroke-width="1.5"/>
+          <text x="215" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="rgba(167,139,250,.7)">Task 3</text>
+          <text x="215" y="68" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(167,139,250,.4)">200k ctx</text>
+          <rect x="190" y="76" width="50" height="6" rx="3" fill="rgba(167,139,250,.12)"/>
+          <rect x="190" y="88" width="38" height="6" rx="3" fill="rgba(167,139,250,.08)"/>
+          <rect x="190" y="100" width="44" height="6" rx="3" fill="rgba(167,139,250,.06)"/>
+          <!-- STATE.md connecting bar -->
+          <rect x="10" y="135" width="240" height="30" rx="7" fill="rgba(167,139,250,.08)" stroke="rgba(167,139,250,.3)" stroke-width="1.5"/>
+          <text x="130" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="rgba(167,139,250,.75)">STATE.md</text>
+          <!-- connector lines from boxes to STATE.md -->
+          <line x1="45" y1="118" x2="45" y2="135" stroke="rgba(167,139,250,.2)" stroke-width="1" stroke-dasharray="2,2"/>
+          <line x1="130" y1="118" x2="130" y2="135" stroke="rgba(255,176,15,.3)" stroke-width="1" stroke-dasharray="2,2"/>
+          <line x1="215" y1="118" x2="215" y2="135" stroke="rgba(167,139,250,.2)" stroke-width="1" stroke-dasharray="2,2"/>
+          <!-- caption -->
+          <text x="130" y="185" text-anchor="middle" font-family="sans-serif" font-size="9" fill="rgba(255,255,255,.3)">STATE.md persists across sessions</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="counter">B3 · 6/12</div>
+</section>
+
+<!-- S44: SO SÁNH 3 TOOLS -->
+<section class="slide" id="s44" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">So sánh</div>
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:24px">Chọn tool nào?</h2>
+  <div class="panel" style="padding:0;overflow:hidden;flex:1">
+    <table style="width:100%;border-collapse:collapse;font-size:var(--fs-base)">
+      <thead><tr style="background:rgba(167,139,250,.1)">
+        <th style="padding:12px 18px;text-align:left;color:var(--mu);font-weight:600;width:18%">Tiêu chí</th>
+        <th style="padding:12px 18px;text-align:left;color:#A78BFA;font-weight:700;width:27%">OpenSpecs</th>
+        <th style="padding:12px 18px;text-align:left;color:#A78BFA;font-weight:700;width:27%">Superpowers</th>
+        <th style="padding:12px 18px;text-align:left;color:#A78BFA;font-weight:700;width:28%">GSD</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-top:1px solid rgba(255,255,255,.06)"><td style="padding:11px 18px;font-weight:700;color:var(--mu)">Scope</td><td style="padding:11px 18px">Per-change (1 ticket)</td><td style="padding:11px 18px">Per-task</td><td style="padding:11px 18px">Per-project / per-phase</td></tr>
+        <tr style="border-top:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)"><td style="padding:11px 18px;font-weight:700;color:var(--mu)">Artifacts</td><td style="padding:11px 18px">proposal · specs · design · tasks</td><td style="padding:11px 18px">design doc + plan.md</td><td style="padding:11px 18px">PROJECT · ROADMAP · PLAN · STATE</td></tr>
+        <tr style="border-top:1px solid rgba(255,255,255,.06)"><td style="padding:11px 18px;font-weight:700;color:var(--mu)">Context</td><td style="padding:11px 18px;color:var(--mu)">Manual</td><td style="padding:11px 18px;color:var(--mu)">Manual</td><td style="padding:11px 18px;color:#A78BFA;font-weight:600">Auto — fresh per task</td></tr>
+        <tr style="border-top:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)"><td style="padding:11px 18px;font-weight:700;color:var(--mu)">Tốt nhất cho</td><td style="padding:11px 18px">Feature spec rõ</td><td style="padding:11px 18px">Collaborative design</td><td style="padding:11px 18px">Multi-phase project lớn</td></tr>
+        <tr style="border-top:1px solid rgba(255,255,255,.06)"><td style="padding:11px 18px;font-weight:700;color:var(--mu)">Kết hợp</td><td style="padding:11px 18px;color:var(--mu)" colspan="3">GSD phases + OpenSpecs per-change trong mỗi phase ✓ — best of both</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="counter">B3 · 7/12</div>
+</section>
+
+<!-- S45: GSD DEEP DIVE — INIT & DISCUSS -->
+<section class="slide" id="s45" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">GSD Deep Dive · 1/3</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:20px">Khởi động Project</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1">
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:12px">/gsd-new-project</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">AI hỏi requirements qua adaptive questions → output <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-size:var(--fs-xs)">PROJECT.md</code></div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5"><code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-size:var(--fs-xs)">ROADMAP.md</code> — phases, goals, dependencies rõ ràng</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5"><code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-size:var(--fs-xs)">STATE.md</code> — context persist qua sessions, không bao giờ mất</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:12px">/gsd-discuss-phase ← quan trọng nhất</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div class="panel" style="padding:12px 15px;background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.3)"><div style="font-size:var(--fs-sm);line-height:1.5;color:var(--w)">Capture <strong>decisions</strong> trước khi plan — AI không biết business context của bạn</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">Adaptive questions: approach, constraints, edge cases, risks</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">Output: <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-size:var(--fs-xs)">CONTEXT.md</code> — AI đọc trước khi plan, không hỏi lại</div></div>
+        <div style="padding:10px 14px;background:rgba(255,176,15,.06);border-left:3px solid rgba(255,176,15,.4);border-radius:4px;font-size:var(--fs-sm);color:var(--mu)">Skip bước này → plan sai → execute sai → rework toàn bộ phase</div>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B3 · 8/12</div>
+</section>
+
+<!-- S46: GSD DEEP DIVE — PLAN & EXECUTE -->
+<section class="slide" id="s46" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">GSD Deep Dive · 2/3</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:20px">Plan → Execute</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1">
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:12px">/gsd-plan-phase</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">AI research codebase + đọc CONTEXT.md → tạo <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-size:var(--fs-xs)">PLAN.md</code></div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">PLAN.md: file map, task list với AC, test strategy</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5"><strong>Verification loop:</strong> AI tự review plan trước khi bạn approve</div></div>
+        <div class="panel" style="padding:12px 15px;background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.3)"><div style="font-size:var(--fs-sm);line-height:1.5;color:var(--w)">Bạn đọc PLAN.md, approve → mới chạy execute</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:12px">/gsd-execute-phase ← Context Isolation</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div class="panel" style="padding:12px 15px;background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.3)"><div style="font-size:var(--fs-sm);line-height:1.5;color:var(--w)"><strong style="color:#A78BFA">Fresh context per task</strong> — mỗi task chạy trong 200k token context riêng. Không context rot.</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5"><strong>Wave-based:</strong> tasks độc lập chạy song song. Tasks phụ thuộc chạy tuần tự.</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">STATE.md update sau mỗi task — resume bất cứ lúc nào</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">Tự commit sau mỗi task hoàn thành — atomic, traceable</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B3 · 9/12</div>
+</section>
+
+<!-- S47: GSD DEEP DIVE — VERIFY & SHIP -->
+<section class="slide" id="s47" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">GSD Deep Dive · 3/3</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:20px">Verify → Ship</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1">
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:12px">/gsd-verify-work</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">Conversational UAT — AI tự test feature theo AC trong PLAN.md</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">Chạy: curl, browser automation, unit test — show evidence thật</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">Report: ✓ pass / ✗ fail per AC — không phải "looks good"</div></div>
+        <div class="panel" style="padding:12px 15px;background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.3)"><div style="font-size:var(--fs-sm);line-height:1.5;color:var(--w)">Fail → loop lại execute → verify lại. Không ship khi còn AC fail.</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#A78BFA;margin-bottom:12px">/gsd-ship</div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">Tạo PR với description tự động từ PLAN.md + verify report</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">Changelog tự động từ commit history của phase</div></div>
+        <div class="panel" style="padding:12px 15px"><div style="font-size:var(--fs-sm);line-height:1.5">STATE.md mark phase done → next phase ready</div></div>
+      </div>
+      <div style="margin-top:12px;padding:14px 16px;background:rgba(255,176,15,.06);border:1px solid rgba(255,176,15,.2);border-radius:10px">
+        <div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--y);margin-bottom:5px">Full cycle</div>
+        <div style="font-size:var(--fs-sm);color:var(--mu);line-height:1.55">new-project → discuss → plan → execute → verify → ship → (next phase)</div>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B3 · 10/12</div>
+</section>
+
+<!-- S48: DECISION TREE -->
+<section class="slide" id="s48" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">Decision Tree</div>
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:24px">Dùng tool nào?</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px;border-left:3px solid rgba(150,150,150,.3)">
+        <div style="font-size:var(--fs-sm);font-weight:700;color:var(--mu);margin-bottom:6px">Task nhỏ, ≤ 1–2 giờ, low-risk</div>
+        <div style="font-size:var(--fs-md);color:var(--w);font-weight:600">→ Không cần spec. Code trực tiếp.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:16px 18px;border-left:3px solid rgba(167,139,250,.5)">
+        <div style="font-size:var(--fs-sm);font-weight:700;color:var(--mu);margin-bottom:6px">Requirement chưa rõ, cần explore trade-offs</div>
+        <div style="font-size:var(--fs-md);color:#A78BFA;font-weight:600">→ Superpowers <code style="font-size:var(--fs-sm);font-family:'JetBrains Mono',monospace">/brainstorming</code></div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:16px 18px;border-left:3px solid rgba(167,139,250,.5)">
+        <div style="font-size:var(--fs-sm);font-weight:700;color:var(--mu);margin-bottom:6px">Feature mới / refactor / API change, 1 ticket</div>
+        <div style="font-size:var(--fs-md);color:#A78BFA;font-weight:600">→ OpenSpecs <code style="font-size:var(--fs-sm);font-family:'JetBrains Mono',monospace">/opsx:propose</code></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:16px 18px;border-left:3px solid rgba(167,139,250,.5)">
+        <div style="font-size:var(--fs-sm);font-weight:700;color:var(--mu);margin-bottom:6px">Project lớn, nhiều phase, multi-repo</div>
+        <div style="font-size:var(--fs-md);color:#A78BFA;font-weight:600">→ GSD <code style="font-size:var(--fs-sm);font-family:'JetBrains Mono',monospace">/gsd-new-project</code></div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:16px 18px;border-left:3px solid rgba(167,139,250,.5)">
+        <div style="font-size:var(--fs-sm);font-weight:700;color:var(--mu);margin-bottom:6px">Project lớn + cần spec rõ per-change</div>
+        <div style="font-size:var(--fs-md);color:#A78BFA;font-weight:600">→ GSD phases + OpenSpecs per-change ✓</div>
+      </div>
+      <div style="background:rgba(255,176,15,.06);border:1px solid rgba(255,176,15,.2);border-radius:12px;padding:16px 18px;border-left:3px solid var(--y)">
+        <div style="font-size:var(--fs-xs);font-weight:700;color:var(--y);margin-bottom:5px">Rule of thumb</div>
+        <div style="font-size:var(--fs-sm);color:var(--w);line-height:1.55">Nếu làm sai có thể mất &gt;30 phút để fix → cần spec. Nếu không → code trực tiếp.</div>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B3 · 11/12</div>
+</section>
+
+<!-- S49: WRAP-UP TRAINING 2 -->
+<section class="slide" id="s49" style="flex-direction:column;justify-content:center;padding:60px 80px;position:relative;overflow:hidden">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div style="position:absolute;right:-60px;bottom:-60px;width:400px;height:400px;background:radial-gradient(ellipse,rgba(167,139,250,.08) 0%,transparent 65%);pointer-events:none"></div>
+  <div class="tag" style="background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);color:#A78BFA">Wrap-up</div>
+  <h2 style="font-size:52px;font-weight:900;letter-spacing:-1px;margin-bottom:14px">Bạn mang về gì<br>hôm nay</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:880px;margin-bottom:22px">
+    <div class="panel" style="padding:15px 18px;display:flex;gap:14px;align-items:flex-start">
+      <div style="background:#A78BFA;color:#000;font-weight:800;font-size:var(--fs-base);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+      <div><div style="font-size:var(--fs-base);font-weight:700;margin-bottom:3px">Core loop</div><div style="font-size:var(--fs-xs);color:var(--mu)">Idea → Brainstorm → Spec → Tasks+AC → Code → Verify → Ship</div></div>
+    </div>
+    <div class="panel" style="padding:15px 18px;display:flex;gap:14px;align-items:flex-start">
+      <div style="background:#A78BFA;color:#000;font-weight:800;font-size:var(--fs-base);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+      <div><div style="font-size:var(--fs-base);font-weight:700;margin-bottom:3px">Decision tree</div><div style="font-size:var(--fs-xs);color:var(--mu)">Biết khi nào dùng OpenSpecs, Superpowers, hay GSD</div></div>
+    </div>
+    <div class="panel" style="padding:15px 18px;display:flex;gap:14px;align-items:flex-start">
+      <div style="background:#A78BFA;color:#000;font-weight:800;font-size:var(--fs-base);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+      <div><div style="font-size:var(--fs-base);font-weight:700;margin-bottom:3px">1 ticket mapped vào GSD</div><div style="font-size:var(--fs-xs);color:var(--mu)">Lấy 1 Linear ticket đang làm, map vào discuss → plan → execute</div></div>
+    </div>
+    <div class="panel" style="padding:15px 18px;display:flex;gap:14px;align-items:flex-start">
+      <div style="background:#A78BFA;color:#000;font-weight:800;font-size:var(--fs-base);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+      <div><div style="font-size:var(--fs-base);font-weight:700;margin-bottom:3px">Preview buổi sau</div><div style="font-size:var(--fs-xs);color:var(--mu)">Thực hành live trên repo thật — end-to-end GSD với 1 feature thật</div></div>
+    </div>
+  </div>
+  <div style="text-align:center;padding:14px;border:2px solid rgba(167,139,250,.4);border-radius:10px;background:rgba(167,139,250,.06);max-width:760px"><span style="font-size:var(--fs-lg);font-weight:800;color:#A78BFA">Spec trước · Code sau · Verify trước khi claim done</span></div>
+  <div class="counter">B3 · 12/12</div>
+</section>
+
+
+<!-- S27: BLOCK 4 INTRO -->
+<section class="slide" id="s27" style="flex-direction:column;justify-content:center;padding:60px 80px;position:relative;overflow:hidden">
+  <div style="position:absolute;right:60px;top:50%;transform:translateY(-50%);width:310px;height:310px;pointer-events:none;opacity:.85">
+<svg viewBox="0 0 310 310" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="mcg" cx="50%" cy="50%"><stop offset="0%" stop-color="#FF7230" stop-opacity=".12"/><stop offset="100%" stop-color="#FF7230" stop-opacity="0"/></radialGradient></defs>
+<circle cx="155" cy="145" r="155" fill="url(#mcg)"/>
+<line x1="155" y1="115" x2="155" y2="60" stroke="rgba(255,114,48,.3)" stroke-width="1.5"/>
+<line x1="155" y1="115" x2="90" y2="145" stroke="rgba(255,114,48,.3)" stroke-width="1.5"/>
+<line x1="155" y1="115" x2="220" y2="145" stroke="rgba(255,114,48,.3)" stroke-width="1.5"/>
+<line x1="155" y1="115" x2="80" y2="200" stroke="rgba(255,114,48,.25)" stroke-width="1.5"/>
+<line x1="155" y1="115" x2="230" y2="200" stroke="rgba(255,114,48,.25)" stroke-width="1.5"/>
+<line x1="155" y1="115" x2="155" y2="230" stroke="rgba(255,114,48,.25)" stroke-width="1.5"/>
+<circle cx="155" cy="115" r="32" fill="rgba(255,114,48,.12)" stroke="rgba(255,114,48,.5)" stroke-width="2"/>
+<text x="155" y="110" text-anchor="middle" fill="#FF7230" font-size="10" font-weight="800" font-family="monospace">AI</text>
+<text x="155" y="124" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="8" font-family="monospace">via MCP</text>
+<circle cx="155" cy="50" r="18" fill="rgba(255,114,48,.07)" stroke="rgba(255,114,48,.3)" stroke-width="1.5"/>
+<text x="155" y="54" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="8" font-family="monospace">MySQL</text>
+<circle cx="80" cy="148" r="18" fill="rgba(255,114,48,.07)" stroke="rgba(255,114,48,.3)" stroke-width="1.5"/>
+<text x="80" y="152" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="8" font-family="monospace">Linear</text>
+<circle cx="230" cy="148" r="18" fill="rgba(255,114,48,.07)" stroke="rgba(255,114,48,.3)" stroke-width="1.5"/>
+<text x="230" y="152" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="8" font-family="monospace">Slack</text>
+<circle cx="72" cy="202" r="18" fill="rgba(255,114,48,.07)" stroke="rgba(255,114,48,.3)" stroke-width="1.5"/>
+<text x="72" y="206" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="8" font-family="monospace">Datadog</text>
+<circle cx="238" cy="202" r="18" fill="rgba(255,114,48,.07)" stroke="rgba(255,114,48,.3)" stroke-width="1.5"/>
+<text x="238" y="206" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="8" font-family="monospace">Amplitude</text>
+<circle cx="155" cy="232" r="18" fill="rgba(255,114,48,.07)" stroke="rgba(255,114,48,.3)" stroke-width="1.5"/>
+<text x="155" y="236" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="8" font-family="monospace">Figma</text>
+</svg>
+</div>
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 4</div>
+  <h2 style="font-size:58px;font-weight:900;letter-spacing:-1px;margin-bottom:18px">MCP Servers</h2>
+  <p style="font-size:var(--fs-lg);color:var(--mu);max-width:640px;line-height:1.65;margin-bottom:32px;border-left:3px solid rgba(255,114,48,.4);padding-left:18px">AI đang bị cô lập — không biết gì về database, Linear tickets, logs, hay bất kỳ tool nào trong workflow thực tế. Mọi data phải copy-paste thủ công vào chat.</p>
+  <div style="display:flex;gap:18px;max-width:680px;margin-bottom:32px">
+    <div class="panel" style="flex:1;border-left:3px solid var(--r)"><div class="panel-title" style="color:var(--r)">❌ Không có MCP</div><div style="font-size:var(--fs-base);color:var(--mu);line-height:1.8">Mở 4 browser tabs · 4 logins<br>Copy-paste số liệu vào chat<br><strong style="color:var(--r)">30-45 phút mỗi sáng</strong></div></div>
+    <div class="panel" style="flex:1;border-left:3px solid var(--g)"><div class="panel-title" style="color:var(--g)">✅ Với MCP</div><div style="font-size:var(--fs-base);color:var(--mu);line-height:1.8">AI gọi trực tiếp<br>Không mở browser, không copy-paste<br><strong style="color:var(--g)">2 phút</strong></div></div>
+  </div>
+  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:9px 18px;font-size:var(--fs-base);color:var(--mu);font-weight:500">⏱ 45 phút · Theory + Demo + Exercise</div>
+  <div class="counter">B4 · 1/7</div>
+</section>
+
+<!-- S28: WHAT IS MCP -->
+<section class="slide" id="s28" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 4 · MCP</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">MCP — Model Context Protocol</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="slide-body">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="panel" style="padding:16px 18px"><div class="panel-title" style="margin-bottom:7px">Là gì</div><div style="font-size:var(--fs-md);color:var(--w);line-height:1.6">MCP là chuẩn kết nối AI với external tools (read + write)</div></div>
+      <div class="panel" style="padding:16px 18px"><div class="panel-title" style="margin-bottom:7px">Trước MCP</div><div style="font-size:var(--fs-md);color:var(--mu);line-height:1.6">AI chỉ có text. Muốn AI biết database → phải copy SQL kết quả vào chat.</div></div>
+      <div class="panel" style="padding:16px 18px"><div class="panel-title" style="margin-bottom:7px">Sau MCP</div><div style="font-size:var(--fs-md);color:var(--mu);line-height:1.6">AI gọi tool trực tiếp trong conversation. Không cần human làm trung gian.</div></div>
+      <div style="background:rgba(255,176,15,.08);border:1px solid rgba(255,176,15,.25);border-radius:10px;padding:14px 18px"><div style="font-size:var(--fs-sm);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--y);margin-bottom:7px">🔒 Security Model</div><div style="font-size:var(--fs-base);color:var(--mu);line-height:1.5">AI chỉ gọi được những tool bạn cấp phép. Permission scoped theo từng tool.</div></div>
+    </div>
+    <div class="query-box" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="query-lbl">Architecture</div>
+      <svg viewBox="0 0 520 200" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="ma" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF7230"/></marker>
+          <marker id="mb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="rgba(146,171,188,.5)"/></marker>
+        </defs>
+        <!-- AI box -->
+        <rect x="20" y="60" width="120" height="80" rx="10" fill="rgba(255,114,48,.1)" stroke="#FF7230" stroke-width="1.5"/>
+        <text x="80" y="95" text-anchor="middle" fill="#FF7230" font-size="14" font-weight="800" font-family="Inter,sans-serif">AI</text>
+        <text x="80" y="113" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="11" font-family="Inter,sans-serif">trong chat</text>
+
+        <!-- MCP bridge -->
+        <rect x="195" y="75" width="90" height="50" rx="8" fill="rgba(255,176,15,.08)" stroke="rgba(255,176,15,.4)" stroke-width="1.5"/>
+        <text x="240" y="104" text-anchor="middle" fill="#FFB00F" font-size="13" font-weight="700" font-family="Inter,sans-serif">MCP</text>
+
+        <!-- Tools box -->
+        <rect x="345" y="30" width="110" height="140" rx="10" fill="rgba(0,141,207,.07)" stroke="rgba(0,141,207,.35)" stroke-width="1.5"/>
+        <text x="400" y="52" text-anchor="middle" fill="rgba(0,141,207,.6)" font-size="10" font-weight="700" font-family="Inter,sans-serif" letter-spacing=".05em">TOOLS</text>
+        <text x="400" y="75" text-anchor="middle" fill="#93c5fd" font-size="11" font-family="monospace">Database</text>
+        <text x="400" y="95" text-anchor="middle" fill="#93c5fd" font-size="11" font-family="monospace">Linear</text>
+        <text x="400" y="115" text-anchor="middle" fill="#93c5fd" font-size="11" font-family="monospace">Datadog</text>
+        <text x="400" y="135" text-anchor="middle" fill="#93c5fd" font-size="11" font-family="monospace">Slack</text>
+        <text x="400" y="155" text-anchor="middle" fill="#93c5fd" font-size="11" font-family="monospace">Figma</text>
+
+        <!-- Arrows AI → MCP → Tools -->
+        <line x1="140" y1="95" x2="193" y2="95" stroke="#FF7230" stroke-width="2" marker-end="url(#ma)"/>
+        <line x1="193" y1="105" x2="140" y2="105" stroke="#FF7230" stroke-width="2" marker-end="url(#ma)"/>
+        <line x1="285" y1="95" x2="343" y2="95" stroke="rgba(0,141,207,.6)" stroke-width="2" marker-end="url(#mb)"/>
+        <line x1="343" y1="105" x2="285" y2="105" stroke="rgba(0,141,207,.6)" stroke-width="2" marker-end="url(#mb)"/>
+
+        <!-- Labels -->
+        <text x="166" y="88" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="9" font-family="Inter,sans-serif">call</text>
+        <text x="166" y="114" text-anchor="middle" fill="rgba(255,114,48,.7)" font-size="9" font-family="Inter,sans-serif">result</text>
+        <text x="314" y="88" text-anchor="middle" fill="rgba(0,141,207,.6)" font-size="9" font-family="Inter,sans-serif">query</text>
+        <text x="314" y="114" text-anchor="middle" fill="rgba(0,141,207,.6)" font-size="9" font-family="Inter,sans-serif">data</text>
+      </svg>
+      <div style="display:flex;gap:20px;margin-top:10px">
+        <div style="font-size:var(--fs-xs);color:var(--mu)"><span style="color:var(--r)">Trước:</span> Human → DB → copy → AI</div>
+        <div style="font-size:var(--fs-xs);color:var(--mu)"><span style="color:var(--g)">Sau:</span> AI → MCP → DB → AI (direct)</div>
+      </div>
+    </div>
+  </div>
+  <div class="counter">B4 · 2/7</div>
+</section>
+
+<!-- S29: TOOLS ECOSYSTEM -->
+<section class="slide" id="s29" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 4 · MCP</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">Ecosystem — Tools đã kết nối</h2>
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:28px" class="slide-body">
+    <div class="tools-grid">
+      <div class="tool-chip"><div class="tool-icon" style="background:rgba(0,141,207,.18)">🗄️</div><div><div class="tool-name">MySQL</div><div class="tool-note">Query trực tiếp, không cần mở client</div></div></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:rgba(255,176,15,.18)">📋</div><div><div class="tool-name">Linear</div><div class="tool-note">Đọc tickets, update status</div></div></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:rgba(74,222,128,.14)">💬</div><div><div class="tool-name">Slack</div><div class="tool-note">Đọc channel, gửi message</div></div></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:rgba(255,114,48,.18)">📊</div><div><div class="tool-name">Datadog</div><div class="tool-note">Logs, APM, monitors, p99</div></div></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:rgba(255,176,15,.18)">📈</div><div><div class="tool-name">Amplitude</div><div class="tool-note">Funnel events, analytics</div></div></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:rgba(0,141,207,.18)">🎨</div><div><div class="tool-name">Figma</div><div class="tool-note">Design context, specs</div></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="impact-box before" style="text-align:center"><div class="impact-num">45</div><div class="impact-lbl">phút / sáng<br>4 tabs · 4 logins</div></div>
+        <div class="impact-box after" style="text-align:center"><div class="impact-num">2</div><div class="impact-lbl">phút / sáng<br>cron 06:00 ICT</div></div>
+      </div>
+      <div class="panel" style="padding:14px 16px"><div class="panel-title" style="color:var(--y);margin-bottom:7px">Daily sanity scan</div><div style="font-size:var(--fs-base);color:var(--mu);line-height:1.5">Datadog × 7 services + Cloudflare + Amplitude × 5 events = structured report tự động</div></div>
+    </div>
+  </div>
+  <div class="counter">B4 · 3/7</div>
+</section>
+
+<!-- S30: BEFORE/AFTER MCP -->
+<section class="slide" id="s30" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 4 · MCP</div>
+  <h2 style="font-size:42px;font-weight:900;letter-spacing:-1px;margin-bottom:24px">Daily Health Check: Before vs After</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" class="slide-body">
+    <div class="ba-box bad" style="padding:22px;display:flex;flex-direction:column">
+      <div style="font-size:var(--fs-lg);font-weight:700;color:var(--r);margin-bottom:12px">❌ Không có MCP (30-45 phút/sáng):</div>
+      <ul style="padding-left:18px;font-size:var(--fs-xs);line-height:2;color:var(--w)">
+        <li>Datadog × 7 services → screenshot từng cái</li>
+        <li>Cloudflare + Amplitude → copy số vào chat</li>
+        <li>Viết report thủ công mỗi sáng</li>
+      </ul>
+      <div style="margin-top:12px;font-size:var(--fs-xs);color:rgba(252,133,133,.7);font-style:italic">4 browser tabs · 4 logins · mỗi ngày</div>
+      <div style="margin-top:auto;border-top:1px solid rgba(252,133,133,.2);padding-top:10px;font-size:var(--fs-base);color:var(--mu)">4 browser tabs · 4 logins · manual pattern matching</div>
+    </div>
+    <div class="ba-box good" style="padding:22px;display:flex;flex-direction:column">
+      <div style="font-size:var(--fs-lg);font-weight:700;color:var(--g);margin-bottom:8px">✅ Với MCP — một lệnh:</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-base);color:var(--y);margin-bottom:12px">/sanity-scan-errors</div>
+      <div style="font-size:var(--fs-base);color:var(--w);line-height:1.8">AI tự call:<br>→ Datadog: 7 services × 4 baselines<br>→ Cloudflare: WAF, 5xx/429 rates<br>→ Amplitude: 5 funnel-critical events</div>
+      <div style="margin-top:10px;font-size:var(--fs-base);color:var(--mu);line-height:1.7">Anomaly thresholds tự động:<br>→ 30% delta = ⚠️ warning<br>→ 80% delta = 🔴 critical</div>
+      <div style="margin-top:auto;border-top:1px solid rgba(74,222,128,.2);padding-top:10px;font-size:var(--fs-base);color:var(--mu)">Writes structured report · Cron 06:00 ICT · Zero human involvement</div>
+    </div>
+  </div>
+  <div class="counter">B4 · 4/7</div>
+</section>
+
+<!-- S31: CROSS-TOOL QUERY -->
+<section class="slide" id="s31" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Block 4 · MCP</div>
+  <h2 style="font-size:42px;font-weight:900;letter-spacing:-1px;margin-bottom:20px">Cross-Tool Query — Chỉ Possible với MCP</h2>
+  <div style="background:rgba(255,176,15,.08);border:1px solid rgba(255,176,15,.25);border-left:4px solid var(--y);border-radius:10px;padding:16px 20px;margin-bottom:20px"><div style="font-size:var(--fs-sm);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--y);margin-bottom:6px">Scenario — Post-deploy 14:30</div><p style="font-size:var(--fs-md);color:var(--w);line-height:1.55">"Có user nào vừa complete trade trong 2h qua <strong>VÀ</strong> đang có open bug ticket liên quan không?"</p></div>
+  <div class="query-box" style="flex:1">
+    <div class="query-lbl">4 bước, 1 conversation, không cần script</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(0,141,207,.08);border-left:3px solid #008DCF;border-radius:0 6px 6px 0">
+        <span style="font-size:var(--fs-2xs);font-weight:700;color:var(--b);white-space:nowrap;padding-top:2px">Step 1 · MySQL</span>
+        <code style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#93c5fd;line-height:1.5">SELECT user_id, steam_id FROM trades<br>WHERE completed_at &gt;= NOW() - INTERVAL 2 HOUR<br>AND status = 'completed'</code>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,176,15,.06);border-left:3px solid #FFB00F;border-radius:0 6px 6px 0">
+        <span style="font-size:var(--fs-2xs);font-weight:700;color:var(--y);white-space:nowrap">Step 2 · Linear</span>
+        <code style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#93c5fd">list_issues(state: unstarted, team: DEV)</code>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(74,222,128,.05);border-left:3px solid #4ade80;border-radius:0 6px 6px 0">
+        <span style="font-size:var(--fs-2xs);font-weight:700;color:var(--g);white-space:nowrap">Step 3 · AI</span>
+        <code style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#86efac">cross-references kết quả trong context (không cần script)</code>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,114,48,.06);border-left:3px solid #FF7230;border-radius:0 6px 6px 0">
+        <span style="font-size:var(--fs-2xs);font-weight:700;color:#FF7230;white-space:nowrap">Step 4 · Slack</span>
+        <code style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#93c5fd">post to #incidents: "3 users with active trades in open bug DEV-4901"</code>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:14px;padding:11px 16px;background:rgba(255,255,255,.04);border-radius:7px;font-size:var(--fs-base);color:var(--mu)"><strong style="color:var(--w)">Không cần:</strong> mở browser · viết script · share credentials · join tables manually</div>
+  <div class="counter">B4 · 5/7</div>
+</section>
+
+<!-- S32: CHECK QUESTIONS B4 -->
+<section class="slide" id="s32" style="flex-direction:column;justify-content:center;padding:56px 80px">
+  <div style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:320px;font-weight:900;color:#FF7230;opacity:.04;line-height:1;pointer-events:none;user-select:none;font-family:serif">?</div>
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Kiểm tra nhanh · Block 4</div>
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:36px">3 Câu hỏi</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px" class="slide-body">
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div style="width:38px;height:38px;background:var(--y);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);font-weight:900;color:#000">01</div>
+      <p style="font-size:var(--fs-lg);color:var(--w);line-height:1.7;font-weight:500">Trước khi có MCP, bạn phải làm gì để AI có thể "biết" data từ database của bạn?</p>
+      <div style="font-size:var(--fs-2xs);color:var(--mu);font-style:italic">(Xem lại S28)</div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div style="width:38px;height:38px;background:var(--y);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);font-weight:900;color:#000">02</div>
+      <p style="font-size:var(--fs-lg);color:var(--w);line-height:1.7;font-weight:500">Nếu AI được kết nối với Linear và database cùng lúc, nó có thể làm được gì mà trước đây không thể?</p>
+      <div style="font-size:var(--fs-2xs);color:var(--mu);font-style:italic">(Xem lại S31)</div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+      <div style="width:38px;height:38px;background:var(--y);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:var(--fs-lg);font-weight:900;color:#000">03</div>
+      <p style="font-size:var(--fs-lg);color:var(--w);line-height:1.7;font-weight:500">Tại sao security model của MCP quan trọng — điều gì có thể xảy ra nếu không có permission control?</p>
+      <div style="font-size:var(--fs-2xs);color:var(--mu);font-style:italic">(Xem lại S28)</div>
+    </div>
+  </div>
+  <div style="margin-top:24px;text-align:center;font-size:var(--fs-md);color:var(--mu)">Trả lời trước khi tiếp tục ⟶</div>
+  <div class="counter">B4 · 6/7</div>
+</section>
+
+<!-- S33: EXERCISE B4 -->
+<section class="slide" id="s33" style="flex-direction:column;padding:52px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <div class="tag">Thực hành · Block 4</div>
+  <h2 style="font-size:46px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">Follow-along + Exercise</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" class="slide-body">
+    <div class="panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="panel-title" style="margin-bottom:0">Follow-along — 20 phút</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,141,207,.12);border:1px solid rgba(0,141,207,.3);border-radius:6px;padding:4px 10px;font-size:var(--fs-2xs);font-weight:700;color:var(--b)">▶ Trainer-led</div>
+      </div>
+      <p style="font-size:var(--fs-base);color:var(--mu);line-height:1.6;margin-bottom:14px">Trainer demo AI query thẳng vào database và Linear trong cùng một conversation — không mở dashboard, không copy số liệu.</p>
+      <div style="padding:12px 14px;background:rgba(255,176,15,.08);border-radius:6px;font-size:var(--fs-base);line-height:1.6;font-style:italic;color:var(--mu)"><strong style="color:var(--y)">Audience quan sát:</strong> "Điều gì vừa mất 30 phút làm thủ công xong trong 30 giây?"</div>
+    </div>
+    <div style="background:rgba(255,176,15,.04);border:2px solid rgba(255,176,15,.35);border-radius:14px;padding:26px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="panel-title" style="color:var(--y);margin-bottom:0">Mini Exercise</div>
+        <div style="background:var(--y);color:#000;font-size:var(--fs-2xl);font-weight:900;border-radius:9px;padding:5px 14px">10'</div>
+      </div>
+      <div style="font-size:var(--fs-lg);font-weight:700;margin-bottom:14px">Liệt kê 3 tools bạn dùng hàng ngày:</div>
+      <table style="width:100%;border-collapse:collapse;font-size:var(--fs-base);margin-bottom:14px">
+        <thead><tr><th style="text-align:left;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.12);color:var(--mu);font-weight:600">Tool</th><th style="text-align:left;padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.12);color:var(--mu);font-weight:600">Nếu AI gọi được, tiết kiệm ở bước nào?</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--mu)">1. ___________</td><td style="padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--mu)">_________________________</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--mu)">2. ___________</td><td style="padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--mu)">_________________________</td></tr>
+          <tr><td style="padding:9px 10px;color:var(--mu)">3. ___________</td><td style="padding:9px 10px;color:var(--mu)">_________________________</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:var(--fs-base);color:var(--mu);font-style:italic">Đây là MCP backlog của bạn — bắt đầu implement ngay sau buổi này</div>
+    </div>
+  </div>
+  <div class="counter">B4 · 7/7</div>
+</section>
+
+<!-- S34: WRAP-UP STACK -->
+<section class="slide" id="s34" style="flex-direction:column;align-items:center;justify-content:center;padding:52px 80px;text-align:center">
+  <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden">
+    <svg width="100%" height="100%" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="wg1" cx="25%" cy="50%"><stop offset="0%" stop-color="#FFB00F" stop-opacity=".07"/><stop offset="100%" stop-color="#FFB00F" stop-opacity="0"/></radialGradient>
+        <radialGradient id="wg2" cx="75%" cy="50%"><stop offset="0%" stop-color="#008DCF" stop-opacity=".06"/><stop offset="100%" stop-color="#008DCF" stop-opacity="0"/></radialGradient>
+      </defs>
+      <ellipse cx="400" cy="450" rx="500" ry="400" fill="url(#wg1)"/>
+      <ellipse cx="1200" cy="450" rx="500" ry="400" fill="url(#wg2)"/>
+      <circle cx="800" cy="20" r="300" fill="none" stroke="rgba(255,176,15,.04)" stroke-width="1"/>
+      <circle cx="800" cy="20" r="450" fill="none" stroke="rgba(255,176,15,.03)" stroke-width="1"/>
+      <circle cx="800" cy="900" r="300" fill="none" stroke="rgba(0,141,207,.04)" stroke-width="1"/>
+    </svg>
+  </div>
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <h2 style="font-size:58px;font-weight:900;letter-spacing:-1px;margin-bottom:10px">Từ hôm nay, <span style="color:var(--y)">AI làm việc cho bạn</span></h2>
+  <p style="font-size:var(--fs-xl);color:var(--mu);margin-bottom:40px">4 công cụ thực tế — setup xong hôm nay, dùng được ngay ngày mai</p>
+  <div style="display:flex;gap:16px;width:100%;margin-bottom:36px">
+    <div class="sblock m1"><div class="sblock-lvl">Project Context</div><h4>Memory</h4><p>AI biết project của bạn từ ngày đầu. Đúng ngay lần đầu.</p></div>
+    <div class="sblock m2"><div class="sblock-lvl">Workflow</div><h4>Skills</h4><p>Quy trình đóng gói, toàn team dùng chung, output nhất quán.</p></div>
+    <div class="sblock m3"><div class="sblock-lvl">Autonomous</div><h4>Agents</h4><p>AI tự chạy pipeline nhiều bước. Không bỏ sót. Không cần nhắc.</p></div>
+    <div class="sblock m4"><div class="sblock-lvl">Connected</div><h4>MCP</h4><p>AI kết nối với database, Linear, Slack. Trực tiếp, không copy-paste.</p></div>
+  </div>
+  <div class="commit-box">
+    <h3>Commitment Exercise</h3>
+    <p>Viết ra <strong>1 việc cụ thể bạn sẽ làm trong 48h tới.</strong><br>Không phải roadmap — chỉ 1 việc nhỏ có thể làm ngay.<br><em style="color:var(--mu)">"Tôi sẽ tạo CLAUDE.md cho project X" hoặc "Tôi sẽ viết skill cho code review"</em></p>
+  </div>
+  <div class="counter">34 / 35</div>
+</section>
+
+<!-- S35: DELIVERABLES -->
+<section class="slide" id="s35" style="flex-direction:column;justify-content:center;padding:56px 80px">
+  <img src="nustech-logo.svg" class="logo" alt="">
+  <h2 style="font-size:48px;font-weight:900;letter-spacing:-1px;margin-bottom:28px">Bạn mang về gì hôm nay</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="panel-title" style="margin-bottom:4px">Deliverables (4 items)</div>
+      <div class="panel" style="padding:13px 16px;display:flex;gap:12px;align-items:flex-start"><span style="font-size:var(--fs-lg);flex-shrink:0">✅</span><span style="font-size:var(--fs-base);color:var(--w)">CLAUDE.md đã viết cho project của mình</span></div>
+      <div class="panel" style="padding:13px 16px;display:flex;gap:12px;align-items:flex-start"><span style="font-size:var(--fs-lg);flex-shrink:0">✅</span><span style="font-size:var(--fs-base);color:var(--w)">Skill draft cho task thường gặp nhất</span></div>
+      <div class="panel" style="padding:13px 16px;display:flex;gap:12px;align-items:flex-start"><span style="font-size:var(--fs-lg);flex-shrink:0">✅</span><span style="font-size:var(--fs-base);color:var(--w)">Agent workflow diagram — bước nào AI làm, bước nào người approve, output là gì</span></div>
+      <div class="panel" style="padding:13px 16px;display:flex;gap:12px;align-items:flex-start"><span style="font-size:var(--fs-lg);flex-shrink:0">✅</span><span style="font-size:var(--fs-base);color:var(--w)">MCP backlog — 3 tools sẽ connect</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="panel-title" style="margin-bottom:4px">Roadmap gợi ý</div>
+      <div class="panel" style="padding:12px 16px;display:flex;gap:12px;align-items:center"><span style="background:var(--y);color:#000;font-weight:800;font-size:var(--fs-sm);padding:3px 10px;border-radius:12px;white-space:nowrap;flex-shrink:0">Week 1</span><span style="font-size:var(--fs-base)"><strong>Memory</strong> — Tạo CLAUDE.md, test với project thực</span></div>
+      <div class="panel" style="padding:12px 16px;display:flex;gap:12px;align-items:center"><span style="background:var(--y);color:#000;font-weight:800;font-size:var(--fs-sm);padding:3px 10px;border-radius:12px;white-space:nowrap;flex-shrink:0">Week 2</span><span style="font-size:var(--fs-base)"><strong>Skills</strong> — Viết skill đầu tiên cho workflow lặp lại</span></div>
+      <div class="panel" style="padding:12px 16px;display:flex;gap:12px;align-items:center"><span style="background:rgba(255,176,15,.5);color:#111;font-weight:800;font-size:var(--fs-sm);padding:3px 10px;border-radius:12px;white-space:nowrap;flex-shrink:0">Week 3–4</span><span style="font-size:var(--fs-base)"><strong>Agents</strong> — Setup opsx, chạy thử một change nhỏ</span></div>
+      <div class="panel" style="padding:12px 16px;display:flex;gap:12px;align-items:center"><span style="background:rgba(255,176,15,.3);color:var(--y);font-weight:800;font-size:var(--fs-sm);padding:3px 10px;border-radius:12px;border:1px solid rgba(255,176,15,.4);white-space:nowrap;flex-shrink:0">Week 5+</span><span style="font-size:var(--fs-base)"><strong>MCP</strong> — Connect internal tools từng cái một</span></div>
+    </div>
+  </div>
+  <div style="text-align:center;padding:16px;border:2px solid var(--y);border-radius:10px;background:rgba(255,176,15,.06)"><span style="font-size:var(--fs-xl);font-weight:800;color:var(--y);letter-spacing:.04em">1 Commitment &nbsp;·&nbsp; 48 giờ &nbsp;·&nbsp; 1 việc nhỏ &nbsp;·&nbsp; Làm ngay</span></div>
+  <div class="counter">35 / 39</div>
+</section>
+
+</div>
+</div>
+</div>
+<div class="toolbar" id="toolbar">
+  <button class="tb-btn" onclick="goTo(0)" title="Slide đầu">⏮</button>
+  <button class="tb-btn" id="prevBtn" title="Trước (←)">◀</button>
+  <span class="tb-count" id="tbCount">1 / 35</span>
+  <button class="tb-btn" id="nextBtn" title="Tiếp (→)">▶</button>
+  <button class="tb-btn" onclick="goTo(slides.length-1)" title="Slide cuối">⏭</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" id="idxBtn" title="Slide index (G)">⊞</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" id="fsBtn" title="Toàn màn hình (F)">⛶</button>
+</div>
+
+<!-- INDEX OVERLAY -->
+<div id="idx-overlay" style="display:none;position:fixed;inset:0;background:rgba(6,14,28,.96);backdrop-filter:blur(12px);z-index:200;overflow-y:auto;padding:40px 48px 100px">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px">
+    <div>
+      <h2 style="font-size:var(--fs-xl);font-weight:800;color:#FEFEFE;margin-bottom:4px">Slide Index</h2>
+      <p style="font-size:var(--fs-xs);color:#92ABBC">Click để nhảy đến slide bất kỳ · <kbd style="background:rgba(255,255,255,.1);padding:2px 7px;border-radius:4px;font-size:var(--fs-2xs)">G</kbd> hoặc <kbd style="background:rgba(255,255,255,.1);padding:2px 7px;border-radius:4px;font-size:var(--fs-2xs)">Esc</kbd> để đóng</p>
+    </div>
+    <button onclick="toggleIdx()" style="border:none;background:rgba(255,255,255,.08);color:#92ABBC;width:36px;height:36px;border-radius:8px;font-size:var(--fs-base);cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+  </div>
+  <div id="idx-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px"></div>
+</div>
+<script>
+let cur = 0;
+const slides = document.querySelectorAll('.slide');
+const dots   = document.querySelectorAll('.dot');
+const tbCount = document.getElementById('tbCount');
+
+slides.forEach((s,i) => { s.style.display = i===0 ? 'flex' : 'none'; });
+dots[0].classList.add('active');
+
+function goTo(n) {
+  slides[cur].style.display = 'none';
+  dots[cur].classList.remove('active');
+  cur = ((n % slides.length) + slides.length) % slides.length;
+  slides[cur].style.display = 'flex';
+  dots[cur].classList.add('active');
+  const blockLabels = ["1/39","2/39","3/39","B1·1/7","B1·2/7","B1·3/7","B1·4/7","B1·5/7","B1·6/7","B1·7/7","B2·1/7","B2·2/7","B2·3/7","B2·4/7","B2·5/7","B2·6/7","B2·7/7","Break","B3·1/12","B3·2/12","B3·3/12","B3·4/12","B3·5/12","B3·6/12","B3·7/12","B3·8/12","B3·9/12","B3·10/12","B3·11/12","B3·12/12","B4·1/7","B4·2/7","B4·3/7","B4·4/7","B4·5/7","B4·6/7","B4·7/7","38/39","39/39"];
+  tbCount.textContent = blockLabels[cur] || (cur+1) + '/' + slides.length;
+}
+
+document.getElementById('prevBtn').addEventListener('click', e => { e.stopPropagation(); goTo(cur-1); });
+document.getElementById('nextBtn').addEventListener('click', e => { e.stopPropagation(); goTo(cur+1); });
+
+document.addEventListener('keydown', e => {
+  const idxOpen = document.getElementById('idx-overlay').style.display !== 'none';
+  if (idxOpen) return; // let index overlay handle its own keys
+  if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); goTo(cur+1); }
+  if (['ArrowLeft','ArrowUp'].includes(e.key))         { e.preventDefault(); goTo(cur-1); }
+  if (e.key === 'f' || e.key === 'F')                  toggleFS();
+  if (e.key === 'g' || e.key === 'G')                  toggleIdx();
+  if (e.key === 'Home')                                { e.preventDefault(); goTo(0); }
+  if (e.key === 'End')                                 { e.preventDefault(); goTo(slides.length-1); }
+});
+
+// click-to-advance disabled
+
+function toggleFS() {
+  const btn = document.getElementById('fsBtn');
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    btn.textContent = '✕';
+    btn.title = 'Thoát toàn màn hình (F)';
+  } else {
+    document.exitFullscreen();
+    btn.textContent = '⛶';
+    btn.title = 'Toàn màn hình (F)';
+  }
+}
+
+document.getElementById('fsBtn').addEventListener('click', e => { e.stopPropagation(); toggleFS(); });
+
+// ── Slide Index ──────────────────────────────────────────
+const IDX = [
+  {n:1,  tag:'Cover',        title:'Advanced AI for Developers',     color:'#FFB00F'},
+  {n:2,  tag:'Agenda',       title:'Chương trình hôm nay',           color:'#FFB00F'},
+  {n:3,  tag:'Framework',    title:'The 7 Levels of Using AI',       color:'#FFB00F'},
+  {n:4,  tag:'Block 1',      title:'Memory System — Intro',          color:'#FFB00F'},
+  {n:5,  tag:'Memory',       title:'CLAUDE.md — Project Memory',     color:'#FFB00F'},
+  {n:6,  tag:'Memory',       title:'5 Rules thực tế từ production',  color:'#FFB00F'},
+  {n:7,  tag:'Memory',       title:'Memory: Before / After',         color:'#FFB00F'},
+  {n:8,  tag:'Memory',       title:'Cross-Session Memory',           color:'#FFB00F'},
+  {n:9,  tag:'Check ✓',      title:'Kiểm tra nhanh · Block 1',       color:'#92ABBC'},
+  {n:10, tag:'Exercise',     title:'Follow-along + Exercise B1',     color:'#92ABBC'},
+  {n:11, tag:'Block 2',      title:'Skills — Intro',                 color:'#008DCF'},
+  {n:12, tag:'Skills',       title:'Anatomy của một Skill',          color:'#008DCF'},
+  {n:13, tag:'Skills',       title:'/brainstorming',                 color:'#008DCF'},
+  {n:14, tag:'Skills',       title:'/systematic-debugging',          color:'#008DCF'},
+  {n:15, tag:'Skills',       title:'Skills: Before / After',         color:'#008DCF'},
+  {n:16, tag:'Check ✓',      title:'Kiểm tra nhanh · Block 2',       color:'#92ABBC'},
+  {n:17, tag:'Exercise',     title:'Follow-along + Exercise B2',     color:'#92ABBC'},
+  {n:18, tag:'Break',        title:'☕ Break — 15 phút',             color:'#314558'},
+  {n:19, tag:'Block 3',      title:'Spec-Driven Dev — Intro',        color:'#A78BFA'},
+  {n:20, tag:'B3·Core',      title:'Core Loop',                      color:'#A78BFA'},
+  {n:21, tag:'B3·Lý thuyết', title:'Context Rot & Vibe Coding',      color:'#A78BFA'},
+  {n:22, tag:'B3·Lý thuyết', title:'Brainstorm & Spec',              color:'#A78BFA'},
+  {n:23, tag:'B3·Lý thuyết', title:'Tasks · AC · Verify',            color:'#A78BFA'},
+  {n:24, tag:'B3·Tools',     title:'3 Spec-Driven Tools',            color:'#A78BFA'},
+  {n:25, tag:'B3·So sánh',   title:'Chọn tool nào?',                 color:'#A78BFA'},
+  {n:26, tag:'B3·GSD 1/3',   title:'GSD: Khởi động & Discuss',       color:'#A78BFA'},
+  {n:27, tag:'B3·GSD 2/3',   title:'GSD: Plan & Execute',            color:'#A78BFA'},
+  {n:28, tag:'B3·GSD 3/3',   title:'GSD: Verify & Ship',             color:'#A78BFA'},
+  {n:29, tag:'B3·Decision',  title:'Decision Tree',                  color:'#A78BFA'},
+  {n:30, tag:'B3·Wrap',      title:'Bạn mang về gì — B3',            color:'#A78BFA'},
+  {n:31, tag:'Block 4',      title:'MCP Servers — Intro',            color:'#FF7230'},
+  {n:32, tag:'MCP',          title:'MCP — Model Context Protocol',   color:'#FF7230'},
+  {n:33, tag:'MCP',          title:'Ecosystem — Tools đã kết nối',  color:'#FF7230'},
+  {n:34, tag:'MCP',          title:'Daily Health Check B/A',         color:'#FF7230'},
+  {n:35, tag:'MCP',          title:'Cross-Tool Query',               color:'#FF7230'},
+  {n:36, tag:'Check ✓',      title:'Kiểm tra nhanh · Block 4',       color:'#92ABBC'},
+  {n:37, tag:'Exercise',     title:'Follow-along + Exercise B4',     color:'#92ABBC'},
+  {n:38, tag:'Wrap-up',      title:'Bạn đã ở Level 4',               color:'#FFB00F'},
+  {n:39, tag:'Wrap-up',      title:'Deliverables + Roadmap',         color:'#FFB00F'},
+];
+
+const idxGrid = document.getElementById('idx-grid');
+IDX.forEach(s => {
+  const card = document.createElement('div');
+  card.style.cssText = `background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s;border-top:3px solid ${s.color}`;
+  card.innerHTML = `<div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:${s.color};margin-bottom:6px;opacity:.85">${s.tag}</div><div style="font-size:var(--fs-xs);font-weight:600;color:#FEFEFE;line-height:1.4;margin-bottom:8px">${s.title}</div><div style="font-size:var(--fs-2xs);color:#92ABBC;font-weight:700;font-family:monospace">${s.n} / ${slides.length}</div>`;
+  card.addEventListener('mouseenter', () => card.style.background = 'rgba(255,255,255,.09)');
+  card.addEventListener('mouseleave', () => card.style.background = 'rgba(255,255,255,.04)');
+  card.addEventListener('click', () => { goTo(s.n-1); toggleIdx(); });
+  if (s.n === cur+1) card.style.outline = `2px solid ${s.color}`;
+  idxGrid.appendChild(card);
+});
+
+function toggleIdx() {
+  const o = document.getElementById('idx-overlay');
+  const isOpen = o.style.display !== 'none';
+  o.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    // highlight current slide card
+    idxGrid.querySelectorAll('div[style*="border-radius:10px"]').forEach((c,i) => {
+      c.style.outline = i === cur ? `2px solid ${IDX[i].color}` : 'none';
+    });
+  }
+}
+
+document.getElementById('idxBtn').addEventListener('click', e => { e.stopPropagation(); toggleIdx(); });
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('idx-overlay').style.display !== 'none') toggleIdx();
+});
+
+function scale() {
+  const w = document.getElementById('wrapper');
+  const s = Math.min(window.innerWidth/1600, window.innerHeight/900);
+  w.style.transform = `scale(${s})`;
+}
+scale();
+window.addEventListener('resize', scale);
+
+// Tool survey tabs
+document.querySelectorAll('.tool-tab').forEach(tab => {
+  tab.addEventListener('click', e => {
+    e.stopPropagation();
+    const tool = tab.dataset.tool;
+    tab.closest('.slide').querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
+    tab.closest('.slide').querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tool-' + tool).classList.add('active');
+    document.getElementById('tool-' + tool).querySelectorAll('.step-box').forEach(b => b.classList.remove('active'));
+    const d = document.getElementById('tool-' + tool).querySelector('.step-detail');
+    d.style.opacity = '0';
+    d.innerHTML = '<span style="font-size:var(--fs-xs);color:var(--mu)">← Click vào bước bất kỳ để xem chi tiết</span>';
+  });
+});
+document.querySelectorAll('.step-box').forEach(box => {
+  box.addEventListener('click', e => {
+    e.stopPropagation();
+    const panel = box.closest('.tool-panel');
+    panel.querySelectorAll('.step-box').forEach(b => b.classList.remove('active'));
+    box.classList.add('active');
+    const detail = panel.querySelector('.step-detail');
+    detail.innerHTML = '<div style="font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#A78BFA;margin-bottom:5px">' + box.dataset.cmd + '</div><div style="font-size:var(--fs-base);color:var(--w);line-height:1.55">' + box.dataset.desc + '</div>';
+    detail.style.opacity = '1';
+  });
+});
+
+// S3 — 7 Levels: click right → update left panel
+const lvlData = [
+  { n:1, name:'One-shot chat, copy-paste', badge:null, badgeClass:null,
+    desc:'Hỏi 1 câu → copy kết quả vào code.',
+    detail:'Điểm xuất phát của hầu hết dev. AI như search engine thông minh hơn — câu trả lời tốt nhưng không có memory, không có workflow, không có context persist.' },
+  { n:2, name:'Multi-turn, prompt cơ bản', badge:null, badgeClass:null,
+    desc:'Hội thoại nhiều lượt, prompt có kỹ thuật hơn.',
+    detail:'Few-shot prompting, chain-of-thought, system prompt. Tốt hơn nhiều nhưng context vẫn mất khi đóng tab. Không có persistence qua sessions.' },
+  { n:3, name:'Project memory', badge:'Hôm nay', badgeClass:'today',
+    desc:'AI biết project, tech stack, conventions từ đầu — không cần giải thích lại.',
+    detail:'CLAUDE.md là nguồn sự thật duy nhất. Context persist qua nhiều ngày làm việc. Đây là foundation — không có level này, mọi thứ reset về zero mỗi session.' },
+  { n:4, name:'Tools + skills + agents', badge:'Hôm nay', badgeClass:'today',
+    desc:'AI gọi tool, chạy workflow tự động, xử lý multi-step task độc lập.',
+    detail:'Skills = workflow tái sử dụng với 1 slash command. Agents = AI tự chạy nhiều bước không cần giám sát. MCP = AI kết nối Datadog, Linear, database... Đây là level của buổi training này.' },
+  { n:5, name:'RAG', badge:'Overkill', badgeClass:'overkill',
+    desc:'AI tra cứu knowledge base nội bộ qua vector search.',
+    detail:'Retrieval-Augmented Generation: cần vector DB + embedding pipeline + maintenance. Powerful nhưng Level 4 giải quyết được 99% use case thực tế — không cần đến đây.' },
+  { n:6, name:'Agentic RAG', badge:'Overkill', badgeClass:'overkill',
+    desc:'Agent tự quyết định retrieve gì, khi nào.',
+    detail:'Kết hợp reasoning + retrieval động. Phức tạp, chưa stable cho production. Cần fine-tuning và dedicated AI infra team. Chỉ meaningful cho công ty có AI platform riêng.' },
+  { n:7, name:'Full autonomous multi-agent', badge:'Overkill', badgeClass:'overkill',
+    desc:'Nhiều agent tự phối hợp, tự phân công, tự debug, tự deploy.',
+    detail:'Frontier research territory. Unstable, unpredictable, expensive. Chỉ Google/OpenAI/Anthropic đang build ở scale này. Không phải mục tiêu thực tế cho engineering team.' },
+];
+const defaultLvlContent = document.getElementById('lvl-content') ? document.getElementById('lvl-content').innerHTML : '';
+document.querySelectorAll('#s3 .lvl-row').forEach((row, i) => {
+  row.addEventListener('click', e => {
+    e.stopPropagation();
+    const wasActive = row.classList.contains('active');
+    document.querySelectorAll('#s3 .lvl-row').forEach(r => { r.classList.remove('active','expanded'); });
+    const content = document.getElementById('lvl-content');
+    if (wasActive) { content.style.opacity='0'; setTimeout(()=>{ content.innerHTML=defaultLvlContent; content.style.opacity='1'; },120); return; }
+    row.classList.add('active');
+    const d = lvlData[i];
+    const badgeHtml = d.badge ? `<span class="lvl-badge ${d.badgeClass}" style="font-size:var(--fs-xs);padding:4px 12px">${d.badge}</span>` : '';
+    content.style.opacity='0';
+    setTimeout(()=>{
+      content.innerHTML = `<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <div style="width:44px;height:44px;border-radius:10px;background:var(--y);color:#000;font-size:var(--fs-xl);font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0">${d.n}</div>
+        <div>
+          <div style="font-size:var(--fs-xl);font-weight:800;color:var(--w);line-height:1.2">${d.name}</div>
+          ${badgeHtml}
+        </div>
+      </div>
+      <p style="font-size:var(--fs-md);color:var(--y);line-height:1.6;margin-bottom:16px;font-weight:600">${d.desc}</p>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px 20px;max-width:440px">
+        <p style="font-size:var(--fs-base);color:var(--mu);line-height:1.65">${d.detail}</p>
+      </div>`;
+      content.style.opacity='1';
+    },120);
+  });
+});
+
+document.querySelectorAll('.lvl-row').forEach(row => {
+  row.addEventListener('click', e => {
+    e.stopPropagation();
+    const wasExpanded = row.classList.contains('expanded');
+    document.querySelectorAll('.lvl-row').forEach(r => r.classList.remove('expanded'));
+    if (!wasExpanded) { row.classList.add('expanded'); }
+  });
+});
+</script>
+</body>
+</html>
