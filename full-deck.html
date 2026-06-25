@@ -503,6 +503,31 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div class="slide-num">02 / 38</div>
 </section>
 
+<!-- ═══ S3.5: AI BASICS WARMUP ═══ -->
+<section class="slide" id="s3-5" style="flex-direction:column;justify-content:center;padding:60px 64px">
+  <div class="eyebrow">Trước khi bắt đầu</div>
+  <div class="display" style="font-size:72px;margin-bottom:32px">Thuật ngữ quan trọng</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1100px">
+    <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:20px 22px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">AI Session</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5">Một lần bạn mở AI assistant và trò chuyện. Khi đóng tab → session kết thúc, AI quên hết.</div>
+    </div>
+    <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:20px 22px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">Context Window</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5">Bộ nhớ tạm của AI trong 1 session. Giới hạn (~200k tokens). Khi đầy → AI bắt đầu quên.</div>
+    </div>
+    <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:20px 22px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">Slash Command</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5">Lệnh bắt đầu bằng / (ví dụ: /pr-code-reviewer). Gọi skill đã viết sẵn, AI thực hiện đúng quy trình.</div>
+    </div>
+    <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:20px 22px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">Token</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5">Đơn vị đo bộ nhớ AI. ~200k tokens ≈ 150k từ tiếng Anh ≈ 75k từ tiếng Việt.</div>
+    </div>
+  </div>
+  <div class="slide-num">03 / 38</div>
+</section>
+
 <!-- ═══ S3: 7 LEVELS (interactive) ═══ -->
 <section class="slide" id="s3">
   <div class="pane-l" style="max-width:780px">
@@ -533,7 +558,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div class="body-lg" style="max-width:720px;margin-bottom:36px;padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">AI bắt đầu từ zero mỗi conversation — không biết project, convention, hay bất kỳ quyết định nào đã làm trước đó</div>
   <div class="mini-cards" style="max-width:900px">
     <div class="mini-card"><div class="mc-label">Tool</div><div class="mc-val">CLAUDE.md</div></div>
-    <div class="mini-card"><div class="mc-label">Rules</div><div class="mc-val">5 Rules</div></div>
+    <div class="mini-card"><div class="mc-label">Rules</div><div class="mc-val">6 Rules</div></div>
     <div class="mini-card"><div class="mc-label">Compare</div><div class="mc-val">Before / After</div></div>
     <div class="mini-card"><div class="mc-label">Advanced</div><div class="mc-val">Cross-Session</div></div>
   </div>
@@ -845,7 +870,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div class="body-lg" style="max-width:760px;margin-bottom:36px;padding-left:20px;border-left:3px solid rgba(0,141,207,.4)">Thay vì nhắc AI làm đúng mỗi lần — viết skill một lần, dùng mãi mãi</div>
   <div class="mini-cards" style="max-width:900px">
     <div class="mini-card"><div class="mc-label">Structure</div><div class="mc-val">Anatomy</div></div>
-    <div class="mini-card"><div class="mc-label">Skill</div><div class="mc-val">/sanity-scan-errors</div></div>
+    <div class="mini-card"><div class="mc-label">Skill</div><div class="mc-val">/datadog-investigator</div></div>
     <div class="mini-card"><div class="mc-label">Skill</div><div class="mc-val">/systematic-debugging</div></div>
     <div class="mini-card"><div class="mc-label">Compare</div><div class="mc-val">Before / After</div></div>
   </div>
@@ -891,8 +916,8 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <!-- Left -->
   <div style="flex:1;padding:64px 60px;display:flex;flex-direction:column;justify-content:center">
     <div class="eyebrow b2">Block 2 — Skills · Ví dụ thực tế</div>
-    <div class="display" style="font-size:76px;margin-bottom:14px;color:#008DCF;line-height:.95">/sanity-scan-errors</div>
-    <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--muted);margin-bottom:32px;line-height:1.55;max-width:500px">Mỗi sáng: AI tự query Datadog + Cloudflare, correlate dữ liệu, viết report — không cần mở browser.</div>
+    <div class="display" style="font-size:76px;margin-bottom:14px;color:#008DCF;line-height:.95">/datadog-investigator</div>
+    <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--muted);margin-bottom:32px;line-height:1.55;max-width:500px">Mỗi sáng: AI tự query Datadog logs, metrics, traces — phân tích anomalies, viết report — không cần mở browser.</div>
 
     <!-- Flow -->
     <div style="display:flex;flex-direction:column;gap:10px">
@@ -902,11 +927,11 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
       </div>
       <div style="display:flex;align-items:center;gap:14px">
         <div style="width:32px;height:32px;border-radius:8px;background:rgba(0,141,207,.12);border:1px solid rgba(0,141,207,.25);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#008DCF;flex-shrink:0">2</div>
-        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink)"><strong>Datadog monitors</strong> — check alerts đang trigger</div>
+        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink)"><strong>Datadog metrics</strong> — check latency, throughput, error spikes</div>
       </div>
       <div style="display:flex;align-items:center;gap:14px">
         <div style="width:32px;height:32px;border-radius:8px;background:rgba(0,141,207,.12);border:1px solid rgba(0,141,207,.25);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#008DCF;flex-shrink:0">3</div>
-        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink)"><strong>Cloudflare</strong> — traffic, 4xx/5xx spike, WAF events</div>
+        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink)"><strong>Datadog traces</strong> — find slow spans, identify bottlenecks</div>
       </div>
       <div style="display:flex;align-items:center;gap:14px">
         <div style="width:32px;height:32px;border-radius:8px;background:rgba(0,141,207,.12);border:1px solid rgba(0,141,207,.25);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#008DCF;flex-shrink:0">4</div>
@@ -997,7 +1022,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     <div class="ba-col good" style="flex:1">
       <div class="ba-lbl">With Skills</div>
       <div class="ba-item">/pr-code-reviewer — security, logic, quality tự động</div>
-      <div class="ba-item">/write-test-cases — test cases cho mọi ticket</div>
+      <div class="ba-item">/feature-analysis — phân tích feature trước khi thay đổi</div>
       <div class="ba-item">/systematic-debugging — 4 phases, không skip bước</div>
       <div class="ba-item">Mọi người follow cùng quy trình, output nhất quán</div>
     </div>
@@ -1008,8 +1033,8 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
       <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);margin-top:4px">Security + quality review</div>
     </div>
     <div style="flex:1;background:rgba(0,141,207,.06);border:1px solid rgba(0,141,207,.2);border-radius:10px;padding:14px 18px;text-align:center">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:#008DCF;font-weight:600">/write-test-cases</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);margin-top:4px">E2E test documentation</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:#008DCF;font-weight:600">/feature-analysis</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);margin-top:4px">Deep code analysis</div>
     </div>
     <div style="flex:1;background:rgba(0,141,207,.06);border:1px solid rgba(0,141,207,.2);border-radius:10px;padding:14px 18px;text-align:center">
       <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:#008DCF;font-weight:600">/systematic-debugging</div>
@@ -1030,7 +1055,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     </div>
     <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(0,141,207,.25);line-height:1;min-width:56px">2</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">/sanity-scan-errors kết hợp những tools nào? Kết quả trả về là gì?</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">/datadog-investigator kết hợp những tools nào? Kết quả trả về là gì?</div>
     </div>
     <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(0,141,207,.25);line-height:1;min-width:56px">3</div>
@@ -1089,7 +1114,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     <div class="mini-card"><div class="mc-label">Tooling</div><div class="mc-val">3 Tools</div></div>
     <div class="mini-card"><div class="mc-label">Navigate</div><div class="mc-val">Decision Tree</div></div>
   </div>
-  <div style="position:absolute;bottom:44px;left:68px;font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:rgba(167,139,250,.5);letter-spacing:.14em">BLOCK 3 · 50 PHÚT</div>
+  <div style="position:absolute;bottom:44px;left:68px;font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:rgba(167,139,250,.5);letter-spacing:.14em">BLOCK 3 · 65 PHÚT</div>
   <div class="slide-num">19 / 38</div>
 </section>
 
@@ -1101,7 +1126,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     <div class="body-lg" style="margin-bottom:24px;max-width:480px">Càng nhiều code trong context → AI output càng tệ. Vibe coding tăng tốc xuống dốc.</div>
     <div style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:16px 20px;max-width:460px">
       <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:rgba(239,68,68,.7);margin-bottom:8px">Context Rot</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:rgba(239,68,68,.8);line-height:1.5">Khi context window đầy code + errors + fixes, AI mất track của original intent và bắt đầu hallucinate solutions.</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:rgba(239,68,68,.8);line-height:1.5">Khi context window (bộ nhớ tạm của AI, ~200k tokens) đầy code + errors + fixes, AI mất track của original intent và bắt đầu "tưởng tượng" ra giải pháp sai (hallucinate).</div>
     </div>
   </div>
   <div class="pane-r" style="padding-left:40px;gap:20px;display:flex;flex-direction:column;justify-content:center">
@@ -1210,7 +1235,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     <button class="tool-tab" onclick="switchTool('superpowers')">Superpowers</button>
     <button class="tool-tab" onclick="switchTool('gsd')">GSD</button>
   </div>
-  <!-- OpenSpecs — 4 steps: explore → propose → apply → archive (NO /opsx:verify command) -->
+  <!-- OpenSpecs — 5 steps: explore → propose → apply → verify → archive -->
   <div class="tool-panel active" id="panel-openspecs">
     <div class="step-row">
       <div class="step-box" onclick="setStep('openspecs',0,this,'Thinking partner. AI đọc codebase, đặt câu hỏi, clarify intent. KHÔNG viết code — chỉ explore và align.')"><div class="step-cmd">/opsx:explore</div><div class="step-name">Explore</div></div>
@@ -1374,7 +1399,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     <div class="display" style="font-size:72px;margin-bottom:24px">Verify → Ship</div>
     <div style="background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.25);border-radius:12px;padding:20px 22px;margin-bottom:16px">
       <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:#A78BFA;font-weight:600;margin-bottom:10px">/gsd-verify-work</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink);margin-bottom:8px">Conversational UAT</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink);margin-bottom:8px">Conversational UAT (User Acceptance Testing — kiểm tra feature có đúng yêu cầu không)</div>
       <div style="display:flex;gap:10px;align-items:center">
         <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:6px;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:rgba(74,222,128,.8)">AC 1 ✓</div>
         <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.2);border-radius:6px;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:rgba(74,222,128,.8)">AC 2 ✓</div>
@@ -1468,6 +1493,54 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     <div class="callout-text">Nếu làm sai mất &gt; 30 phút fix → cần spec trước khi code</div>
   </div>
   <div class="slide-num">28 / 38</div>
+</section>
+
+<!-- ═══ S28.5: CHECK BLOCK 3 ═══ -->
+<section class="slide" id="s28-5" style="flex-direction:column;justify-content:center;padding:80px 64px">
+  <div class="eyebrow b3">Block 3 — Check</div>
+  <div class="display" style="font-size:80px;margin-bottom:48px">3 Câu hỏi · Block 3</div>
+  <div style="display:flex;flex-direction:column;gap:20px;max-width:900px">
+    <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(167,139,250,.25);line-height:1;min-width:56px">1</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">Spec = WHAT, không phải HOW — tại sao điều này quan trọng?</div>
+    </div>
+    <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(167,139,250,.25);line-height:1;min-width:56px">2</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">Nếu làm sai 1 task mất 45 phút fix — bạn cần làm gì trước khi code?</div>
+    </div>
+    <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(167,139,250,.25);line-height:1;min-width:56px">3</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">GSD discuss-phase quan trọng nhất vì sao? Nếu skip?</div>
+    </div>
+  </div>
+  <div class="slide-num">29 / 38</div>
+</section>
+
+<!-- ═══ S28.6: EXERCISE BLOCK 3 ═══ -->
+<section class="slide" id="s28-6" style="flex-direction:column;justify-content:center;padding:80px 64px">
+  <div class="eyebrow b3">Block 3 — Exercise</div>
+  <div class="display" style="font-size:80px;margin-bottom:12px">Follow-along + Exercise</div>
+  <div class="body-lg" style="margin-bottom:40px;color:#A78BFA">Task: Chọn 1 Linear ticket, chạy qua core loop</div>
+  <div style="display:flex;flex-direction:column;gap:14px;max-width:800px">
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <div style="width:36px;height:36px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:var(--fs-md);color:#A78BFA">1</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5;padding-top:6px">Chọn 1 ticket bạn đang làm hoặc sắp làm</div>
+    </div>
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <div style="width:36px;height:36px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:var(--fs-md);color:#A78BFA">2</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5;padding-top:6px">Viết 3 dòng spec: WHAT (mục tiêu) + 2 AC (câu hỏi Yes/No)</div>
+    </div>
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <div style="width:36px;height:36px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:var(--fs-md);color:#A78BFA">3</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5;padding-top:6px">Dùng decision tree (S28) chọn tool phù hợp</div>
+    </div>
+    <div style="display:flex;gap:20px;align-items:flex-start">
+      <div style="width:36px;height:36px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:var(--fs-md);color:#A78BFA">4</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5;padding-top:6px">Share với team: ticket nào, spec gì, chọn tool nào</div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:44px;left:68px;font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:rgba(167,139,250,.6);letter-spacing:.1em">20 PHUT</div>
+  <div class="slide-num">30 / 38</div>
 </section>
 
 <!-- ═══ S29: WRAP-UP BLOCK 3 ═══ -->
@@ -1576,43 +1649,53 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
 <section class="slide" id="s32" style="flex-direction:column;justify-content:center;padding:60px 64px">
   <div class="eyebrow b4">Block 4 — MCP</div>
   <div class="display" style="font-size:80px;margin-bottom:32px">Tools đã kết nối tại NUS</div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px">
-    <div style="background:rgba(255,114,48,.05);border:1px solid rgba(255,114,48,.2);border-radius:12px;padding:20px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:#FF7230;margin-bottom:6px">Datadog</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Query logs, metrics, traces. Error investigation.</div>
+  <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px">
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:#FF7230;margin-bottom:10px">MCP Server (trực tiếp)</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+        <div style="background:rgba(255,114,48,.05);border:1px solid rgba(255,114,48,.2);border-radius:12px;padding:20px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:#FF7230;margin-bottom:6px">Linear</div>
+          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Read tickets, update status, create issues.</div>
+        </div>
+        <div style="background:rgba(255,114,48,.05);border:1px solid rgba(255,114,48,.2);border-radius:12px;padding:20px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:#FF7230;margin-bottom:6px">MySQL</div>
+          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Query replica. Schema explore. No writes.</div>
+        </div>
+        <div style="background:rgba(255,114,48,.05);border:1px solid rgba(255,114,48,.2);border-radius:12px;padding:20px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:#FF7230;margin-bottom:6px">Figma</div>
+          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Read designs. Get design context for code.</div>
+        </div>
+        <div style="background:rgba(255,114,48,.05);border:1px solid rgba(255,114,48,.2);border-radius:12px;padding:20px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:#FF7230;margin-bottom:6px">OpenSearch</div>
+          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Search items, query index, analyze relevance.</div>
+        </div>
+      </div>
     </div>
-    <div style="background:rgba(255,114,48,.05);border:1px solid rgba(255,114,48,.2);border-radius:12px;padding:20px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:#FF7230;margin-bottom:6px">Linear</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Read tickets, update status, create issues.</div>
-    </div>
-    <div style="background:rgba(255,114,48,.05);border:1px solid rgba(255,114,48,.2);border-radius:12px;padding:20px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:#FF7230;margin-bottom:6px">Amplitude</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Query events, funnels, retention data.</div>
-    </div>
-    <div style="background:rgba(255,114,48,.05);border:1px solid rgba(255,114,48,.2);border-radius:12px;padding:20px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:#FF7230;margin-bottom:6px">MySQL</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Query replica. Schema explore. No writes.</div>
-    </div>
-    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:var(--muted);margin-bottom:6px">Slack</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Send messages, read channels, search.</div>
-    </div>
-    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:var(--muted);margin-bottom:6px">Figma</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Read designs. Get design context for code.</div>
-    </div>
-    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:var(--muted);margin-bottom:6px">GitHub</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">PRs, issues, code search, diff review.</div>
-    </div>
-    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:var(--muted);margin-bottom:6px">Browser</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Chrome DevTools. Screenshot, click, test UI flows.</div>
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Skills / CLI (qua tool khác)</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:var(--muted);margin-bottom:6px">Datadog</div>
+          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Query logs, metrics, traces. Error investigation.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:var(--muted);margin-bottom:6px">GitHub</div>
+          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">PRs, issues, code search, diff review.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:var(--muted);margin-bottom:6px">Browser</div>
+          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Chrome DevTools. Screenshot, click, test UI flows.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:20px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-2xl);font-weight:900;color:var(--muted);margin-bottom:6px">Slack</div>
+          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted);line-height:1.4">Send messages, read channels, search.</div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="callout">
     <div class="callout-title">Transform</div>
-    <div class="callout-text">MCP transforms AI from code-only to full-stack assistant</div>
+    <div class="callout-text">MCP biến AI từ công cụ chỉ viết code thành trợ lý toàn diện</div>
   </div>
   <div class="slide-num">32 / 38</div>
 </section>
@@ -1634,7 +1717,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
         <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:rgba(239,68,68,.6);margin-bottom:10px">BEFORE — Manual (30 min)</div>
         <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:rgba(239,68,68,.75);line-height:1.6">
           1. Open Datadog → check error rates<br>
-          2. Open Amplitude → check DAU, conversion<br>
+          2. Open Amplitude → check DAU (Daily Active Users), conversion<br>
           3. Open Linear → check P0/P1 tickets<br>
           4. Query DB → check payment status<br>
           5. Slack → check for incidents<br>
@@ -1645,7 +1728,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
         <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:rgba(74,222,128,.6);margin-bottom:10px">AFTER — MCP (2 min)</div>
         <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:rgba(74,222,128,.75);line-height:1.6">
           1 prompt → AI queries all in parallel<br>
-          → "Error rate normal, DAU +5% WoW,<br>
+          → "Error rate normal, DAU +5% so với tuần trước,<br>
           &nbsp;&nbsp;&nbsp;2 active P1s, payment gateway OK,<br>
           &nbsp;&nbsp;&nbsp;no incidents in past 24h"
         </div>
@@ -1943,10 +2026,10 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <button class="tb-btn" onclick="goTo(cur-1)" title="Previous">&#8592;</button>
   <button class="tb-btn" onclick="goTo(cur+1)" title="Next">&#8594;</button>
   <div class="tb-sep"></div>
-  <div class="tb-count" id="tb-count">1 / 39</div>
+  <div class="tb-count" id="tb-count">1 / 41</div>
   <button class="tb-btn" onclick="toggleIdx()" title="Index (I)" style="font-size:12px;width:32px">☰</button>
   <div class="tb-sep"></div>
-  <div class="timer-display paused" id="timer-display">3:00:00</div>
+  <div class="timer-display paused" id="timer-display">3:50:00</div>
   <button class="tb-btn" id="timer-btn" onclick="timerToggle()" title="Bắt đầu timer" style="font-size:11px;width:24px">▶</button>
 </div>
 
@@ -2007,7 +2090,7 @@ const IDX_DATA = [
   { label:'Block 2 — Skills', color:'#008DCF', col:0, slides:[
     {n:11, title:'Skills — Intro'},
     {n:12, title:'Anatomy of a Skill'},
-    {n:13, title:'/sanity-scan-errors — Demo thực tế'},
+    {n:13, title:'/datadog-investigator — Demo thực tế'},
     {n:14, title:'/systematic-debugging'},
     {n:15, title:'Skills: Before / After'},
     {n:16, title:'Check · Block 2'},
@@ -2094,8 +2177,8 @@ function toggleIdx() {
   el.style.display = el.style.display === 'block' ? 'none' : 'block';
 }
 
-// ── Timer (3 hours countdown) ──
-let timerRemain = 3 * 60 * 60;
+// ── Timer (3 hours 50 min countdown) ──
+let timerRemain = 3 * 60 * 60 + 50 * 60;
 let timerRunning = false;
 let timerInterval = null;
 
