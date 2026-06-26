@@ -518,7 +518,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     </div>
     <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:20px 22px">
       <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">Slash Command</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5">Lệnh bắt đầu bằng / (ví dụ: /pr-code-reviewer). Gọi skill đã viết sẵn, AI thực hiện đúng quy trình.</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--ink);line-height:1.5">Lệnh bắt đầu bằng /. Có 2 loại: <strong>built-in</strong> (luôn sẵn sàng, đơn giản) và <strong>skill</strong> (project-specific, có cấu trúc rõ ràng).</div>
     </div>
     <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:20px 22px">
       <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px">Token</div>
@@ -535,7 +535,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     <div class="display" style="font-size:72px;margin-bottom:20px">The 7 Levels<br>of Using AI</div>
     <div id="lvl-desc" class="body-lg" style="max-width:500px;margin-bottom:24px;min-height:80px">Phần lớn dev đang ở Level 2-3 — viết code và debug với AI. Hôm nay chúng ta sẽ lên Level 4-5: AI tự chạy workflow, kiểm soát quality, và kết nối tooling. Click một level để xem chi tiết.</div>
     <div class="callout" style="max-width:500px">
-      <div class="callout-title">Hôm nay chúng ta học</div>
+      <div class="callout-title">Hôm nay chúng ta cùng tìm hiểu</div>
       <div class="callout-text">Level 3 (Memory) + Level 4 (Skills + Agents + MCP) — giải quyết được 99% use case thực tế</div>
     </div>
   </div>
@@ -557,7 +557,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div class="display" style="font-size:120px;margin-bottom:24px">MEMORY<br><span style="color:var(--amber)">SYSTEM</span></div>
   <div class="body-lg" style="max-width:720px;margin-bottom:36px;padding-left:20px;border-left:3px solid rgba(245,158,11,.4)">AI bắt đầu từ zero mỗi conversation — không biết project, convention, hay bất kỳ quyết định nào đã làm trước đó</div>
   <div class="mini-cards" style="max-width:900px">
-    <div class="mini-card"><div class="mc-label">Tool</div><div class="mc-val">CLAUDE.md</div></div>
+    <div class="mini-card"><div class="mc-label">Tool</div><div class="mc-val">CLAUDE.md &amp; AGENTS.md</div></div>
     <div class="mini-card"><div class="mc-label">Rules</div><div class="mc-val">6 Rules</div></div>
     <div class="mini-card"><div class="mc-label">Compare</div><div class="mc-val">Before / After</div></div>
     <div class="mini-card"><div class="mc-label">Advanced</div><div class="mc-val">Cross-Session</div></div>
@@ -570,8 +570,18 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
 <section class="slide" id="s5">
   <div class="pane-l">
     <div class="eyebrow b1">Block 1 — Memory</div>
-    <div class="display" style="font-size:80px;margin-bottom:24px">CLAUDE.md —<br>Project Memory</div>
-    <div class="body-lg" style="margin-bottom:28px">AI đọc file này đầu mỗi session — không cần giải thích lại tech stack, conventions, hay patterns.</div>
+    <div class="display" style="font-size:80px;margin-bottom:24px">CLAUDE.md &amp;<br>AGENTS.md</div>
+    <div class="body-lg" style="margin-bottom:16px">AI đọc file này đầu mỗi session — không cần giải thích lại tech stack, conventions, hay patterns.</div>
+    <div style="display:flex;gap:10px;margin-bottom:20px">
+      <div style="flex:1;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 12px;text-align:center">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:var(--amber);font-weight:700">CLAUDE.md</div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:var(--muted)">Claude Code đọc</div>
+      </div>
+      <div style="flex:1;background:rgba(0,141,207,.06);border:1px solid rgba(0,141,207,.2);border-radius:8px;padding:10px 12px;text-align:center">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#008DCF;font-weight:700">AGENTS.md</div>
+        <div style="font-family:'Inter',sans-serif;font-size:11px;color:var(--muted)">Codex, Cursor, OpenCode đọc</div>
+      </div>
+    </div>
     <div style="display:flex;flex-direction:column;gap:10px">
       <div style="display:flex;gap:14px;align-items:center">
         <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0"></div>
@@ -583,10 +593,6 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
       </div>
       <div style="display:flex;gap:14px;align-items:center">
         <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0"></div>
-        <div class="body-lg" style="font-size:var(--fs-md)">Git flow &amp; branch naming</div>
-      </div>
-      <div style="display:flex;gap:14px;align-items:center">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0"></div>
         <div class="body-lg" style="font-size:var(--fs-md)">Anti-patterns — những thứ AI hay làm sai</div>
       </div>
     </div>
@@ -595,20 +601,16 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     <div class="code-box" style="font-size:var(--fs-sm)">
       <div style="color:rgba(245,158,11,.6);margin-bottom:12px"># CLAUDE.md</div>
       <div style="color:rgba(255,255,255,.4);margin-bottom:8px">## Tech Stack</div>
-      <div style="color:rgba(255,255,255,.65);margin-bottom:4px">- <span style="color:#86efac">Nuxt 3</span> + TypeScript</div>
-      <div style="color:rgba(255,255,255,.65);margin-bottom:4px">- <span style="color:#86efac">Express</span> :3000 (user-facing API)</div>
-      <div style="color:rgba(255,255,255,.65);margin-bottom:16px">- <span style="color:#86efac">NestJS</span> (pricing-manager)</div>
+      <div style="color:rgba(255,255,255,.65);margin-bottom:4px">- <span style="color:#86efac">React / Vue / Next.js</span> + TypeScript</div>
+      <div style="color:rgba(255,255,255,.65);margin-bottom:12px">- <span style="color:#86efac">Node.js</span> API :3000</div>
       <div style="color:rgba(255,255,255,.4);margin-bottom:8px">## Conventions</div>
-      <div style="color:rgba(255,255,255,.65);margin-bottom:4px">- 2 spaces, single quotes, no semicolons</div>
-      <div style="color:rgba(255,255,255,.65);margin-bottom:16px">- Always brace control statements</div>
-      <div style="color:rgba(255,255,255,.4);margin-bottom:8px">## Anti-patterns</div>
-      <div style="color:rgba(239,68,68,.7);margin-bottom:4px">- Never use window.localStorage directly</div>
-      <div style="color:rgba(239,68,68,.7);margin-bottom:4px">- No &lt;v-icon&gt; — use Font Awesome &lt;i&gt; tags</div>
-      <div style="color:rgba(239,68,68,.7)">- No &lt;p&gt; tags for UI text, use &lt;div&gt;/&lt;span&gt;</div>
+      <div style="color:rgba(255,255,255,.65);margin-bottom:12px">- 2 spaces, single quotes, no semicolons</div>
+      <div style="color:rgba(255,255,255,.4);margin-bottom:8px">## Import shared rules</div>
+      <div style="color:rgba(167,139,250,.8);margin-bottom:4px">@AGENTS.md</div>
     </div>
     <div class="callout" style="margin-top:16px">
-      <div class="callout-title">Key Insight</div>
-      <div class="callout-text" style="font-size:var(--fs-base)">File này là "bộ nhớ dài hạn" của AI về project. Thay đổi codebase → update ngay.</div>
+      <div class="callout-title">Pattern:避免 duplicated</div>
+      <div class="callout-text" style="font-size:var(--fs-base)">CLAUDE.md ghi <code>@AGENTS.md</code> → Codex đọc AGENTS.md, Claude Code đọc cả hai. Team dùng nhiều agents → chỉmaintain 1 file.</div>
     </div>
   </div>
   <div class="slide-num">05 / 37</div>
@@ -617,7 +619,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
 <!-- ═══ S6: 5 RULES ═══ -->
 <section class="slide" id="s6" style="flex-direction:column;justify-content:center;padding:60px 64px">
   <div class="eyebrow b1">Block 1 — Memory</div>
-  <div class="display" style="font-size:76px;margin-bottom:32px">6 Rules viết CLAUDE.md hiệu quả</div>
+  <div class="display" style="font-size:76px;margin-bottom:32px">6 Rules viết Memory File hiệu quả</div>
 
   <svg viewBox="0 0 1050 470" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1050px;margin:0 auto;display:block">
     <defs>
@@ -745,7 +747,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin-top:24px">
-        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.22);border-radius:999px;color:rgba(74,222,128,.9);font-family:'Inter',sans-serif;font-size:var(--fs-base);font-weight:500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(74,222,128,.85)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Nuxt 3 · TS</div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.22);border-radius:999px;color:rgba(74,222,128,.9);font-family:'Inter',sans-serif;font-size:var(--fs-base);font-weight:500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(74,222,128,.85)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> React / Vue · TS</div>
         <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.22);border-radius:999px;color:rgba(74,222,128,.9);font-family:'Inter',sans-serif;font-size:var(--fs-base);font-weight:500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(74,222,128,.85)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 2sp · no-;</div>
         <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.22);border-radius:999px;color:rgba(74,222,128,.9);font-family:'Inter',sans-serif;font-size:var(--fs-base);font-weight:500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(74,222,128,.85)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> JWT auth</div>
         <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.22);border-radius:999px;color:rgba(74,222,128,.9);font-family:'Inter',sans-serif;font-size:var(--fs-base);font-weight:500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(74,222,128,.85)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> kebab-case</div>
@@ -822,7 +824,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div style="display:flex;flex-direction:column;gap:20px;max-width:900px">
     <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(245,158,11,.3);line-height:1;min-width:56px">1</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">CLAUDE.md nên chứa gì — và không nên chứa gì?</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">CLAUDE.md / AGENTS.md nên chứa gì — và không nên chứa gì?</div>
     </div>
     <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(245,158,11,.3);line-height:1;min-width:56px">2</div>
@@ -830,7 +832,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     </div>
     <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(245,158,11,.3);line-height:1;min-width:56px">3</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">Nếu không có CLAUDE.md, AI sẽ gặp vấn đề gì đầu tiên?</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">Nếu không có CLAUDE.md / AGENTS.md, AI sẽ gặp vấn đề gì đầu tiên?</div>
     </div>
   </div>
   <div class="slide-num">09 / 37</div>
@@ -839,8 +841,8 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
 <!-- ═══ S10: EXERCISE BLOCK 1 ═══ -->
 <section class="slide" id="s10" style="flex-direction:column;justify-content:center;padding:80px 64px">
   <div class="eyebrow b1">Block 1 — Exercise</div>
-  <div class="display" style="font-size:80px;margin-bottom:12px">Follow-along + Exercise</div>
-  <div class="body-lg" style="margin-bottom:40px;color:var(--amber)">Task: Viết CLAUDE.md cho repo bạn đang phụ trách</div>
+  <div class="display" style="font-size:80px;margin-bottom:12px">Cùng thực hành</div>
+  <div class="body-lg" style="margin-bottom:40px;color:var(--amber)">Task: Viết CLAUDE.md + AGENTS.md cho repo bạn đang phụ trách</div>
   <div style="display:flex;flex-direction:column;gap:14px;max-width:800px">
     <div style="display:flex;gap:20px;align-items:flex-start">
       <div style="width:36px;height:36px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:var(--fs-md);color:var(--amber)">1</div>
@@ -870,7 +872,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div class="body-lg" style="max-width:760px;margin-bottom:36px;padding-left:20px;border-left:3px solid rgba(0,141,207,.4)">Thay vì nhắc AI làm đúng mỗi lần — viết skill một lần, dùng mãi mãi</div>
   <div class="mini-cards" style="max-width:900px">
     <div class="mini-card"><div class="mc-label">Structure</div><div class="mc-val">Anatomy</div></div>
-    <div class="mini-card"><div class="mc-label">Skill</div><div class="mc-val">/datadog-investigator</div></div>
+    <div class="mini-card"><div class="mc-label">Skill</div><div class="mc-val">/ai-slop-remover</div></div>
     <div class="mini-card"><div class="mc-label">Skill</div><div class="mc-val">/systematic-debugging</div></div>
     <div class="mini-card"><div class="mc-label">Compare</div><div class="mc-val">Before / After</div></div>
   </div>
@@ -883,7 +885,17 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div class="pane-l">
     <div class="eyebrow b2">Block 2 — Skills</div>
     <div class="display" style="font-size:80px;margin-bottom:24px">Anatomy of a Skill</div>
-    <div class="body-lg" style="margin-bottom:28px;max-width:500px">Skill = workflow tái sử dụng. Gọi bằng slash command. AI follows exact steps mỗi lần.</div>
+    <div class="body-lg" style="margin-bottom:16px;max-width:500px">Skill = workflow tái sử dụng với cấu trúc rõ ràng. AI follows exact steps mỗi lần.</div>
+    <div style="display:flex;gap:12px;margin-bottom:24px">
+      <div style="flex:1;background:rgba(0,141,207,.06);border:1px solid rgba(0,141,207,.2);border-radius:10px;padding:14px 16px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#008DCF;font-weight:700;margin-bottom:4px">/command</div>
+        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted)">Built-in, luôn sẵn sàng. Đơn giản.</div>
+      </div>
+      <div style="flex:1;background:rgba(0,141,207,.06);border:1px solid rgba(0,141,207,.2);border-radius:10px;padding:14px 16px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:#008DCF;font-weight:700;margin-bottom:4px">/skill-name</div>
+        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted)">Project-specific, có cấu trúc TRIGGER → PROCESS → OUTPUT.</div>
+      </div>
+    </div>
     <div class="callout" style="border-color:rgba(0,141,207,.3);background:rgba(0,141,207,.05)">
       <div class="callout-title" style="color:#008DCF">Example</div>
       <div class="callout-text" style="font-size:var(--fs-base);font-family:'JetBrains Mono',monospace;color:#93c5fd">/pr-code-reviewer</div>
@@ -926,37 +938,32 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <!-- Left -->
   <div style="flex:1;padding:64px 60px;display:flex;flex-direction:column;justify-content:center">
     <div class="eyebrow b2">Block 2 — Skills · Ví dụ thực tế</div>
-    <div class="display" style="font-size:76px;margin-bottom:14px;color:#008DCF;line-height:.95">/datadog-investigator</div>
-    <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--muted);margin-bottom:32px;line-height:1.55;max-width:500px">Mỗi sáng: AI tự query Datadog logs, metrics, traces — phân tích anomalies, viết report — không cần mở browser.</div>
+    <div class="display" style="font-size:76px;margin-bottom:14px;color:#008DCF;line-height:.95">/ai-slop-remover</div>
+    <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);color:var(--muted);margin-bottom:32px;line-height:1.55;max-width:500px">Dọn dẹp code AI-generated: scan file → tìm code smell → fix giữ functionality → review lại.</div>
 
     <svg viewBox="0 0 520 100" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <marker id="a13" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#008DCF" opacity=".55"/></marker>
         <marker id="a13a" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#F59E0B" opacity=".55"/></marker>
       </defs>
-      <!-- Logs -->
       <rect x="6" y="26" width="80" height="48" rx="24" fill="rgba(0,141,207,.12)" stroke="rgba(0,141,207,.35)"/>
-      <text x="46" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#008DCF" font-weight="600">Logs</text>
+      <text x="46" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#008DCF" font-weight="600">Scan</text>
       <line x1="86" y1="50" x2="106" y2="50" stroke="#008DCF" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#a13)"/>
-      <!-- Metrics -->
       <rect x="108" y="26" width="84" height="48" rx="24" fill="rgba(0,141,207,.12)" stroke="rgba(0,141,207,.35)"/>
-      <text x="150" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#008DCF" font-weight="600">Metrics</text>
+      <text x="150" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#008DCF" font-weight="600">Detect</text>
       <line x1="192" y1="50" x2="212" y2="50" stroke="#008DCF" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#a13)"/>
-      <!-- Traces -->
       <rect x="214" y="26" width="80" height="48" rx="24" fill="rgba(0,141,207,.12)" stroke="rgba(0,141,207,.35)"/>
-      <text x="254" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#008DCF" font-weight="600">Traces</text>
+      <text x="254" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#008DCF" font-weight="600">Fix</text>
       <line x1="294" y1="50" x2="314" y2="50" stroke="#008DCF" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#a13)"/>
-      <!-- Correlate -->
       <rect x="316" y="26" width="90" height="48" rx="24" fill="rgba(0,141,207,.12)" stroke="rgba(0,141,207,.35)"/>
-      <text x="361" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#008DCF" font-weight="600">Correlate</text>
+      <text x="361" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#008DCF" font-weight="600">Verify</text>
       <line x1="406" y1="50" x2="426" y2="50" stroke="#008DCF" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#a13a)"/>
-      <!-- Report -->
       <rect x="428" y="26" width="86" height="48" rx="24" fill="rgba(245,158,11,.12)" stroke="rgba(245,158,11,.35)"/>
-      <text x="471" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#F59E0B" font-weight="600">Report</text>
+      <text x="471" y="55" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#F59E0B" font-weight="600">Ship</text>
     </svg>
 
     <div style="margin-top:28px;padding:14px 20px;border-left:2px solid #008DCF;font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--muted)">
-      Thủ công: 30 phút mỗi sáng &nbsp;·&nbsp; Với skill: <strong style="color:var(--ink)">2 phút, tự động</strong>
+      Review tay: 30 phút &nbsp;·&nbsp; Với skill: <strong style="color:var(--ink)">2 phút, tự động</strong>
     </div>
   </div>
 
@@ -964,18 +971,18 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div style="width:540px;background:rgba(0,0,0,.25);border-left:1px solid var(--dim);padding:48px 40px;display:flex;flex-direction:column;justify-content:center">
     <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:#008DCF;margin-bottom:16px">Sample Output</div>
     <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);line-height:1.8;color:var(--muted)">
-      <div style="color:var(--ink);font-size:var(--fs-sm);margin-bottom:8px"># Daily Sanity Scan · 2026-05-21</div>
-      <div style="color:var(--amber)">## Status: 🟡 Warning</div>
-      <div style="margin-top:12px;color:var(--ink)">### Anomalies (2)</div>
-      <div style="margin-top:6px">🔴 <span style="color:#f87171">tradeit-backend</span></div>
-      <div style="padding-left:20px;font-size:var(--fs-sm)">Error rate +340% vs baseline</div>
-      <div style="padding-left:20px;font-size:var(--fs-sm);color:#fbbf24">→ OAuth2 timeout, RDS spike</div>
-      <div style="margin-top:8px">🟡 <span style="color:#fbbf24">Cloudflare</span></div>
-      <div style="padding-left:20px;font-size:var(--fs-sm)">4xx rate 2.1% (threshold 1%)</div>
-      <div style="margin-top:12px;color:var(--ink)">### Clear (3 services) ✓</div>
-      <div style="font-size:var(--fs-sm);color:var(--muted);margin-top:4px">tradeit-frontend · tradebot · pricing</div>
-      <div style="margin-top:16px;font-size:var(--fs-xs);color:rgba(255,255,255,.25)">────────────────────</div>
-      <div style="margin-top:8px;font-size:var(--fs-sm)">📎 <span style="color:#60a5fa;text-decoration:underline">Datadog dashboard →</span></div>
+      <div style="color:var(--ink);font-size:var(--fs-sm);margin-bottom:8px"># AI Slop Report · payment.service.ts</div>
+      <div style="color:var(--amber)">## Found 4 issues</div>
+      <div style="margin-top:10px">🔴 <span style="color:#f87171">L14</span> — Unused variable <span style="color:var(--ink)">tempResult</span></div>
+      <div style="padding-left:20px;font-size:var(--fs-sm)">AI generated, never read</div>
+      <div style="margin-top:6px">🟡 <span style="color:#fbbf24">L31</span> — Redundant <span style="color:var(--ink)">try/catch</span></div>
+      <div style="padding-left:20px;font-size:var(--fs-sm)">Empty catch block, swallows errors</div>
+      <div style="margin-top:6px">🟡 <span style="color:#fbbf24">L45</span> — Over-abstraction</div>
+      <div style="padding-left:20px;font-size:var(--fs-sm)">Factory for single-use function</div>
+      <div style="margin-top:6px">🔴 <span style="color:#f87171">L62</span> — Hardcoded <span style="color:var(--ink)">as any</span></div>
+      <div style="padding-left:20px;font-size:var(--fs-sm)">Type safety bypass</div>
+      <div style="margin-top:14px;color:var(--ink)">### Fixed: 4/4 ✓</div>
+      <div style="font-size:var(--fs-sm);color:rgba(74,222,128,.7)">Tests pass · Functionality preserved</div>
     </div>
   </div>
 
@@ -1067,7 +1074,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     </div>
     <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(0,141,207,.25);line-height:1;min-width:56px">2</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">/datadog-investigator kết hợp những tools nào? Kết quả trả về là gì?</div>
+      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xl);font-weight:600;color:var(--ink);line-height:1.4;padding-top:8px">/ai-slop-remover xử lý những loại code smell nào? Kết quả ra sao?</div>
     </div>
     <div style="display:flex;gap:28px;align-items:flex-start;padding:24px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:60px;font-weight:900;color:rgba(0,141,207,.25);line-height:1;min-width:56px">3</div>
@@ -1080,7 +1087,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
 <!-- ═══ S17: EXERCISE BLOCK 2 ═══ -->
 <section class="slide" id="s17" style="flex-direction:column;justify-content:center;padding:80px 64px">
   <div class="eyebrow b2">Block 2 — Exercise</div>
-  <div class="display" style="font-size:80px;margin-bottom:12px">Follow-along + Exercise</div>
+  <div class="display" style="font-size:80px;margin-bottom:12px">Cùng thực hành</div>
   <div class="body-lg" style="margin-bottom:40px;color:#008DCF">Task: Draft skill cho task lặp lại nhất của bạn</div>
   <div style="display:flex;flex-direction:column;gap:14px;max-width:800px">
     <div style="display:flex;gap:20px;align-items:flex-start">
@@ -1286,7 +1293,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div class="tool-tabs" id="tool-tabs">
     <button class="tool-tab active" onclick="switchTool('openspecs')">OpenSpecs</button>
     <button class="tool-tab" onclick="switchTool('superpowers')">Superpowers</button>
-    <button class="tool-tab" onclick="switchTool('gsd')">GSD</button>
+    <button class="tool-tab" onclick="switchTool('gsd')">GSD Core</button>
   </div>
   <!-- OpenSpecs — 5 steps: explore → propose → apply → verify → archive -->
   <div class="tool-panel active" id="panel-openspecs">
@@ -1321,44 +1328,62 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div class="slide-num">23 / 37</div>
 </section>
 
-<!-- ═══ S24: 3 TOOLS RELATIONSHIP ═══ -->
+<!-- ═══ S24: 3 TOOLS — SAME PATTERN ═══ -->
 <section class="slide" id="s24">
   <div class="pane-l">
     <div class="eyebrow b3">Block 3 — Tooling</div>
-    <div class="display" style="font-size:64px;margin-bottom:20px">Không cạnh tranh —<br>lồng nhau theo scale</div>
-    <!-- Nested diagram -->
-    <div style="position:relative;width:480px;height:320px;margin-top:16px">
-      <div style="position:absolute;inset:0;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.3);border-radius:16px;padding:16px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:4px">GSD · Project Level</div>
-        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted)">ROADMAP → Phases → STATE.md</div>
-        <div style="position:absolute;inset:52px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:4px">OpenSpecs · Change Level</div>
-          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-sm);color:var(--muted)">Per-ticket spec + tasks + AC</div>
-          <div style="position:absolute;inset:52px;background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.2);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-2xs);letter-spacing:.1em;text-transform:uppercase;color:rgba(167,139,250,.6)">Superpowers</div>
-            <div style="font-family:'Inter',sans-serif;font-size:var(--fs-xs);color:var(--muted);margin-top:4px">Task Level · When unclear</div>
-          </div>
-        </div>
+    <div class="display" style="font-size:64px;margin-bottom:20px">Cùng 1 pattern<br>khác scope</div>
+    <div class="body-lg" style="margin-bottom:24px;max-width:480px">Cả 3 tool đều follow quy trình giống nhau. Chỉ khác ở quy mô — từ task cá nhân đến toàn team.</div>
+    <svg viewBox="0 0 480 60" style="width:100%;height:auto;display:block;margin-bottom:20px" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a24" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="#A78BFA" opacity=".5"/></marker></defs>
+      <rect x="4" y="12" width="88" height="36" rx="18" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
+      <text x="48" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#A78BFA" font-weight="600">Hiểu</text>
+      <line x1="92" y1="30" x2="108" y2="30" stroke="#A78BFA" stroke-width="1.2" marker-end="url(#a24)"/>
+      <rect x="110" y="12" width="88" height="36" rx="18" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
+      <text x="154" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#A78BFA" font-weight="600">Lên KH</text>
+      <line x1="198" y1="30" x2="214" y2="30" stroke="#A78BFA" stroke-width="1.2" marker-end="url(#a24)"/>
+      <rect x="216" y="12" width="88" height="36" rx="18" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
+      <text x="260" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#A78BFA" font-weight="600">Thực hiện</text>
+      <line x1="304" y1="30" x2="320" y2="30" stroke="#A78BFA" stroke-width="1.2" marker-end="url(#a24)"/>
+      <rect x="322" y="12" width="88" height="36" rx="18" fill="rgba(167,139,250,.1)" stroke="rgba(167,139,250,.3)"/>
+      <text x="366" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#A78BFA" font-weight="600">Kiểm tra</text>
+      <line x1="410" y1="30" x2="426" y2="30" stroke="#A78BFA" stroke-width="1.2" marker-end="url(#a24)"/>
+      <rect x="428" y="12" width="48" height="36" rx="18" fill="rgba(74,222,128,.12)" stroke="rgba(74,222,128,.3)"/>
+      <text x="452" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ade80" font-weight="600">Ship</text>
+    </svg>
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;text-align:center;padding:8px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);font-weight:700">GSD Core</div>
+        <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--muted)">Phase → Team</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:8px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:8px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#A78BFA;font-weight:700">OpenSpecs</div>
+        <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--muted)">Ticket → Spec</div>
+      </div>
+      <div style="flex:1;text-align:center;padding:8px;background:rgba(0,141,207,.06);border:1px solid rgba(0,141,207,.2);border-radius:8px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#008DCF;font-weight:700">Superpowers</div>
+        <div style="font-family:'Inter',sans-serif;font-size:10px;color:var(--muted)">Unclear → Clear</div>
       </div>
     </div>
   </div>
   <div class="pane-r" style="padding-left:40px">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Kết hợp thực tế</div>
-    <div style="display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;gap:12px;align-items:flex-start">
-        <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:8px"></div>
-        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-md);font-weight:600;color:var(--amber)">/gsd-new-project</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">So sánh</div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="padding:16px 20px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:10px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:var(--amber);font-weight:700;margin-bottom:4px">GSD Core</div>
+        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--muted)">Discuss → Plan → Execute → Verify → Ship. Mỗi phase = 1 fresh context. Phù hợp feature lớn, nhiều task.</div>
       </div>
-      <div style="padding-left:40px;display:flex;flex-direction:column;gap:8px">
-        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--muted)">→ Phase 1</div>
-        <div style="padding-left:20px;font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink)">Change A (clear): <span style="color:#A78BFA">/opsx:propose</span></div>
-        <div style="padding-left:20px;font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink)">Change B (ambiguous): <span style="color:#008DCF">/brainstorming</span> → <span style="color:#A78BFA">/opsx:propose</span></div>
-        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--muted)">→ Phase 2...</div>
+      <div style="padding:16px 20px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2);border-radius:10px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:#A78BFA;font-weight:700;margin-bottom:4px">OpenSpecs</div>
+        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--muted)">Explore → Propose → Apply → Verify → Archive. Per-ticket spec với AC rõ ràng. Phù hợp task đơn lẻ.</div>
+      </div>
+      <div style="padding:16px 20px;background:rgba(0,141,207,.06);border:1px solid rgba(0,141,207,.2);border-radius:10px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:#008DCF;font-weight:700;margin-bottom:4px">Superpowers</div>
+        <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--muted)">Brainstorm → Clarify → Implement. Khi chưa biết bắt đầu từ đâu. Phù hợp exploration phase.</div>
       </div>
     </div>
-    <div style="margin-top:28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px 20px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-lg);font-weight:900;color:var(--amber);margin-bottom:6px">GSD = shell</div>
-      <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--muted);line-height:1.5">OpenSpecs = per-ticket spec. Superpowers = khi chưa biết làm gì. Dùng đúng tool đúng scope.</div>
+    <div style="margin-top:20px;padding:14px 20px;border-left:2px solid var(--amber);font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--muted)">
+      Tips: Chọn 1 tool phù hợp scope. Khi quen rồi, có thể kết hợp nếu cần.
     </div>
   </div>
   <div class="slide-num">24 / 37</div>
@@ -1515,29 +1540,24 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
   <div class="display" style="font-size:80px;margin-bottom:32px">Dùng tool nào?</div>
   <div style="display:flex;flex-direction:column;max-width:1100px;margin-bottom:24px">
     <div class="dt-row">
-      <div class="dt-cond">Task &lt; 2h, low-risk</div>
+      <div class="dt-cond">Task &lt; 2h, low-risk, requirement rõ</div>
       <div class="dt-arrow">→</div>
       <div class="dt-action">Code directly</div>
     </div>
     <div class="dt-row">
-      <div class="dt-cond">Requirement chưa rõ</div>
+      <div class="dt-cond">Chưa biết bắt đầu từ đâu, requirement mơ hồ</div>
       <div class="dt-arrow">→</div>
-      <div class="dt-action" style="color:#008DCF">/brainstorming</div>
+      <div class="dt-action" style="color:#008DCF">Superpowers — brainstorm + explore</div>
     </div>
     <div class="dt-row">
-      <div class="dt-cond">Single ticket, scope rõ</div>
+      <div class="dt-cond">Single ticket, scope rõ, cần spec + AC</div>
       <div class="dt-arrow">→</div>
-      <div class="dt-action" style="color:#A78BFA">/opsx:propose</div>
+      <div class="dt-action" style="color:#A78BFA">OpenSpecs — /opsx:propose</div>
     </div>
     <div class="dt-row">
-      <div class="dt-cond">Multi-phase project</div>
+      <div class="dt-cond">Feature lớn, nhiều task, cần track progress</div>
       <div class="dt-arrow">→</div>
-      <div class="dt-action" style="color:var(--amber)">/gsd-new-project</div>
-    </div>
-    <div class="dt-row">
-      <div class="dt-cond">Large project + detailed specs</div>
-      <div class="dt-arrow">→</div>
-      <div class="dt-action" style="color:var(--amber)">GSD + OpenSpecs per change</div>
+      <div class="dt-action" style="color:var(--amber)">GSD Core — /gsd-new-project</div>
     </div>
   </div>
   <div class="callout" style="max-width:800px">
@@ -1571,7 +1591,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
 <!-- ═══ S28.6: EXERCISE BLOCK 3 ═══ -->
 <section class="slide" id="s28-6" style="flex-direction:column;justify-content:center;padding:80px 64px">
   <div class="eyebrow b3">Block 3 — Exercise</div>
-  <div class="display" style="font-size:80px;margin-bottom:12px">Follow-along + Exercise</div>
+  <div class="display" style="font-size:80px;margin-bottom:12px">Cùng thực hành</div>
   <div class="body-lg" style="margin-bottom:40px;color:#A78BFA">Task: Chọn 1 Linear ticket, chạy qua core loop</div>
   <div style="display:flex;flex-direction:column;gap:14px;max-width:800px">
     <div style="display:flex;gap:20px;align-items:flex-start">
@@ -1767,7 +1787,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     <div class="display" style="font-size:72px;margin-bottom:24px">Daily Health<br>Check</div>
     <div class="body-lg" style="margin-bottom:20px;max-width:480px">Thay vì mở 5 tabs và tốn 30 phút — một lệnh, AI query tất cả, xong trong 2 phút.</div>
     <div style="background:rgba(255,114,48,.06);border:1px solid rgba(255,114,48,.2);border-radius:10px;padding:16px 20px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:#FF7230;margin-bottom:8px">"Give me the morning health check for tradeit"</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-sm);color:#FF7230;margin-bottom:8px">"Give me the morning health check for our project"</div>
       <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--muted);line-height:1.5">AI queries Datadog + Amplitude + Linear + DB đồng thời → summary trong 2 phút</div>
     </div>
   </div>
@@ -1885,7 +1905,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
 <!-- ═══ S36: EXERCISE BLOCK 4 ═══ -->
 <section class="slide" id="s36" style="flex-direction:column;justify-content:center;padding:80px 64px">
   <div class="eyebrow b4">Block 4 — Exercise</div>
-  <div class="display" style="font-size:80px;margin-bottom:12px">Follow-along + Exercise</div>
+  <div class="display" style="font-size:80px;margin-bottom:12px">Cùng thực hành</div>
   <div class="body-lg" style="margin-bottom:40px;color:#FF7230">Task: List 3 MCP tools bạn muốn có cho workflow</div>
   <div style="display:flex;flex-direction:column;gap:14px;max-width:800px">
     <div style="display:flex;gap:20px;align-items:flex-start">
@@ -1925,7 +1945,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
     </div>
     <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:20px 28px;text-align:center">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-xl);font-weight:900;color:var(--amber);margin-bottom:4px">Spec-Driven</div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-base);color:rgba(74,222,128,.8)">GSD + OpenSpecs ✓</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-base);color:rgba(74,222,128,.8)">GSD Core ✓</div>
     </div>
     <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:20px 28px;text-align:center">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:var(--fs-xl);font-weight:900;color:var(--amber);margin-bottom:4px">MCP</div>
@@ -2050,7 +2070,7 @@ html,body{width:100%;height:100%;background:#060C18;overflow:hidden;-webkit-font
       <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);letter-spacing:.16em;text-transform:uppercase;color:#A78BFA;margin-bottom:14px;font-weight:700">Spec-Driven Tools</div>
       <div style="display:flex;flex-direction:column;gap:10px">
         <div style="border-left:2px solid rgba(167,139,250,.3);padding-left:14px">
-          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink);font-weight:600;line-height:1.4">Get Shit Done (GSD) — spec-driven development framework</div>
+          <div style="font-family:'Inter',sans-serif;font-size:var(--fs-base);color:var(--ink);font-weight:600;line-height:1.4">Get Shit Done (GSD Core) — spec-driven development framework</div>
           <div style="font-family:'JetBrains Mono',monospace;font-size:var(--fs-xs);color:var(--muted);margin-top:3px">gsd-build · github.com/gsd-build/get-shit-done</div>
         </div>
         <div style="border-left:2px solid rgba(167,139,250,.3);padding-left:14px">
@@ -2164,22 +2184,21 @@ const IDX_DATA = [
     {n:4, title:'The 7 Levels of Using AI'},
   ]},
   { label:'Block 1 — Memory System', color:'#F59E0B', col:0, slides:[
-    {n:4,  title:'Memory System — Intro'},
-    {n:5,  title:'CLAUDE.md — Project Memory'},
+    {n:5,  title:'CLAUDE.md & AGENTS.md — Project Memory'},
     {n:6,  title:'6 Rules viết CLAUDE.md hiệu quả'},
     {n:7,  title:'Memory: Before / After'},
     {n:8,  title:'Cross-Session Memory'},
     {n:9,  title:'Check · Block 1'},
-    {n:10, title:'Exercise · Block 1'},
+    {n:10, title:'Thực hành · Block 1'},
   ]},
   { label:'Block 2 — Skills', color:'#008DCF', col:0, slides:[
     {n:11, title:'Skills — Intro'},
     {n:12, title:'Anatomy of a Skill'},
-    {n:13, title:'/datadog-investigator — Demo thực tế'},
+    {n:13, title:'/ai-slop-remover — Demo thực tế'},
     {n:14, title:'/systematic-debugging'},
     {n:15, title:'Skills: Before / After'},
     {n:16, title:'Check · Block 2'},
-    {n:17, title:'Exercise · Block 2'},
+    {n:17, title:'Thực hành · Block 2'},
   ]},
   { label:'☕ Break', color:'#4A6580', col:0, slides:[
     {n:18, title:'Break — 15 phút'},
@@ -2190,20 +2209,12 @@ const IDX_DATA = [
     {n:21, title:'Core Loop (interactive)'},
     {n:22, title:'Spec = WHAT + AC'},
     {n:23, title:'3 Spec-Driven Tools (interactive tabs)'},
-    {n:24, title:'3 Tools Relationship — lồng nhau theo scale'},
-    {n:25, title:'GSD Workflow'},
-    {n:26, title:'GSD in Action'},
-    {n:28, title:'Decision Tree — dùng tool nào?'},
-    {n:20, title:'Context Rot & Vibe Coding'},
-    {n:21, title:'Core Loop (interactive)'},
-    {n:22, title:'Spec = WHAT + AC'},
-    {n:23, title:'3 Spec-Driven Tools (interactive tabs)'},
-    {n:24, title:'3 Tools Relationship — lồng nhau theo scale'},
+    {n:24, title:'Chọn tool phù hợp'},
     {n:25, title:'GSD Workflow'},
     {n:26, title:'GSD in Action'},
     {n:28, title:'Decision Tree — dùng tool nào?'},
     {n:29, title:'Check · Block 3'},
-    {n:30, title:'Exercise · Block 3'},
+    {n:30, title:'Thực hành · Block 3'},
     {n:31, title:'Wrap-up · Block 3'},
   ]},
   { label:'Block 4 — MCP Servers', color:'#FF7230', col:1, slides:[
@@ -2213,14 +2224,14 @@ const IDX_DATA = [
     {n:35, title:'Daily Health Check: Before vs After'},
     {n:36, title:'Cross-Tool Query'},
     {n:37, title:'Check · Block 4'},
-    {n:38, title:'Exercise · Block 4'},
+    {n:38, title:'Thực hành · Block 4'},
   ]},
   { label:'Wrap-up', color:'#F59E0B', col:1, slides:[
-    {n:37, title:'Bạn đã ở Level 4'},
-    {n:38, title:'Deliverables + Roadmap'},
+    {n:39, title:'Bạn đã ở Level 4'},
+    {n:40, title:'Deliverables + Roadmap'},
   ]},
   { label:'Appendix', color:'#64748B', col:1, slides:[
-    {n:39, title:'References'},
+    {n:41, title:'References'},
   ]},
 ];
 
